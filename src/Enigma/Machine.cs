@@ -15,7 +15,7 @@ public class Machine
 
     private Pipeline BuildPipeline()
     {
-        var pipeline = new Pipeline(Log);
+        var pipeline = new Pipeline();
 
         pipeline.Add(PlugBoard);
         pipeline.AddRange(Spindle.Rotors);
@@ -36,8 +36,8 @@ public class Machine
 
         foreach (var step in list)
         {
-            var result = step.Invoke(temp);
-            Log.Add($"{temp} -> {result}");
+            var result = step.Action.Invoke(temp);
+            Log.Add($"{step.Component.Name} {temp} -> {result}");
             temp = result;
         }
 

@@ -1,69 +1,44 @@
-using System.Collections.ObjectModel;
-
 namespace Enigma;
 
 public class Pipeline
 {
-    private readonly List<string> _log;
-    private readonly List<ICipher> _steps = [];
+    private readonly List<IComponent> _components = [];
 
-    public ReadOnlyCollection<ICipher> Steps => _steps.AsReadOnly();
-    public void Add(ICipher cipher) => _steps.Add(cipher);
-    public void AddRange(IEnumerable<ICipher> ciphers) => _steps.AddRange(ciphers);
+    public void Add(IComponent component) => _components.Add(component);
+    public void AddRange(IEnumerable<IComponent> components) => _components.AddRange(components);
 
-    public Pipeline(List<string> log) => _log = log;
-
-    public LinkedList<Func<char, char>> Build()
+    public LinkedList<Step> Build()
     {
-        var stack = new Stack<ICipher>(_steps);
+        var stack = new Stack<IComponent>(_components);
         
-        var list = new LinkedList<Func<char, char>>();
+        var list = new LinkedList<Step>();
 
         if (stack.Count == 0) return list;
 
-        var step = stack.Pop();
+        var component = stack.Pop();
 
-        list.AddFirst(x => step.Encode(x));
+        list.AddFirst(component.CreateStep(x => component.Cipher.Encode(x)));
 
         while (stack.Count > 0)
         {
             var next = stack.Pop();
 
-            list.AddBefore(list.First!, x => next.Encode(x));
-            list.AddAfter(list.Last!, x => next.Decode(x));
+            list.AddBefore(list.First!, next.CreateStep(x => next.Cipher.Encode(x)));
+            list.AddAfter(list.Last!, next.CreateStep(x => next.Cipher.Decode(x)));
         }
         
         return list;
     }
 
-    public char Execute(char input)
+    public class Step
     {
-        var temp = input;
-        
-        for (var i = 0; i < _steps.Count; i++)
+        public Step(IComponent component, Func<char, char> action)
         {
-            var cipher = _steps[i];
-
-            var result = cipher.Encode(temp);
-            
-            _log.Add($"{i} {cipher.Name} {temp} -> {result}");
-
-            temp = result;
-        }
-        
-        // skip decoding the reflector as it would undo
-        // it's own encoding
-        for (var i = _steps.Count - 2; i >= 0; i--)
-        {
-            var cipher = _steps[i];
-
-            var result = cipher.Decode(temp);
-            
-            _log.Add($"{i} {cipher.Name} {temp} -> {result}");
-
-            temp = result;
+            Component = component;
+            Action = action;
         }
 
-        return temp;
+        public IComponent Component { get; }
+        public Func<char, char> Action { get; }
     }
 }

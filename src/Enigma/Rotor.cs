@@ -1,6 +1,6 @@
 namespace Enigma;
 
-public class Rotor : ICipher
+public class Rotor : IComponent
 {
     public string Name => RotorName.ToString();
     public RotorName RotorName { get; }
@@ -39,9 +39,5 @@ public class Rotor : ICipher
         Position = (Position + 1) % 26;
     }
 
-    public char Encode(int i) => Cipher.Encode(i);
-    public char Encode(char c) => Encode(c.ToInt());
-    public char Decode(char c) => Decode(c.ToInt());
-    public char Decode(int i) => Cipher.Decode(i);
     public override string ToString() => Cipher.ToString();
 }

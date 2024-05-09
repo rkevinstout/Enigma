@@ -16,4 +16,9 @@ public static class Extensions
     {
         return Convert.ToChar(i + 65);
     }
+
+    public static Pipeline.Step CreateStep(
+        this IComponent component, 
+        Func<char, char> action
+        ) => new(component, action);
 }
