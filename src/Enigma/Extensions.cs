@@ -19,6 +19,7 @@ public static class Extensions
 
     public static Pipeline.Step CreateStep(
         this IComponent component, 
-        Func<char, char> action
-        ) => new(component, action);
+        Func<char, char> action,
+        bool? inbound = true
+        ) => new(component, action, inbound);
 }

@@ -1,9 +1,8 @@
 namespace Enigma;
 
-
 public class PlugBoard : IComponent
 {
-    public string Name { get; } = "PlugBoard";
+    public string Name { get; } = "PB";
     
     public SubstitutionCipher Cipher { get; } = new();
 

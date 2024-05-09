@@ -43,6 +43,6 @@ public class MachineTests
 
     private void LogOutput(Machine machine)
     {
-        machine.Log.ForEach(x => _output.WriteLine(x));
+        machine.Log.ForEach(x => _output.WriteLine(x.ToString()));
     }
 }

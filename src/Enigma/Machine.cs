@@ -5,7 +5,7 @@ public class Machine
     public PlugBoard PlugBoard { get; } = new();
     public Spindle Spindle { get; }
     public Reflector Reflector { get; }
-    public readonly List<string> Log = [];
+    public readonly List<TraceRecord> Log = [];
 
     public Machine(Spindle spindle, Reflector reflector)
     {
@@ -13,15 +13,15 @@ public class Machine
         Reflector = reflector;
     }
 
-    private Pipeline BuildPipeline()
+    private LinkedList<Pipeline.Step>  BuildPipeline()
     {
         var pipeline = new Pipeline();
 
         pipeline.Add(PlugBoard);
-        pipeline.AddRange(Spindle.Rotors);
+        pipeline.Add(Spindle.Rotors);
         pipeline.Add(Reflector);
 
-        return pipeline;
+        return pipeline.Build();
     }
 
     public char Encode(char input)
@@ -32,17 +32,35 @@ public class Machine
         
         var pipeline = BuildPipeline();
 
-        var list = pipeline.Build();
-
-        foreach (var step in list)
+        foreach (var step in pipeline)
         {
             var result = step.Action.Invoke(temp);
-            Log.Add($"{step.Component.Name} {temp} -> {result}");
+            
+            Record(step, temp, result);
+            
             temp = result;
         }
 
-        //var result =  pipeline.Execute(input);
-
         return temp;
+    }
+
+    private void Record(Pipeline.Step step, char input, char output)
+    {
+        var cipher = step.Inbound
+            ? step.Component.Cipher
+            : step.Component.Cipher.Inversion;
+
+        var alphabet = cipher.ToString()!
+            .Replace(output.ToString(), $"[{output}]");
+        
+        var record = new TraceRecord(
+            step.Component.Name,
+            input,
+            output,
+            alphabet
+            );
+        
+        Log.Add(record);
+        
     }
 }
