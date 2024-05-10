@@ -5,7 +5,7 @@ public class Machine
     public PlugBoard PlugBoard { get; } = new();
     public Spindle Spindle { get; }
     public Reflector Reflector { get; }
-    public readonly List<TraceRecord> Log = [];
+    public readonly TraceLog Log = new();
 
     public Machine(Spindle spindle, Reflector reflector)
     {
@@ -28,39 +28,24 @@ public class Machine
     {
         Spindle.Advance();
         
-        var temp = input;
-        
         var pipeline = BuildPipeline();
+        
+        var temp = input;
 
-        foreach (var step in pipeline)
+        var node = pipeline.First;
+        
+        while (node != null)
         {
+            var step = node.Value;
+
             var result = step.Action.Invoke(temp);
-            
-            Record(step, temp, result);
-            
+
+            Log.Record(step, temp, result, Spindle.Position);
+
             temp = result;
+            node = node.Next;
         }
 
         return temp;
-    }
-
-    private void Record(Pipeline.Step step, char input, char output)
-    {
-        var cipher = step.Inbound
-            ? step.Component.Cipher
-            : step.Component.Cipher.Inversion;
-
-        var alphabet = cipher.ToString()!
-            .Replace(output.ToString(), $"[{output}]");
-        
-        var record = new TraceRecord(
-            step.Component.Name,
-            input,
-            output,
-            alphabet
-            );
-        
-        Log.Add(record);
-        
     }
 }

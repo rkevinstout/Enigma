@@ -1,0 +1,22 @@
+using FluentAssertions;
+
+namespace Enigma.Tests;
+
+public class CeaserCipherTests
+{
+    [Fact]
+    public void WikipediaExampleShouldWork()
+    {
+        // https://en.wikipedia.org/wiki/Caesar_cipher#Example
+        
+        var cipher = new CaesarCipher(-3);
+
+        const string plainText = "THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG";
+
+        var result = cipher.Encode(plainText);
+        
+        const string cipherText = "QEB NRFZH YOLTK CLU GRJMP LSBO QEB IXWV ALD";
+
+        result.Should().Be(cipherText);
+    }
+}

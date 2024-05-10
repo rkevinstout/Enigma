@@ -9,12 +9,17 @@ public class Pipeline
 
     public LinkedList<Step> Build()
     {
-        var stack = new Stack<IComponent>(_components);
+        if (_components.Count == 0) return [];
         
+        var stack = new Stack<IComponent>(_components);
+
+        return Build(stack);
+    }
+
+    private static LinkedList<Step> Build(Stack<IComponent> stack)
+    {
         var list = new LinkedList<Step>();
-
-        if (stack.Count == 0) return list;
-
+        
         var component = stack.Pop();
 
         list.AddFirst(component.CreateStep(x => component.Cipher.Encode(x)));
@@ -23,8 +28,8 @@ public class Pipeline
         {
             var next = stack.Pop();
 
-            list.AddBefore(list.First!, next.CreateStep(x => next.Cipher.Encode(x)));
-            list.AddAfter(list.Last!, next.CreateStep(x => next.Cipher.Decode(x), false));
+            list.AddBefore(list.First!, next.CreateStep());
+            list.AddAfter(list.Last!, next.CreateStep(false));
         }
         
         return list;

@@ -3,7 +3,7 @@ namespace Enigma;
 public class Rotor : IComponent
 {
     public string Name => RotorName.ToString();
-    public RotorName RotorName { get; }
+    private RotorName RotorName { get; }
     public char Ring { get; set; }
     public SubstitutionCipher Cipher { get; }        
     public IList<char> Notches { get; set; }
@@ -29,10 +29,6 @@ public class Rotor : IComponent
         Ring = ring;
         Notches = notches;
     }
-
-    public ICipher Inversion => Cipher.Inversion;
-
-    public IDictionary<char, char> Pins => Cipher.Dictionary;
 
     public void Advance()
     {

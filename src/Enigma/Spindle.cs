@@ -10,7 +10,7 @@ public class Spindle
     public string Position
     {
         get => new (Rotors.Select(r => r.Position.ToChar()).ToArray());
-        set => SetRotorPositions(value);
+        private init => SetRotorPositions(value);
     }
 
     public Spindle(params Rotor[] rotors) :this("AAAA", rotors)
@@ -40,7 +40,7 @@ public class Spindle
 
     private void Validate()
     {
-        var distinctRotors = Rotors.Select(x => x.ToString()).Distinct();
+        var distinctRotors = Rotors.Select(x => x.Name).Distinct();
 
         if (distinctRotors.Count() != Rotors.Count)
         {

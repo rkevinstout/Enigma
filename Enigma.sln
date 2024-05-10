@@ -11,6 +11,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{903051BF
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Enigma.Tests", "tests\Enigma.Tests\Enigma.Tests.csproj", "{8BEB475C-5B1D-40CC-B024-8F2F934402E1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Enigma.Benchmarks", "tests\Enigma.Benchmarks\Enigma.Benchmarks.csproj", "{8B862032-56C7-498A-850F-5FAB9FA1D96D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -28,9 +30,14 @@ Global
 		{8BEB475C-5B1D-40CC-B024-8F2F934402E1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8BEB475C-5B1D-40CC-B024-8F2F934402E1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8BEB475C-5B1D-40CC-B024-8F2F934402E1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8B862032-56C7-498A-850F-5FAB9FA1D96D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8B862032-56C7-498A-850F-5FAB9FA1D96D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8B862032-56C7-498A-850F-5FAB9FA1D96D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8B862032-56C7-498A-850F-5FAB9FA1D96D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{34FE76FF-2A40-4CCC-858D-2CD95F29D5F6} = {7C5580A9-4048-4045-B78A-4226833CBFC2}
 		{8BEB475C-5B1D-40CC-B024-8F2F934402E1} = {903051BF-9C3F-4BF5-9A98-293C8530E6D4}
+		{8B862032-56C7-498A-850F-5FAB9FA1D96D} = {903051BF-9C3F-4BF5-9A98-293C8530E6D4}
 	EndGlobalSection
 EndGlobal
