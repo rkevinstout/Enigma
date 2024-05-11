@@ -28,9 +28,26 @@ public class Pipeline
         {
             var next = stack.Pop();
 
-            list.AddBefore(list.First!, next.CreateStep());
-            list.AddAfter(list.Last!, next.CreateStep(false));
+
+            var pre = list.AddBefore(list.First!, next.CreateStep());
+            
+            if (next is Rotor inRotor)
+            {
+                var shift = inRotor.Shift();
+                var step = new Step(inRotor, shift.Encode);
+                list.AddAfter(pre, step);
+            }
+            
+            var post =list.AddAfter(list.Last!, next.CreateStep(false));
+            
+            if (next is Rotor outRotor)
+            {
+                var shift = outRotor.Shift();
+                var step = new Step(outRotor, shift.Decode, false);
+                list.AddBefore(post, step);
+            }
         }
+        
         
         return list;
     }

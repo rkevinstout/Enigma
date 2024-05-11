@@ -13,8 +13,5 @@ public abstract class Reflector : IComponent
 
     public ICipher Inversion => Cipher.Inversion;
 
-    public override string ToString()
-    {
-        return Cipher.ToString();
-    }
+    public override string ToString() => Cipher.ToString();
 }

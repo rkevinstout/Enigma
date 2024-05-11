@@ -1,8 +1,12 @@
+using System.Collections.ObjectModel;
+
 namespace Enigma;
 
 public class SubstitutionCipher : ICipher
 {
-    public SortedList<char, char> Dictionary { get; }
+    private readonly SortedList<char, char> _dictionary;
+    public ReadOnlyDictionary<char, char> Dictionary => _dictionary.AsReadOnly();
+
     public ICipher Inversion => _inversion.Value;
 
     private readonly Lazy<SubstitutionCipher> _inversion;
@@ -27,7 +31,7 @@ public class SubstitutionCipher : ICipher
 
     public SubstitutionCipher(SortedList<char, char> dictionary)
     {
-        Dictionary = dictionary;
+        _dictionary = dictionary;
         
         _inversion = new Lazy<SubstitutionCipher>(Invert);
     }
@@ -37,6 +41,5 @@ public class SubstitutionCipher : ICipher
     public char Decode(char c) => Inversion.Encode(c);
     public char Decode(int i) => Inversion.Encode(i % 26);
     private SubstitutionCipher Invert() => new (Dictionary.Invert());
-
     public override string ToString() => new(Dictionary.Values.ToArray());
 }

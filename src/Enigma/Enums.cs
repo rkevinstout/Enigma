@@ -29,4 +29,5 @@ public enum RotorName
     VII,
     VIII
 }
+
 // ReSharper restore InconsistentNaming

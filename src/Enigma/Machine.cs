@@ -18,34 +18,46 @@ public class Machine
         var pipeline = new Pipeline();
 
         pipeline.Add(PlugBoard);
-        pipeline.Add(Spindle.Rotors);
+        pipeline.Add(Spindle.Rotors.Reverse());
         pipeline.Add(Reflector);
 
         return pipeline.Build();
     }
-
-    public char Encode(char input)
+    
+    public char Enter(char input)
     {
         Spindle.Advance();
-        
+
+        return Encode(input);
+    }
+    
+    public char Encode(char input)
+    {
         var pipeline = BuildPipeline();
-        
+
+        return Encode(pipeline, input);
+    }
+
+    private char Encode(LinkedList<Pipeline.Step> pipeline, char input)
+    {
         var temp = input;
 
-        var node = pipeline.First;
-        
-        while (node != null)
+        foreach (var step in pipeline)
         {
-            var step = node.Value;
-
             var result = step.Action.Invoke(temp);
 
             Log.Record(step, temp, result, Spindle.Position);
 
             temp = result;
-            node = node.Next;
         }
 
         return temp;
     }
+    
+    public Dictionary<char, char> ToDictionary() =>
+        Alphabet.PlainText
+            .ToCharArray()
+            .ToDictionary(c => c, Encode);
+
+    public SubstitutionCipher ToCipher() => new(ToDictionary());
 }

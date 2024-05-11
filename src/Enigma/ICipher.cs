@@ -7,4 +7,5 @@ public interface ICipher
     char Decode(char c);
     char Decode(int i);
     ICipher Inversion { get; }
+
 }

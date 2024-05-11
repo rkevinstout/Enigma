@@ -10,23 +10,20 @@ public class Spindle
     public string Position
     {
         get => new (Rotors.Select(r => r.Position.ToChar()).ToArray());
-        private init => SetRotorPositions(value);
+        set => SetRotorPositions(value);
     }
 
-    public Spindle(params Rotor[] rotors) :this("AAAA", rotors)
+    public Spindle(params RotorName[] rotors) 
+        : this(rotors.Select(RotorFactory.Create).ToArray())
     { }
 
-    public Spindle(string position, params Rotor[] rotors)
+    public Spindle(params Rotor[] rotors)
     {
         _rotors = rotors;
         Validate();
-        Position = position;
     }
 
-    public void Advance()
-    {
-        Rotors.Last().Advance();
-    }
+    public void Advance() => _rotors.Last().Advance();
 
     private void SetRotorPositions(string trigram)
     {
@@ -40,9 +37,12 @@ public class Spindle
 
     private void Validate()
     {
-        var distinctRotors = Rotors.Select(x => x.Name).Distinct();
+        var distinct = Rotors
+            .Select(x => x.Name)
+            .Distinct()
+            .Count();
 
-        if (distinctRotors.Count() != Rotors.Count)
+        if (distinct != Rotors.Count)
         {
             throw new ArgumentException("Rotors must be unique");
         }

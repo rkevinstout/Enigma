@@ -2,7 +2,7 @@ using FluentAssertions;
 
 namespace Enigma.Tests;
 
-public class CeaserCipherTests
+public class CaesarCipherTests
 {
     [Fact]
     public void WikipediaExampleShouldWork()
@@ -18,5 +18,24 @@ public class CeaserCipherTests
         const string cipherText = "QEB NRFZH YOLTK CLU GRJMP LSBO QEB IXWV ALD";
 
         result.Should().Be(cipherText);
+    }
+
+    [Fact]
+    public void ShouldBeSelfReciprocal()
+    {
+        var cipher = new CaesarCipher(-3);
+
+        cipher.Should().BeSelfReciprocal();
+
+    }
+
+    [Fact]
+    public void ShouldShiftRight()
+    {
+        var cipher = new CaesarCipher(-1);
+
+        var result = cipher.Encode('B');
+
+        result.Should().Be('A');
     }
 }

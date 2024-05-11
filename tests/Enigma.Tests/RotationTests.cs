@@ -9,7 +9,7 @@ public class RotationTests(ITestOutputHelper output)
     {
         var chars = Alphabet.I.ToCharArray();
         
-        for (int i = 0; i < chars.Length * 2; i++)
+        for (var i = 0; i < chars.Length * 2; i++)
         {
             var rotated = chars.Rotate(i);
         
@@ -22,7 +22,7 @@ public class RotationTests(ITestOutputHelper output)
     {
         var chars = Alphabet.I.ToCharArray();
         
-        for (int i = 0; i < chars.Length * 2; i++)
+        for (var i = 0; i < chars.Length * 2; i++)
         {
             var rotated = chars.Rotate(i * -1);
         

@@ -1,10 +1,6 @@
 namespace Enigma;
 
-public class ReflectorB : Reflector
+public class ReflectorB() : Reflector(Alphabet.RefB)
 {
     public override string Name => nameof(Alphabet.RefB);
-
-    public ReflectorB()
-        : base(Alphabet.RefB)
-    { }
 }

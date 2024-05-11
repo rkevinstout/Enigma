@@ -5,9 +5,15 @@ public class Rotor : IComponent
     public string Name => RotorName.ToString();
     private RotorName RotorName { get; }
     public char Ring { get; set; }
-    public SubstitutionCipher Cipher { get; }        
+    public SubstitutionCipher Cipher { get; private set; }        
     public IList<char> Notches { get; set; }
-    public int Position { get; set; }
+    
+    private int _position;
+    public int Position
+    {
+        get => _position;
+        set => UpdatePosition(value);
+    }
 
     public Rotor(RotorConfiguration config) : this(
         config.Name, 
@@ -30,10 +36,39 @@ public class Rotor : IComponent
         Notches = notches;
     }
 
-    public void Advance()
+    public void Advance() => Position += 1;
+
+    private void UpdatePosition(int position)
+    { 
+        position %= 26;
+        
+        if (_position == position) return;
+        
+        _position = position;
+        
+        UpdateCipher();
+    }
+
+    private void UpdateCipher()
     {
-        Position = (Position + 1) % 26;
+        var chars = RotorFactory
+            .Alphabets[RotorName]
+            .ToCharArray()
+            .Rotate(_position);
+
+        Cipher = new SubstitutionCipher(chars);
+    }
+    
+    
+    public ICipher Shift()
+    {
+        return new CaesarCipher(Position * -1);
     }
 
     public override string ToString() => Cipher.ToString();
+
+    public string Dump()
+    {
+        return $"{RotorName,10} {Position,3} {Cipher,25}";
+    }
 }

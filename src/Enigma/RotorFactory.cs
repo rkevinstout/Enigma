@@ -13,6 +13,18 @@ public static class RotorFactory
         { RotorName.VII, new RotorConfiguration(RotorName.VII, Alphabet.VII, 'A', 'N') },
         { RotorName.VIII, new RotorConfiguration(RotorName.VIII, Alphabet.VIII, 'A', 'N') }
     };
+    
+    public static readonly Dictionary<RotorName, string> Alphabets = new()
+    {
+        { RotorName.I, Alphabet.I},
+        { RotorName.II, Alphabet.II},
+        { RotorName.III, Alphabet.III},
+        { RotorName.IV, Alphabet.IV},
+        { RotorName.V, Alphabet.V},
+        { RotorName.VI, Alphabet.VI},
+        { RotorName.VII, Alphabet.VII},
+        { RotorName.VIII, Alphabet.VIII}
+    };
 
     public static Rotor Create(RotorName name) => new Rotor(Configurations[name]);
 }

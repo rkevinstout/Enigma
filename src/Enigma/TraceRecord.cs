@@ -2,7 +2,9 @@ namespace Enigma;
 
 public class TraceLog
 {
-    public readonly List<TraceRecord> Records = [];
+    public List<TraceRecord> Records = [];
+
+    public void Reset() => Records = [];
     
     public void Record(Pipeline.Step step, char input, char output, string position)
     {
@@ -35,7 +37,7 @@ public class TraceLog
         {
             var alphabet = Alphabet.Replace(Output.ToString(), $"[{Output}]");
             
-            return $"{ComponentName,-7} {Input} -> {alphabet} {Position}";
+            return $"{ComponentName,-7} {Input} -> {Output} {alphabet} {Position}";
         }
     }
 }

@@ -2,22 +2,43 @@ namespace Enigma;
 
 public class PlugBoard : IComponent
 {
-    public string Name { get; } = "PB";
-    
-    public SubstitutionCipher Cipher { get; } = new();
+    public string Name => "PB";
 
-    public void Add(char from, char to)
+    public SubstitutionCipher Cipher { get; private set; } = new();
+
+    public PlugBoard()
+    { }
+    public PlugBoard(params Pair[] pairs)
     {
-        if (from == to) return;
-
-        Cipher.Dictionary[from] = to;
-        Cipher.Dictionary[to] = from;
+        Add(pairs);
     }
+
+    public void Add(char from, char to) => Add(new Pair(from, to));
+
+    public void Add(params Pair[] pairs)
+    {
+        var copy = CopyDictionary();
+        
+        Add(copy, pairs);
+
+        Cipher = new SubstitutionCipher(copy);
+    }
+
+    private static void Add(IDictionary<char, char> dictionary, params Pair[] pairs)
+    {
+        foreach (var pair in pairs)
+        {
+            dictionary[pair.From] = pair.To;
+            dictionary[pair.To] = pair.From;
+        }
+    }
+
+    private Dictionary<char, char> CopyDictionary() => 
+        Cipher.Dictionary.ToDictionary(x => x.Key, x => x.Value);
 
     public ICipher Inversion => Cipher.Inversion;
 
-    public override string ToString()
-    {
-        return Cipher.ToString();
-    }
+    public override string ToString() => Cipher.ToString();
+
+    public record struct Pair(char From, char To);
 }
