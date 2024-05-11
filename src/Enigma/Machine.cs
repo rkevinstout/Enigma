@@ -1,5 +1,9 @@
 namespace Enigma;
 
+/// <summary>
+/// Represents the functional elements of
+/// the Enigma machine
+/// </summary>
 public class Machine
 {
     public PlugBoard PlugBoard { get; } = new();

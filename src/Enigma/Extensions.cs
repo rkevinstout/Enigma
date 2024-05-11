@@ -71,4 +71,10 @@ public static class Extensions
 
         return buffer.ToString();
     }
+
+    public static Dictionary<char, char> ToDictionary(this ICipher cipher) =>
+        Alphabet.PlainText
+            .ToCharArray()
+            .Select(c => new ValueTuple<char, char>(c, cipher.Encode(c)))
+            .ToDictionary(x => x.Item1, x => x.Item2);
 }

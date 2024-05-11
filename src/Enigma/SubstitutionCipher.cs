@@ -36,10 +36,8 @@ public class SubstitutionCipher : ICipher
         _inversion = new Lazy<SubstitutionCipher>(Invert);
     }
 
-    public char Encode(int i) => Dictionary.Values.ElementAt(i % 26);
     public char Encode(char c) => Dictionary[c];
     public char Decode(char c) => Inversion.Encode(c);
-    public char Decode(int i) => Inversion.Encode(i % 26);
     private SubstitutionCipher Invert() => new (Dictionary.Invert());
     public override string ToString() => new(Dictionary.Values.ToArray());
 }

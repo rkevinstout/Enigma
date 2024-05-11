@@ -19,9 +19,9 @@ public class CipherAssertions(ICipher subject)
 
     public AndConstraint<CipherAssertions> BeSelfReciprocal()
     {
-        Execute.Assertion
-            .Given(() => Subject.Inversion)
-            .ForCondition(inv => inv.Inversion.ToString()!.Equals(Subject.ToString()));
+        // Execute.Assertion
+        //     .Given(() => Subject.ToDictionary()).
+        //     .ForCondition(d => d.Keys.);
 
         return new AndConstraint<CipherAssertions>(this);
     }

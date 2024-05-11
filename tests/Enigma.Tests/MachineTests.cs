@@ -32,17 +32,16 @@ public class MachineTests(ITestOutputHelper output)
         machine.Spindle.Position.Should().Be("AAA");
     }
 
-    [Fact]
-    public void AAAAA_BDZGO()
+    [Theory]
+    [InlineData("AAA", "AAAAA", "BDZGO")]
+    [InlineData("BBB", "AAAAA", "PGQPW")]
+    public void ProducesPredictableCipherText(string position, string plainText, string cipherText)
     {
         // https://en.wikipedia.org/wiki/Enigma_rotor_details#Rotor_offset
-        const string plainText = "AAAAA";
-        const string cipherText = "BDZGO";
         
         var machine = Build(RotorName.I, RotorName.II, RotorName.III);
-        //var machine = Build(RotorName.III, RotorName.II, RotorName.I);
 
-        machine.Spindle.Position = "AAA";
+        machine.Spindle.Position = position;
 
         var result = EncodeAndLog(machine, plainText);
 
@@ -80,7 +79,12 @@ public class MachineTests(ITestOutputHelper output)
         cipher.Dictionary.Values.Should().OnlyHaveUniqueItems();
         cipher.Should().BeSelfReciprocal();
         cipher.ToString().Should().Be("UEJOBTPZWCNSRKDGVMLFAQIYXH");
+        
+        var dictionary = cipher.ToDictionary();
+
+        dictionary.Should().AllSatisfy(x => dictionary[x.Value].Should().Be(x.Key));
     }
+
 
     private string EncodeAndLog(Machine machine, string input)
     {

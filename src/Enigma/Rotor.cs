@@ -1,5 +1,8 @@
 namespace Enigma;
-
+/// <summary>
+/// A rotating wheel the effects a substitution cipher
+/// </summary>
+/// <see cref="https://en.wikipedia.org/wiki/Enigma_machine#Rotors"/>
 public class Rotor : IComponent
 {
     public string Name => RotorName.ToString();
@@ -59,7 +62,10 @@ public class Rotor : IComponent
         Cipher = new SubstitutionCipher(chars);
     }
     
-    
+    /// <summary>
+    /// Shifts the current cipher by the current position of the rotor
+    /// </summary>
+    /// <returns>a new cipher</returns>
     public ICipher Shift()
     {
         return new CaesarCipher(Position * -1);

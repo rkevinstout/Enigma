@@ -1,7 +1,9 @@
 using System.Collections.ObjectModel;
 
 namespace Enigma;
-
+/// <summary>
+/// A collection of rotors
+/// </summary>
 public class Spindle
 {
     private readonly Rotor[] _rotors;

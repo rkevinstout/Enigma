@@ -5,12 +5,12 @@ namespace Enigma.Tests;
 public class PlugBoardTests
 {
     private static readonly PlugBoard.Pair[] Pairs = [
-            new('A', 'Z'),
-            new('B', 'Y'),
-            new('C', 'X'),
-            new('D', 'W'),
-            new('E', 'V')
-        ];
+        new('A', 'Z'),
+        new('B', 'Y'),
+        new('C', 'X'),
+        new('D', 'W'),
+        new('E', 'V')
+    ];
     private static readonly PlugBoard PlugBoard = Create(Pairs);
 
     private static PlugBoard Create(PlugBoard.Pair[] pairs)
@@ -29,16 +29,16 @@ public class PlugBoardTests
 
         result.Should().Be(to);
     }
-    
-    [Fact]
-    public void PlugBoardsAreSelfReciprocal()
-    {
-        var inverted = PlugBoard.Inversion;
 
-        inverted.ToString().Should().Be(PlugBoard.ToString());
+    [Fact]
+    public void ShouldBeReciprocal()
+    {   
+        var dictionary = PlugBoard.Cipher.ToDictionary();
+
+        dictionary.Should().AllSatisfy(x => dictionary[x.Value].Should().Be(x.Key));
     }
 
-    public class TestData : TheoryData<char, char>
+    private class TestData : TheoryData<char, char>
     {
         public TestData()
         {

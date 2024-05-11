@@ -21,15 +21,6 @@ public class CaesarCipherTests
     }
 
     [Fact]
-    public void ShouldBeSelfReciprocal()
-    {
-        var cipher = new CaesarCipher(-3);
-
-        cipher.Should().BeSelfReciprocal();
-
-    }
-
-    [Fact]
     public void ShouldShiftRight()
     {
         var cipher = new CaesarCipher(-1);

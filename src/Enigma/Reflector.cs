@@ -10,8 +10,6 @@ public abstract class Reflector : IComponent
     protected Reflector(string alphabet)
         : this(new SubstitutionCipher(alphabet))
     { }
-
-    public ICipher Inversion => Cipher.Inversion;
-
+    
     public override string ToString() => Cipher.ToString();
 }

@@ -35,7 +35,7 @@ public class TraceLog
     {
         public override string ToString()
         {
-            var alphabet = Alphabet.Replace(Output.ToString(), $"[{Output}]");
+            var alphabet = Alphabet.Replace(Output.ToString(), $" {Output} ");
             
             return $"{ComponentName,-7} {Input} -> {Output} {alphabet} {Position}";
         }

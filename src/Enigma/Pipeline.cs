@@ -27,31 +27,28 @@ public class Pipeline
         while (stack.Count > 0)
         {
             var next = stack.Pop();
-
-
-            var pre = list.AddBefore(list.First!, next.CreateStep());
             
-            if (next is Rotor inRotor)
+            if (next is Rotor { Position: > 0 } rotor)
             {
-                var shift = inRotor.Shift();
-                var step = new Step(inRotor, shift.Encode);
-                list.AddAfter(pre, step);
+                // Add Caesar Shift to capture the offset of the rotor position
+                var shift = rotor.Shift();
+
+                list.AddFirst(new Step(rotor, shift.Encode));
+                list.AddLast(new Step(rotor, shift.Decode, false)); 
             }
-            
-            var post =list.AddAfter(list.Last!, next.CreateStep(false));
-            
-            if (next is Rotor outRotor)
-            {
-                var shift = outRotor.Shift();
-                var step = new Step(outRotor, shift.Decode, false);
-                list.AddBefore(post, step);
-            }
+            // the normal encipherment of the wheels/components themselves
+            list.AddFirst(next.CreateStep());
+            list.AddLast(next.CreateStep(false));
         }
-        
-        
         return list;
     }
 
+    /// <summary>
+    /// A wrapper for a character substitution.  Mostly for logging purposes
+    /// </summary>
+    /// <param name="component">Plug board, reflector, rotor, etc</param>
+    /// <param name="action">delegate that will perform the encipherment</param>
+    /// <param name="inbound">flag to denote the monoalphabetic substitution performed</param>
     public class Step(IComponent component, Func<char, char> action, bool? inbound = true)
     {
         public IComponent Component { get; } = component;

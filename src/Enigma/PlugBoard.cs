@@ -36,8 +36,6 @@ public class PlugBoard : IComponent
     private Dictionary<char, char> CopyDictionary() => 
         Cipher.Dictionary.ToDictionary(x => x.Key, x => x.Value);
 
-    public ICipher Inversion => Cipher.Inversion;
-
     public override string ToString() => Cipher.ToString();
 
     public record struct Pair(char From, char To);
