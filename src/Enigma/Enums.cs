@@ -30,4 +30,10 @@ public enum RotorName
     VIII
 }
 
+public enum ReflectorName
+{
+    RefB,
+    RefC
+}
+
 // ReSharper restore InconsistentNaming

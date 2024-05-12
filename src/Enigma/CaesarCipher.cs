@@ -6,5 +6,6 @@ public class CaesarCipher : SubstitutionCipher
         : base(Splice(Alphabet.PlainText, offset))
     { }
     
-    private static char[] Splice(string alphabet, int offset) => alphabet.ToCharArray().Rotate(offset);
+    private static char[] Splice(string alphabet, int offset) => 
+        alphabet.ToCharArray().Rotate(offset);
 }

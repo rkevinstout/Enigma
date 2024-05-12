@@ -23,9 +23,23 @@ public static class Extensions
         ? component.CreateStep(x => component.Cipher.Encode(x), inbound) 
         : component.CreateStep(x => component.Cipher.Decode(x), inbound);
 
+    /// <summary>
+    /// Swaps keys and values in a dictionary
+    /// </summary>
+    /// <param name="dictionary"></param>
+    /// <returns>a new dictionary</returns>
     public static Dictionary<char, char> Invert(this IDictionary<char, char> dictionary) =>
         dictionary.ToDictionary(x => x.Value, x => x.Key);
 
+    /// <summary>
+    /// Rotates an array of characters
+    /// </summary>
+    /// <param name="input">the character array</param>
+    /// <param name="offset">number of places to shift.
+    /// Positive = left;
+    /// Negative = Right
+    /// </param>
+    /// <returns>A new array of characters</returns>
     public static char[] Rotate(this char[] input, int offset)
     {
         if (offset == 0) return input;

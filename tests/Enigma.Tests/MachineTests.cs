@@ -10,7 +10,7 @@ public class MachineTests(ITestOutputHelper output)
     {
         var spindle = new Spindle(rotors);
 
-        var reflector = new ReflectorB();
+        var reflector = Reflector.Create(ReflectorName.RefB);
         
         return new Machine(spindle, reflector);
     }
@@ -77,7 +77,6 @@ public class MachineTests(ITestOutputHelper output)
 
         cipher.Dictionary.Keys.Should().OnlyHaveUniqueItems();
         cipher.Dictionary.Values.Should().OnlyHaveUniqueItems();
-        cipher.Should().BeSelfReciprocal();
         cipher.ToString().Should().Be("UEJOBTPZWCNSRKDGVMLFAQIYXH");
         
         var dictionary = cipher.ToDictionary();

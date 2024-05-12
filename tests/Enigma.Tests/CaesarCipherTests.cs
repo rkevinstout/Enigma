@@ -29,4 +29,14 @@ public class CaesarCipherTests
 
         result.Should().Be('A');
     }
+    
+    [Fact]
+    public void ShouldShiftLeft()
+    {
+        var cipher = new CaesarCipher(1);
+
+        var result = cipher.Encode('B');
+
+        result.Should().Be('C');
+    }
 }

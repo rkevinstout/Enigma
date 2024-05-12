@@ -1,15 +1,24 @@
 namespace Enigma;
 
-public abstract class Reflector : IComponent
+public class Reflector : IComponent
 {
-    public abstract string Name { get; }
+    public string Name => _reflectorName.ToString();
+
+    private readonly ReflectorName _reflectorName;
     public SubstitutionCipher Cipher { get; }
 
-    private Reflector(SubstitutionCipher cipher) => Cipher = cipher;
+    public static Reflector Create(ReflectorName name) => 
+        new(name, ReflectorFactory.Alphabets[name]);
 
-    protected Reflector(string alphabet)
-        : this(new SubstitutionCipher(alphabet))
+    private Reflector(ReflectorName name, string alphabet)
+        : this(name, new SubstitutionCipher(alphabet))
     { }
+    
+    private Reflector(ReflectorName name, SubstitutionCipher cipher)
+    {
+        _reflectorName = name;
+        Cipher = cipher;
+    }
     
     public override string ToString() => Cipher.ToString();
 }

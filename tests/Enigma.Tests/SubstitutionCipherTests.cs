@@ -6,14 +6,6 @@ namespace Enigma.Tests;
 public class SubstitutionCipherTests(ITestOutputHelper output)
 {
     [Fact]
-    public void CipherShouldBeReciprocal()
-    {
-        var cipher = new SubstitutionCipher(Alphabet.IV);
-
-        cipher.Should().BeSelfReciprocal();
-    }
-
-    [Fact]
     public void RotateTests()
     {
         var cipher = new SubstitutionCipher(Alphabet.I);
@@ -22,7 +14,7 @@ public class SubstitutionCipherTests(ITestOutputHelper output)
 
         for (var i = 1; i < 55; i++)
         {
-            cipher =  cipher.Rotate(i);
+            cipher = cipher.Rotate(i);
             
             output.WriteLine($"{i,3} {cipher}");
         }

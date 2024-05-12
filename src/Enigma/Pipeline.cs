@@ -21,7 +21,8 @@ public class Pipeline
         var list = new LinkedList<Step>();
         
         var component = stack.Pop();
-
+        
+        // unlike other components reflector is only called once
         list.AddFirst(component.CreateStep(x => component.Cipher.Encode(x)));
 
         while (stack.Count > 0)

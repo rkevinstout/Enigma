@@ -40,12 +40,8 @@ public class PlugBoardTests
 
     private class TestData : TheoryData<char, char>
     {
-        public TestData()
-        {
-            foreach (var pair in Pairs)
-            {
-                Add(pair.From, pair.To);
-            }
-        }
+        public TestData() => Pairs
+            .ToList()
+            .ForEach(p => Add(p.From, p.To));
     }
 }

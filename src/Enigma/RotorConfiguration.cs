@@ -1,31 +1,20 @@
 namespace Enigma;
 
-public class RotorConfiguration
+public class RotorConfiguration(
+    RotorName name,
+    char ring,
+    params char[] notches
+    )
 {
-    public RotorName Name { get; }
-    public string Alphabet { get; }
-    public char Ring { get; }
-    public char[] Notches { get; }
-
+    public RotorName Name { get; } = name;
+    public string Alphabet { get; } = RotorFactory.Alphabets[name];
+    public char Ring { get; } = ring;
+    public char[] Notches { get; } = notches;
 
     public RotorConfiguration(
         RotorName name,
-        string alphabet,
         params char[] notches
-    ) : this(name, alphabet, 'A', notches)
+    ) : this(name, 'A', notches)
     { }
-
-    public RotorConfiguration(
-        RotorName name, 
-        string alphabet, 
-        char ring,
-        params char[] notches
-        )
-    {
-        Name = name;
-        Alphabet = alphabet;
-        Ring = ring;
-        Notches = notches;
-    }
 }
 
