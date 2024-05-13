@@ -1,4 +1,4 @@
 ﻿using BenchmarkDotNet.Running;
 using Enigma.Benchmarks;
 
-var summary = BenchmarkRunner.Run<RotorTests>();
+var summary = BenchmarkRunner.Run<CaesarShiftTests>();

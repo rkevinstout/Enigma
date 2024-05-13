@@ -1,15 +1,17 @@
+using System.Runtime.InteropServices;
 using FluentAssertions;
+using Xunit.Abstractions;
 
 namespace Enigma.Tests;
 
-public class CaesarCipherTests
+public class CaesarCipherTests(ITestOutputHelper output)
 {
     [Fact]
     public void WikipediaExampleShouldWork()
     {
         // https://en.wikipedia.org/wiki/Caesar_cipher#Example
         
-        var cipher = new CaesarCipher(-3);
+        var cipher = new CaesarSubstitutionCipher(-3);
 
         const string plainText = "THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG";
 
@@ -23,7 +25,7 @@ public class CaesarCipherTests
     [Fact]
     public void ShouldShiftRight()
     {
-        var cipher = new CaesarCipher(-1);
+        var cipher = new CaesarSubstitutionCipher(-1);
 
         var result = cipher.Encode('B');
 
@@ -33,10 +35,37 @@ public class CaesarCipherTests
     [Fact]
     public void ShouldShiftLeft()
     {
-        var cipher = new CaesarCipher(1);
+        var cipher = new CaesarSubstitutionCipher(1);
 
         var result = cipher.Encode('B');
 
         result.Should().Be('C');
+    }
+
+    [Fact]
+    public void InversionTests()
+    {
+        var left = new CaesarSubstitutionCipher(1);
+        var right = new CaesarSubstitutionCipher(-1);
+
+        var leftInversion = left.Inversion;
+
+        leftInversion.ToString().Should().Be(right.ToString());
+    }
+
+    [Theory]
+    [InlineData(1)]
+    [InlineData(13)]
+    [InlineData(25)]
+    [InlineData(35)]
+    [InlineData(95)]
+    public void AlgoShouldEqualDictionary(int shift)
+    {
+        var left = new CaesarSubstitutionCipher(shift);
+        var algo = new CaesarCipher(shift);
+
+        left.Dictionary.Should().Equal(algo.ToDictionary());
+
+        left.Inversion.ToDictionary().Should().Equal(algo.Inversion.ToDictionary());
     }
 }

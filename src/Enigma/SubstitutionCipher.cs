@@ -6,7 +6,7 @@ public class SubstitutionCipher : ICipher
 {
     private readonly SortedList<char, char> _dictionary;
     public ReadOnlyDictionary<char, char> Dictionary => _dictionary.AsReadOnly();
-
+    
     public ICipher Inversion => _inversion.Value;
 
     private readonly Lazy<SubstitutionCipher> _inversion;
@@ -19,10 +19,10 @@ public class SubstitutionCipher : ICipher
         : this(alphabet.ToCharArray())
     { }
 
-    public SubstitutionCipher(char[] array) 
+    public SubstitutionCipher(char[] array)
         : this(array
-            .Select((c, index) => new ValueTuple<char, char>(index.ToChar(), c))
-            .ToDictionary(x => x.Item1, x => x.Item2))
+            .Select((c, index) => new KeyValuePair<char, char>(index.ToChar(), c))
+            .ToDictionary())
     { }
 
     public SubstitutionCipher(Dictionary<char, char> dictionary) 
@@ -33,6 +33,7 @@ public class SubstitutionCipher : ICipher
     {
         _dictionary = dictionary;
         
+        // Lazy load to avoid n + 1 recursion
         _inversion = new Lazy<SubstitutionCipher>(Invert);
     }
 

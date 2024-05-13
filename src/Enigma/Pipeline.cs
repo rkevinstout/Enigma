@@ -49,11 +49,11 @@ public class Pipeline
     /// </summary>
     /// <param name="component">Plug board, reflector, rotor, etc</param>
     /// <param name="action">delegate that will perform the encipherment</param>
-    /// <param name="inbound">flag to denote the monoalphabetic substitution performed</param>
-    public class Step(IComponent component, Func<char, char> action, bool? inbound = true)
+    /// <param name="isInbound">flag to denote the monoalphabetic substitution performed</param>
+    public class Step(IComponent component, Func<char, char> action, bool? isInbound = true)
     {
         public IComponent Component { get; } = component;
         public Func<char, char> Action { get; } = action;
-        public bool Inbound { get; } = inbound ?? true;
+        public bool Inbound { get; } = isInbound ?? true;
     }
 }

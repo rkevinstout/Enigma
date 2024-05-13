@@ -2,7 +2,7 @@ namespace Enigma;
 /// <summary>
 /// A rotating wheel the effects a substitution cipher
 /// </summary>
-/// <see cref="https://en.wikipedia.org/wiki/Enigma_machine#Rotors"/>
+/// <seealso cref="https://en.wikipedia.org/wiki/Enigma_machine#Rotors"/>
 public class Rotor : IComponent
 {
     public string Name => RotorName.ToString();

@@ -8,11 +8,11 @@ public class MachineTests(ITestOutputHelper output)
 {
     private static Machine Build(params RotorName[] rotors)
     {
-        var spindle = new Spindle(rotors);
-
-        var reflector = Reflector.Create(ReflectorName.RefB);
+        var config = new Machine.Configuration();
         
-        return new Machine(spindle, reflector);
+        config.AddRotors(rotors);
+
+        return config.Create();
     }
 
     [Fact]
@@ -22,14 +22,14 @@ public class MachineTests(ITestOutputHelper output)
 
         var machine = Build(RotorName.I, RotorName.II, RotorName.III);
 
-        machine.Spindle.Position = "AAZ";
+        machine.Position = "AAZ";
         
         var result = machine.Enter('G');
         
         LogOutput(machine);
 
         result.Should().Be('P');
-        machine.Spindle.Position.Should().Be("AAA");
+        machine.Position.Should().Be("AAA");
     }
 
     [Theory]
@@ -41,7 +41,7 @@ public class MachineTests(ITestOutputHelper output)
         
         var machine = Build(RotorName.I, RotorName.II, RotorName.III);
 
-        machine.Spindle.Position = position;
+        machine.Position = position;
 
         var result = EncodeAndLog(machine, plainText);
 
@@ -55,13 +55,13 @@ public class MachineTests(ITestOutputHelper output)
         
         var machine = Build(RotorName.I, RotorName.II, RotorName.III);
 
-        machine.Spindle.Position = "AAA";
+        machine.Position = "AAA";
 
         var cipherText = EncodeAndLog(machine, plainText);
         
         machine.Log.Reset();
         
-        machine.Spindle.Position = "AAA";
+        machine.Position = "AAA";
         
         var result = EncodeAndLog(machine, cipherText);
 
@@ -79,9 +79,9 @@ public class MachineTests(ITestOutputHelper output)
         cipher.Dictionary.Values.Should().OnlyHaveUniqueItems();
         cipher.ToString().Should().Be("UEJOBTPZWCNSRKDGVMLFAQIYXH");
         
-        var dictionary = cipher.ToDictionary();
-
-        dictionary.Should().AllSatisfy(x => dictionary[x.Value].Should().Be(x.Key));
+        cipher.Dictionary.Should().AllSatisfy(x => 
+            cipher.Dictionary[x.Value].Should().Be(x.Key)
+            );
     }
 
 

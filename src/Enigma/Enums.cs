@@ -15,7 +15,7 @@ public static class Alphabet
     public const string RefB = "YRUHQSLDPXNGOKMIEBFZCWVJAT";
     public const string RefC = "FVPJIAOYEDRZXWGCTKUQSBNMHL";
     public const string M4B = "ENKQAUYWJICOPBLMDXZVFTHRGS";
-    public const string M4C = "ENKQAUYWJICOPBLMDXZVFTHRGS";
+    public const string M4C = "RDOBJNTKVEHMLFCWZAXGYIPSUQ";
 }
 
 public enum RotorName
@@ -33,7 +33,9 @@ public enum RotorName
 public enum ReflectorName
 {
     RefB,
-    RefC
+    RefC,
+    M4B,
+    M4C
 }
 
 // ReSharper restore InconsistentNaming

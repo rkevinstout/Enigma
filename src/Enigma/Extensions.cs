@@ -13,15 +13,15 @@ public static class Extensions
     public static Pipeline.Step CreateStep(
         this IComponent component, 
         Func<char, char> action,
-        bool inbound = true
-    ) => new(component, action, inbound);
+        bool isInbound = true
+    ) => new(component, action, isInbound);
 
     public static Pipeline.Step CreateStep(
         this IComponent component,
-        bool inbound = true
-    ) => inbound 
-        ? component.CreateStep(x => component.Cipher.Encode(x), inbound) 
-        : component.CreateStep(x => component.Cipher.Decode(x), inbound);
+        bool isInbound = true
+    ) => isInbound 
+        ? component.CreateStep(x => component.Cipher.Encode(x), isInbound) 
+        : component.CreateStep(x => component.Cipher.Decode(x), isInbound);
 
     /// <summary>
     /// Swaps keys and values in a dictionary
@@ -89,6 +89,7 @@ public static class Extensions
     public static Dictionary<char, char> ToDictionary(this ICipher cipher) =>
         Alphabet.PlainText
             .ToCharArray()
-            .Select(c => new ValueTuple<char, char>(c, cipher.Encode(c)))
-            .ToDictionary(x => x.Item1, x => x.Item2);
+            .ToDictionary(c => c, cipher.Encode);
+
+    public static SubstitutionCipher ToCipher(Dictionary<char, char> dictionary) => new(dictionary);
 }

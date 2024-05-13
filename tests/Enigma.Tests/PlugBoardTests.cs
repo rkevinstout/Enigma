@@ -13,13 +13,7 @@ public class PlugBoardTests
     ];
     private static readonly PlugBoard PlugBoard = Create(Pairs);
 
-    private static PlugBoard Create(PlugBoard.Pair[] pairs)
-    {
-        var pb = new PlugBoard();
-        pb.Add(pairs);
-
-        return pb;
-    }
+    private static PlugBoard Create(PlugBoard.Pair[] pairs) => new(pairs);
 
     [Theory]
     [ClassData(typeof(TestData))]
