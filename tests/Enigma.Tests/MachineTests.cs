@@ -1,3 +1,4 @@
+using System.CodeDom.Compiler;
 using System.Text;
 using FluentAssertions;
 using Xunit.Abstractions;
@@ -48,11 +49,10 @@ public class MachineTests(ITestOutputHelper output)
         result.Should().Be(cipherText);
     }
 
-    [Fact]
-    public void EncryptionIsReciprocal()
+    [Theory]
+    [ClassData(typeof(RandomTextGenerator))]
+    public void EncryptionIsReciprocal(string plainText)
     {
-        var plainText = "AAAAA";
-        
         var machine = Build(RotorName.I, RotorName.II, RotorName.III);
 
         machine.Position = "AAA";
@@ -94,10 +94,13 @@ public class MachineTests(ITestOutputHelper output)
             var encoded = machine.Enter(c);
 
             buffer.Append(encoded);
+            
+            LogOutput(machine);
+            
+            machine.Log.Reset();
+            
+            output.WriteLine(new('=', 50));
         }
-        
-        LogOutput(machine);
-
         return buffer.ToString();
     }
     
@@ -106,6 +109,23 @@ public class MachineTests(ITestOutputHelper output)
         foreach (var x in machine.Log.Records)
         {
             output.WriteLine(x.ToString());
+        }
+    }
+
+    public class RandomTextGenerator : TheoryData<string>
+    {
+        public RandomTextGenerator() => Add(Generate(256));
+        private static string Generate(int length)
+        {
+            var buffer = new StringBuilder();
+            
+            while (length-- > 0)
+            {
+                var c = Random.Shared.Next(26).ToChar();
+                buffer.Append(c);
+            }
+
+            return buffer.ToString();
         }
     }
 }

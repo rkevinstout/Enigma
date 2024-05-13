@@ -60,7 +60,7 @@ public class Machine
 
         foreach (var step in pipeline)
         {
-            var result = step.Action.Invoke(temp);
+            var result = step.Execute(temp);
 
             Log.Record(step, temp, result, _spindle.Position);
 

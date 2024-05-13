@@ -3,7 +3,6 @@ namespace Enigma;
 public class Pipeline
 {
     private readonly List<IComponent> _components = [];
-
     public void Add(IComponent component) => _components.Add(component);
     public void Add(IEnumerable<IComponent> components) => _components.AddRange(components);
 
@@ -23,7 +22,7 @@ public class Pipeline
         var component = stack.Pop();
         
         // unlike other components reflector is only called once
-        list.AddFirst(component.CreateStep(x => component.Cipher.Encode(x)));
+        list.AddFirst(component.CreateStep());
 
         while (stack.Count > 0)
         {
@@ -34,8 +33,8 @@ public class Pipeline
                 // Add Caesar Shift to capture the offset of the rotor position
                 var shift = rotor.Shift();
 
-                list.AddFirst(new Step(rotor, shift.Encode));
-                list.AddLast(new Step(rotor, shift.Decode, false)); 
+                list.AddFirst(next.CreateStep(shift));
+                list.AddLast(next.CreateStep(shift, false)); 
             }
             // the normal encipherment of the wheels/components themselves
             list.AddFirst(next.CreateStep());
@@ -47,13 +46,27 @@ public class Pipeline
     /// <summary>
     /// A wrapper for a character substitution.  Mostly for logging purposes
     /// </summary>
-    /// <param name="component">Plug board, reflector, rotor, etc</param>
-    /// <param name="action">delegate that will perform the encipherment</param>
-    /// <param name="isInbound">flag to denote the monoalphabetic substitution performed</param>
-    public class Step(IComponent component, Func<char, char> action, bool? isInbound = true)
+    public class Step
     {
-        public IComponent Component { get; } = component;
-        public Func<char, char> Action { get; } = action;
-        public bool Inbound { get; } = isInbound ?? true;
+        public IComponent Component { get; }
+        public ICipher Cipher { get; }
+        public bool Inbound { get; }
+        public char Execute(char input) => Inbound
+            ? Cipher.Encode(input)
+            : Cipher.Decode(input);
+
+        /// <summary>
+        /// A wrapper for a character substitution.  Mostly for logging purposes
+        /// </summary>
+        /// <param name="component">Plug board, reflector, rotor, etc</param>
+        /// <param name="action">delegate that will perform the encipherment</param>
+        /// <param name="cipher"></param>
+        /// <param name="isInbound">flag to denote the monoalphabetic substitution performed</param>
+        public Step(IComponent component, ICipher cipher, bool isInbound = true)
+        {
+            Component = component;
+            Cipher = cipher;
+            Inbound = isInbound;
+        }
     }
 }

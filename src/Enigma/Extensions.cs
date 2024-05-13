@@ -9,20 +9,19 @@ public static class Extensions
     public static int ToInt(this char c) => Convert.ToInt32(c - 'A');
 
     public static char ToChar(this int i) => Convert.ToChar(i + 65);
-
+    
     public static Pipeline.Step CreateStep(
         this IComponent component, 
-        Func<char, char> action,
         bool isInbound = true
-    ) => new(component, action, isInbound);
-
+    ) => new(component, component.Cipher, isInbound);
+    
     public static Pipeline.Step CreateStep(
-        this IComponent component,
+        this IComponent component, 
+        ICipher cipher,
         bool isInbound = true
-    ) => isInbound 
-        ? component.CreateStep(x => component.Cipher.Encode(x), isInbound) 
-        : component.CreateStep(x => component.Cipher.Decode(x), isInbound);
-
+    ) => new(component, cipher, isInbound);
+    
+    
     /// <summary>
     /// Swaps keys and values in a dictionary
     /// </summary>
