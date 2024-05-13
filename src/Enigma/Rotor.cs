@@ -5,10 +5,12 @@ namespace Enigma;
 /// <seealso cref="https://en.wikipedia.org/wiki/Enigma_machine#Rotors"/>
 public class Rotor : IComponent
 {
-    public string Name => RotorName.ToString();
-    private RotorName RotorName { get; }
+    public string Name => _rotorName.ToString();
+    private readonly RotorName _rotorName;
     public char Ring { get; set; }
-    public SubstitutionCipher Cipher { get; private set; }        
+
+    private SubstitutionCipher _substitutionCipher;
+    public ICipher Cipher => _substitutionCipher;       
     public IList<char> Notches { get; set; }
     
     private int _position;
@@ -33,8 +35,8 @@ public class Rotor : IComponent
         IList<char> notches
         )
     {
-        RotorName = name;
-        Cipher = cipher;
+        _rotorName = name;
+        _substitutionCipher = cipher;
         Ring = ring;
         Notches = notches;
     }
@@ -55,11 +57,11 @@ public class Rotor : IComponent
     private void UpdateCipher()
     {
         var chars = RotorFactory
-            .Alphabets[RotorName]
+            .Alphabets[_rotorName]
             .ToCharArray()
             .Rotate(_position);
 
-        Cipher = new SubstitutionCipher(chars);
+        _substitutionCipher = new SubstitutionCipher(chars);
     }
     
     /// <summary>
@@ -71,10 +73,10 @@ public class Rotor : IComponent
         return new CaesarCipher(Position * -1);
     }
 
-    public override string ToString() => Cipher.ToString();
+    public override string ToString() => _substitutionCipher.ToString();
 
     public string Dump()
     {
-        return $"{RotorName,10} {Position,3} {Cipher,25}";
+        return $"{_rotorName,10} {Position,3} {Cipher,25}";
     }
 }

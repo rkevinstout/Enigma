@@ -2,6 +2,6 @@ namespace Enigma;
 
 public interface IComponent
 {
-    public SubstitutionCipher Cipher { get; }
+    public ICipher Cipher { get; }
     public string Name { get; }
 }

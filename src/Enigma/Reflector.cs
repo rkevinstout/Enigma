@@ -5,7 +5,9 @@ public class Reflector : IComponent
     public string Name => _reflectorName.ToString();
 
     private readonly ReflectorName _reflectorName;
-    public SubstitutionCipher Cipher { get; }
+
+    private readonly SubstitutionCipher _substitutionCipher;
+    public ICipher Cipher => _substitutionCipher;
 
     public static Reflector Create(ReflectorName name) => 
         new(name, ReflectorFactory.Alphabets[name]);
@@ -17,8 +19,8 @@ public class Reflector : IComponent
     private Reflector(ReflectorName name, SubstitutionCipher cipher)
     {
         _reflectorName = name;
-        Cipher = cipher;
+        _substitutionCipher = cipher;
     }
     
-    public override string ToString() => Cipher.ToString();
+    public override string ToString() => _substitutionCipher.ToString();
 }

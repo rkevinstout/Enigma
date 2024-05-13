@@ -1,10 +1,9 @@
 using System.Runtime.InteropServices;
 using FluentAssertions;
-using Xunit.Abstractions;
 
 namespace Enigma.Tests;
 
-public class CaesarCipherTests(ITestOutputHelper output)
+public class CaesarCipherTests()
 {
     [Fact]
     public void WikipediaExampleShouldWork()
