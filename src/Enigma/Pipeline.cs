@@ -31,10 +31,8 @@ public class Pipeline
             if (next is Rotor { Position: > 0 } rotor)
             {
                 // Add Caesar Shift to capture the offset of the rotor position
-                var shift = rotor.Shift();
-
-                list.AddFirst(next.CreateStep(shift));
-                list.AddLast(next.CreateStep(shift, false)); 
+                list.AddFirst(next.CreateStep(rotor.Shift));
+                list.AddLast(next.CreateStep(rotor.Shift, false)); 
             }
             // the normal encipherment of the wheels/components themselves
             list.AddFirst(next.CreateStep());

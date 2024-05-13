@@ -33,7 +33,7 @@ public class RotorTests(ITestOutputHelper output)
 
         rotor.Position = 1;
 
-        var shift = rotor.Shift();
+        var shift = rotor.Shift;
 
         var list = new List<ICipher> { rotor.Cipher, shift };
 

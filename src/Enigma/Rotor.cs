@@ -20,6 +20,8 @@ public class Rotor : IComponent
         set => UpdatePosition(value);
     }
 
+    public ICipher Shift { get; private set; }
+
     public Rotor(RotorConfiguration config) : this(
         config.Name, 
         new SubstitutionCipher(config.Alphabet), 
@@ -62,17 +64,9 @@ public class Rotor : IComponent
             .Rotate(_position);
 
         _substitutionCipher = new SubstitutionCipher(chars);
+        Shift = new CaesarCipher(Position * -1);
     }
     
-    /// <summary>
-    /// Shifts the current cipher by the current position of the rotor
-    /// </summary>
-    /// <returns>a new cipher</returns>
-    public ICipher Shift()
-    {
-        return new CaesarCipher(Position * -1);
-    }
-
     public override string ToString() => _substitutionCipher.ToString();
 
     public string Dump()
