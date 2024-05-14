@@ -60,11 +60,13 @@ public class CaesarCipherTests()
     [InlineData(95)]
     public void AlgoShouldEqualDictionary(int shift)
     {
-        var left = new CaesarSubstitutionCipher(shift);
+        var substitution = new CaesarSubstitutionCipher(shift);
         var algo = new CaesarCipher(shift);
 
-        left.Dictionary.Should().Equal(algo.ToDictionary());
+        var d = algo.ToDictionary();
 
-        left.Inversion.ToDictionary().Should().Equal(algo.Inversion.ToDictionary());
+        substitution.Dictionary.Should().Equal(d);
+
+        substitution.Inversion.ToDictionary().Should().Equal(algo.Inversion.ToDictionary());
     }
 }

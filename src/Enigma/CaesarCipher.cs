@@ -16,22 +16,11 @@ public class CaesarSubstitutionCipher(int offset)
 
 public class CaesarCipher(int offset) : ICipher
 {
-    private readonly int _offset = Normalize(offset);
+    private readonly int _offset = offset.Normalize();
 
-    private static int Normalize(int input)
-    {
-        if (input == 0) return input;
-        
-        var abs = Math.Abs(input) % 26;
+    public char Encode(char c) => (c.ToInt() + _offset).Normalize().ToChar();
 
-        var count = input > 0 ? abs : 26 - abs;
-
-        return count;
-    }
-    
-    public char Encode(char c) => Normalize(c.ToInt() + _offset).ToChar();
-
-    public char Decode(char c) => Normalize(c.ToInt() + (_offset * -1)).ToChar();
+    public char Decode(char c) => (c.ToInt() + (_offset * -1)).Normalize().ToChar();
 
     public ICipher Inversion => new CaesarCipher(_offset * -1);
 }

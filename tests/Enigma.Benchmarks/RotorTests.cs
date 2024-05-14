@@ -5,7 +5,7 @@ namespace Enigma.Benchmarks;
 [MemoryDiagnoser]
 public class RotorTests
 {
-    private readonly Rotor _rotor = RotorFactory.Create(RotorName.I);
+    private readonly Rotor _rotor = Rotor.Create(RotorName.I);
 
     [Benchmark]
     public void Advance()

@@ -9,7 +9,7 @@ public class RotorTests(ITestOutputHelper output)
     [Fact]
     public void PositionShouldInitializeToZero()
     {
-        var rotor = RotorFactory.Create(RotorName.III);
+        var rotor = Rotor.Create(RotorName.III);
 
         rotor.Position.Should().Be(0);
     }
@@ -17,7 +17,7 @@ public class RotorTests(ITestOutputHelper output)
     [Fact]
     public void RotorShouldRollOver()
     {
-        var rotor = RotorFactory.Create(RotorName.I);
+        var rotor = Rotor.Create(RotorName.I);
 
         rotor.Position = 25;
         rotor.Advance();
@@ -29,7 +29,7 @@ public class RotorTests(ITestOutputHelper output)
     [Fact]
     public void MergeWithShift()
     {
-        var rotor = RotorFactory.Create(RotorName.I);
+        var rotor = Rotor.Create(RotorName.I);
 
         rotor.Position = 1;
 

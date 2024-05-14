@@ -16,7 +16,7 @@ public class Spindle
     }
 
     public Spindle(params RotorName[] rotors) 
-        : this(rotors.Select(RotorFactory.Create).ToArray())
+        : this(rotors.Select(Rotor.Create).ToArray())
     { }
 
     public Spindle(params Rotor[] rotors)
@@ -25,7 +25,24 @@ public class Spindle
         Validate();
     }
 
-    public void Advance() => _rotors.Last().Advance();
+    public void Advance()
+    {
+        Stack<Rotor> stack = new(_rotors);
+
+        var rotor = stack.Pop();
+        
+        rotor.Advance();
+
+        while (stack.Count > 0)
+        {
+            var next = stack.Pop();
+
+            if (!rotor.IsAtNotch) return;
+            
+            next.Advance();
+            rotor = next;
+        }
+    }
 
     private void SetRotorPositions(string trigram)
     {

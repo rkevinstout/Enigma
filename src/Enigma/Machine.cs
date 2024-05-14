@@ -83,7 +83,7 @@ public class Machine
         public List<PlugBoard.Pair> Pairs { get; } = new();
         public ReflectorName ReflectorName { get; set; } = ReflectorName.RefB;
         public void AddRotor(Rotor rotor) => Rotors.Add(rotor);
-        public void AddRotor(RotorName name) => Rotors.Add(RotorFactory.Create(name));
+        public void AddRotor(RotorName name) => Rotors.Add(Rotor.Create(name));
         public void AddRotors(params RotorName[] names) => names.ToList().ForEach(AddRotor);
         public void AddPairs(params PlugBoard.Pair[] pairs) => pairs.ToList().ForEach(Pairs.Add);
 

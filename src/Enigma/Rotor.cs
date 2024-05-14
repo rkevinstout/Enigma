@@ -8,9 +8,6 @@ public class Rotor : IComponent
     public string Name => _rotorName.ToString();
     private readonly RotorName _rotorName;
     public Ring Ring { get; set; }
-
-    private SubstitutionCipher _substitutionCipher;
-    public ICipher Cipher => _substitutionCipher;  
     
     private int _position;
     public int Position
@@ -18,12 +15,21 @@ public class Rotor : IComponent
         get => _position;
         set => UpdatePosition(value);
     }
+    public bool IsAtNotch => Ring.Notches.Contains(_position.ToChar());
+    
+    private SubstitutionCipher _substitutionCipher;
+    public ICipher Cipher => _substitutionCipher;  
 
     public ICipher Shift { get; private set; }
+    
+    public static Rotor Create(RotorName name) => new(RotorConfiguration.Create(name));
+    public static Rotor Create(RotorName name, char ringSetting) =>
+        new(RotorConfiguration.Create(name, ringSetting));
 
-    public Rotor(RotorConfiguration config) : this(
+
+    private Rotor(RotorConfiguration config) : this(
         config.Name, 
-        new SubstitutionCipher(config.Alphabet), 
+        new SubstitutionCipher(config.Wiring), 
         config.Ring
         )
     { }
@@ -56,7 +62,7 @@ public class Rotor : IComponent
 
     private void UpdateCipher()
     {
-        var chars = RotorFactory
+        var chars = RotorConfiguration
             .Alphabets[_rotorName]
             .ToCharArray()
             .Rotate(_position);
