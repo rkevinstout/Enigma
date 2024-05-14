@@ -1,4 +1,3 @@
-using System.CodeDom.Compiler;
 using System.Text;
 using FluentAssertions;
 using Xunit.Abstractions;
@@ -23,9 +22,9 @@ public class MachineTests(ITestOutputHelper output)
 
         var machine = Build(RotorName.I, RotorName.II, RotorName.III);
 
-        machine.Position = "AAZ";
+        machine.Position = "AAA";
         
-        var result = machine.Enter('G');
+        var result = machine.Encode('G');
         
         LogOutput(machine);
 
@@ -117,7 +116,7 @@ public class MachineTests(ITestOutputHelper output)
         public RandomTextGenerator() => Add(Generate(256));
         private static string Generate(int length)
         {
-            var buffer = new StringBuilder();
+            var buffer = new StringBuilder(length);
             
             while (length-- > 0)
             {

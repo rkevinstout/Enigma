@@ -28,7 +28,7 @@ public class Pipeline
         {
             var next = stack.Pop();
             
-            if (next is Rotor { Position: > 0 } rotor)
+            if (next is Rotor rotor)
             {
                 // Add Caesar Shift to capture the offset of the rotor position
                 list.AddFirst(next.CreateStep(rotor.Shift));

@@ -7,11 +7,10 @@ public class Rotor : IComponent
 {
     public string Name => _rotorName.ToString();
     private readonly RotorName _rotorName;
-    public char Ring { get; set; }
+    public Ring Ring { get; set; }
 
     private SubstitutionCipher _substitutionCipher;
-    public ICipher Cipher => _substitutionCipher;       
-    public IList<char> Notches { get; set; }
+    public ICipher Cipher => _substitutionCipher;  
     
     private int _position;
     public int Position
@@ -25,22 +24,21 @@ public class Rotor : IComponent
     public Rotor(RotorConfiguration config) : this(
         config.Name, 
         new SubstitutionCipher(config.Alphabet), 
-        config.Ring,
-        config.Notches
+        config.Ring
         )
     { }
 
     private Rotor(
         RotorName name, 
         SubstitutionCipher cipher, 
-        char ring, 
-        IList<char> notches
+        Ring ring
         )
     {
         _rotorName = name;
         _substitutionCipher = cipher;
         Ring = ring;
-        Notches = notches;
+        
+        Shift = new CaesarCipher(Position * -1);
     }
 
     public void Advance() => Position += 1;

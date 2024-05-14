@@ -2,21 +2,7 @@ namespace Enigma;
 
 public static class RotorFactory
 {
-    public static Dictionary<RotorName, string> Alphabets => BuildAlphabets();
-    
-    private static readonly Dictionary<RotorName, RotorConfiguration> Configurations = new()
-    {
-        { RotorName.I, new RotorConfiguration(RotorName.I, 'R') },
-        { RotorName.II, new RotorConfiguration(RotorName.II, 'F') },
-        { RotorName.III, new RotorConfiguration(RotorName.III, 'W') },
-        { RotorName.IV, new RotorConfiguration(RotorName.IV, 'K') },
-        { RotorName.V, new RotorConfiguration(RotorName.V, 'A') },
-        { RotorName.VI, new RotorConfiguration(RotorName.VI, 'A', 'N') },
-        { RotorName.VII, new RotorConfiguration(RotorName.VII, 'A', 'N') },
-        { RotorName.VIII, new RotorConfiguration(RotorName.VIII, 'A', 'N') }
-    };
-
-    private static Dictionary<RotorName, string> BuildAlphabets() => new()
+    public static Dictionary<RotorName, string> Alphabets => new()
     {
         { RotorName.I, Alphabet.I },
         { RotorName.II, Alphabet.II },
@@ -27,6 +13,21 @@ public static class RotorFactory
         { RotorName.VII, Alphabet.VII },
         { RotorName.VIII, Alphabet.VIII }
     };
+    
+    public static Dictionary<RotorName, char[]> Notches => new()
+    {
+        { RotorName.I, ['R'] },
+        { RotorName.II, ['F'] },
+        { RotorName.III, ['W'] },
+        { RotorName.IV, ['K'] },
+        { RotorName.V, ['A'] },
+        { RotorName.VI, ['A', 'N'] },
+        { RotorName.VII, ['A', 'N'] },
+        { RotorName.VIII, ['A', 'N']},
+    };
 
-    public static Rotor Create(RotorName name) => new Rotor(Configurations[name]);
+    public static Rotor Create(RotorName name) =>
+        new(RotorConfiguration.Create(name));
+    public static Rotor Create(RotorName name, char ringSetting) =>
+        new(RotorConfiguration.Create(name, ringSetting));
 }

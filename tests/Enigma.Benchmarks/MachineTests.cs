@@ -6,11 +6,17 @@ namespace Enigma.Benchmarks;
 [MemoryDiagnoser]
 public class MachineTests
 {
-    private readonly Machine _machine = Build(RotorName.I, RotorName.II, RotorName.III);
-    private static readonly Dictionary<int, string> Dictionary = CreateTextDictionary();
+    private readonly Machine _machine;
+    private readonly Dictionary<int, string> _dictionary;
 
-    [Params(256, 1024)]
+    [Params(256)]
     public int Key;
+
+    public MachineTests()
+    {
+        _machine = Build(RotorName.I, RotorName.II, RotorName.III);
+        _dictionary = CreateTextDictionary();
+    }
 
     private static Machine Build(params RotorName[] rotors)
     {
@@ -24,11 +30,11 @@ public class MachineTests
     }
 
     [Benchmark]
-    public void Encrpyt()
+    public string Encrpyt()
     {
-        var plainText = Dictionary[Key];
+        var plainText = _dictionary[Key];
         
-        var cipherText = _machine.Encode(plainText);
+        return _machine.Encode(plainText);
     }
     private static string Generate(int length)
     {
@@ -46,7 +52,7 @@ public class MachineTests
     private static Dictionary<int, string> CreateTextDictionary() => new()
     {
         { 256, Generate(256) },
-        { 1024, Generate(1024) },
-        { 4096,  Generate(4096) }
+        // { 1024, Generate(1024) },
+        // { 4096,  Generate(4096) }
     };
 }

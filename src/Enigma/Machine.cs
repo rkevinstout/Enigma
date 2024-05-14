@@ -80,7 +80,6 @@ public class Machine
     public class Configuration
     {
         public List<Rotor> Rotors { get; } = new();
-        public string Position { get; } = "AAA";
         public List<PlugBoard.Pair> Pairs { get; } = new();
         public ReflectorName ReflectorName { get; set; } = ReflectorName.RefB;
         public void AddRotor(Rotor rotor) => Rotors.Add(rotor);
