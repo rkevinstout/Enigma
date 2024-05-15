@@ -47,6 +47,29 @@ public class MachineTests(ITestOutputHelper output)
 
         result.Should().Be(cipherText);
     }
+    [Theory]
+    [InlineData("AAA", "AAA", "AAAAA", "BDZGO")]
+    [InlineData("AAA", "BBB", "AAAAA", "EWTYX")]
+    public void RingSettingsShouldEffectOffset(string position, string ringSettings, string plainText, string cipherText)
+    {
+        // https://en.wikipedia.org/wiki/Enigma_rotor_details#Ring_setting
+
+        var rings = ringSettings.ToCharArray();
+
+        var config = new Machine.Configuration();
+        
+        config.AddRotor(RotorName.I, rings[0]);
+        config.AddRotor(RotorName.II, rings[1]);
+        config.AddRotor(RotorName.III, rings[2]);
+
+        var machine = config.Create();
+
+        machine.Position = position;
+
+        var result = EncodeAndLog(machine, plainText);
+
+        result.Should().Be(cipherText);
+    }
 
     [Theory]
     [ClassData(typeof(RandomTextGenerator))]
