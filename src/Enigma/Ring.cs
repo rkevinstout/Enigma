@@ -11,7 +11,7 @@ public record struct Ring(char Position, char[] Notches)
             var offset = position - 'A';
 
             notches = notches
-                .Select(notch => (notch + offset)
+                .Select(notch => (notch.ToInt() + offset)
                     .Normalize()
                     .ToChar())
                 .ToArray();

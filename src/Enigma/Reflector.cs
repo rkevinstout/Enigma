@@ -10,7 +10,7 @@ public class Reflector : IComponent
     public ICipher Cipher => _substitutionCipher;
 
     public static Reflector Create(ReflectorName name) => 
-        new(name, ReflectorFactory.Alphabets[name]);
+        new(name, Alphabets[name]);
 
     private Reflector(ReflectorName name, string alphabet)
         : this(name, new SubstitutionCipher(alphabet))
@@ -21,6 +21,13 @@ public class Reflector : IComponent
         _reflectorName = name;
         _substitutionCipher = cipher;
     }
+    public static Dictionary<ReflectorName, string> Alphabets => new()
+    {
+        { ReflectorName.RefB, Alphabet.RefB },
+        { ReflectorName.RefC, Alphabet.RefC },
+        { ReflectorName.M4B, Alphabet.M4B },
+        { ReflectorName.M4C, Alphabet.M4C },
+    };
     
     public override string ToString() => _substitutionCipher.ToString();
 }

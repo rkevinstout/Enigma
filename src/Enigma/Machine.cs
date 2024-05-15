@@ -20,7 +20,11 @@ public class Machine
 
     public readonly TraceLog Log = new();
 
-    private Machine(PlugBoard plugBoard, Spindle spindle, Reflector reflector)
+    private Machine(
+        PlugBoard plugBoard, 
+        Spindle spindle, 
+        Reflector reflector
+        )
     {
         _plugBoard = plugBoard;
         _spindle = spindle;

@@ -6,12 +6,16 @@ namespace Enigma.Tests;
 
 public class MachineTests(ITestOutputHelper output)
 {
-    private static Machine Build(params RotorName[] rotors)
+    private static Machine Build(string ringSettings = "AAA", params RotorName[] rotors )
     {
+        var rings = ringSettings.ToCharArray();
         var config = new Machine.Configuration();
         
-        config.AddRotors(rotors);
-
+        for (var i = 0; i < rotors.Length; i++)
+        {
+            config.AddRotor(rotors[i], rings[i]);
+        }
+        
         return config.Create();
     }
 
@@ -20,7 +24,7 @@ public class MachineTests(ITestOutputHelper output)
     {
         // https://www.codesandciphers.org.uk/enigma/example1.htm
 
-        var machine = Build(RotorName.I, RotorName.II, RotorName.III);
+        var machine = Build("AAA",RotorName.I, RotorName.II, RotorName.III);
 
         machine.Position = "AAA";
         
@@ -39,7 +43,7 @@ public class MachineTests(ITestOutputHelper output)
     {
         // https://en.wikipedia.org/wiki/Enigma_rotor_details#Rotor_offset
         
-        var machine = Build(RotorName.I, RotorName.II, RotorName.III);
+        var machine = Build("AAA", RotorName.I, RotorName.II, RotorName.III);
 
         machine.Position = position;
 
@@ -72,18 +76,18 @@ public class MachineTests(ITestOutputHelper output)
     }
 
     [Theory]
-    [ClassData(typeof(RandomTextGenerator))]
-    public void EncryptionIsReciprocal(string plainText)
+    [ClassData(typeof(TestConfigurations))]
+    public void EncryptionIsSymetric (string ringSettings, string position, string plainText)
     {
-        var machine = Build(RotorName.I, RotorName.II, RotorName.III);
+        var machine = Build(ringSettings, RotorName.I, RotorName.II, RotorName.III);
 
-        machine.Position = "AAA";
+        machine.Position = position;
 
         var cipherText = EncodeAndLog(machine, plainText);
         
         machine.Log.Reset();
-        
-        machine.Position = "AAA";
+
+        machine.Position = position;
         
         var result = EncodeAndLog(machine, cipherText);
 
@@ -93,7 +97,7 @@ public class MachineTests(ITestOutputHelper output)
     [Fact]
     public void ShouldCreateCipher()
     {
-        var machine = Build(RotorName.I, RotorName.II, RotorName.III);
+        var machine = Build("AAA", RotorName.I, RotorName.II, RotorName.III);
 
         var cipher = machine.ToCipher();
 
@@ -133,21 +137,19 @@ public class MachineTests(ITestOutputHelper output)
             output.WriteLine(x.ToString());
         }
     }
+    
+    
 
-    public class RandomTextGenerator : TheoryData<string>
+    public class TestConfigurations : TheoryData<string, string, string>
     {
-        public RandomTextGenerator() => Add(Generate(256));
-        private static string Generate(int length)
+        public TestConfigurations()
         {
-            var buffer = new StringBuilder(length);
-            
-            while (length-- > 0)
-            {
-                var c = Random.Shared.Next(26).ToChar();
-                buffer.Append(c);
-            }
-
-            return buffer.ToString();
+            var text = GenerateText(256);
+            Add("AAA", "AAA", text);
+            Add("BBB", "BBB", text);
+            Add("ABC", "DEF", text);
         }
     }
+    
+    private static string GenerateText(int length) => Extensions.GenerateText(length);
 }

@@ -9,24 +9,23 @@ public class PlugBoard : IComponent
     
     public PlugBoard(params Pair[] pairs)
     {
-        var dictionary = Alphabet.PlainText.ToCharArray()
-            .Select((c, index) => new KeyValuePair<char, char>(index.ToChar(), c))
-            .ToDictionary();
+        var chars = Swap(pairs);
 
-        Add(dictionary, pairs);
-
-        _substitutionCipher = new SubstitutionCipher(dictionary);
+        _substitutionCipher = new SubstitutionCipher(chars);
     }
-    
-    private static void Add(IDictionary<char, char> dictionary, params Pair[] pairs)
+
+    private static char[] Swap(Pair[] pairs)
     {
+        var chars = Alphabet.PlainText.ToCharArray();
+
         foreach (var pair in pairs)
         {
-            dictionary[pair.From] = pair.To;
-            dictionary[pair.To] = pair.From;
+            chars[pair.From.ToInt()] = pair.To;
+            chars[pair.To.ToInt()] = pair.From;
         }
-    }
 
+        return chars;
+    }
     public override string ToString() => _substitutionCipher.ToString();
 
     public record struct Pair(char From, char To);

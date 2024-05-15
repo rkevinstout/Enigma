@@ -7,7 +7,7 @@ public class Rotor : IComponent
 {
     public string Name => _rotorName.ToString();
     private readonly RotorName _rotorName;
-    public Ring Ring { get; set; }
+    public Ring Ring { get; }
     
     private int _position;
     public int Position
@@ -26,25 +26,29 @@ public class Rotor : IComponent
     public static Rotor Create(RotorName name, char ringSetting) =>
         new(RotorConfiguration.Create(name, ringSetting));
 
-
     private Rotor(RotorConfiguration config) : this(
         config.Name, 
-        new SubstitutionCipher(config.Wiring), 
+        config.Wiring.ToCharArray(), 
         config.Ring
         )
     { }
 
     private Rotor(
         RotorName name, 
-        SubstitutionCipher cipher, 
+        char[] wiring,
         Ring ring
         )
     {
         _rotorName = name;
-        _substitutionCipher = cipher;
         Ring = ring;
         
-        Shift = new CaesarCipher(Position * -1);
+        var chars = Ring.Position != 'A'
+            ? wiring.Rotate((Ring.Position - 'A'))
+            : wiring;
+        
+        _substitutionCipher = new SubstitutionCipher(chars);
+        
+        Shift = new CaesarSubstitutionCipher(Position * -1);
     }
 
     public void Advance() => Position += 1;
@@ -59,16 +63,27 @@ public class Rotor : IComponent
         
         UpdateCipher();
     }
+    
+    private SubstitutionCipher CreateSubstitutionCipher(char[] chars)
+    {
+        var shift = (Position - Ring.Position.ToInt()).Normalize();
+        
+        var rotated = chars.Rotate(shift);
+        
+        return new SubstitutionCipher(rotated);
+    }
 
     private void UpdateCipher()
     {
         var chars = RotorConfiguration
             .Alphabets[_rotorName]
             .ToCharArray()
+            .Rotate(Ring.Position - 'A')
             .Rotate(_position);
 
         _substitutionCipher = new SubstitutionCipher(chars);
-        Shift = new CaesarCipher(Position * -1);
+        
+        Shift = new CaesarSubstitutionCipher(Position * -1);
     }
     
     public override string ToString() => _substitutionCipher.ToString();

@@ -47,8 +47,10 @@ public class RotorTests(ITestOutputHelper output)
         var rotor = Rotor.Create(RotorName.I, ring);
 
         var result = rotor.Cipher.Encode(plaintext);
+        output.WriteLine(rotor.ToString());
 
         result.Should().Be(expected);
+        
     }
 
     [Fact]

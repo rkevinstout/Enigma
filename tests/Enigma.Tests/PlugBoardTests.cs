@@ -16,7 +16,7 @@ public class PlugBoardTests
     private static PlugBoard Create(PlugBoard.Pair[] pairs) => new(pairs);
 
     [Theory]
-    [ClassData(typeof(TestData))]
+    [MemberData(nameof(TestPairs))]
     public void ShouldEncode(char from, char to)
     {
         var result = PlugBoard.Cipher.Encode(from);
@@ -32,10 +32,7 @@ public class PlugBoardTests
         dictionary.Should().AllSatisfy(x => dictionary[x.Value].Should().Be(x.Key));
     }
 
-    private class TestData : TheoryData<char, char>
-    {
-        public TestData() => Pairs
-            .ToList()
-            .ForEach(p => Add(p.From, p.To));
-    }
+    public static TheoryData<char, char> TestPairs => Pairs
+        .Select(x => new Tuple<char, char>(x.From, x.To))
+        .ToTheoryData();
 }
