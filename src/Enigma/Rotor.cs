@@ -86,6 +86,9 @@ public class Rotor : IComponent
         Shift = new CaesarSubstitutionCipher(Position * -1);
     }
     
+    public char Encode(char c) => _substitutionCipher.Encode(c);
+    public char Decode(char c) => _substitutionCipher.Decode(c);
+    
     public override string ToString() => _substitutionCipher.ToString();
 
     public string Dump()

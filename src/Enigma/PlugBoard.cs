@@ -26,6 +26,10 @@ public class PlugBoard : IComponent
 
         return chars;
     }
+    
+    
+    public char Encode(char c) => _substitutionCipher.Encode(c);
+    public char Decode(char c) => _substitutionCipher.Decode(c);
     public override string ToString() => _substitutionCipher.ToString();
 
     public record struct Pair(char From, char To);

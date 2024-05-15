@@ -29,5 +29,9 @@ public class Reflector : IComponent
         { ReflectorName.M4C, Alphabet.M4C },
     };
     
+    
+    public char Encode(char c) => _substitutionCipher.Encode(c);
+    public char Decode(char c) => _substitutionCipher.Decode(c);
+    
     public override string ToString() => _substitutionCipher.ToString();
 }
