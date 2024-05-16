@@ -77,7 +77,7 @@ public class Machine
             .ToCharArray()
             .ToDictionary(c => c, Encode);
 
-    public SubstitutionCipher ToCipher() => new(ToDictionary());
+    public CharacterMap ToCipher() => new(ToDictionary().Values.ToArray());
 
     public class Configuration
     {

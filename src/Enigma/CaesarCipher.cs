@@ -8,7 +8,7 @@ namespace Enigma;
 /// <param name="offset">The number of poitions to shift</param>
 /// <seealso cref="https://en.wikipedia.org/wiki/Caesar_cipher"/>
 public class CaesarSubstitutionCipher(int offset) 
-    : SubstitutionCipher(
+    : CharacterMap(
         Alphabet.PlainText
             .ToCharArray()
             .Rotate(offset)

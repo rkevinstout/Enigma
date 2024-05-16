@@ -50,30 +50,20 @@ public class Rotor : IComponent
     
     public char Encode(char c) => Encode(c.ToInt()).ToChar();
 
-    private int Encode(int i)
+    private int Encode(int i) => Encode(i, _characterMap);
+
+    private int Encode(int i, CharacterMap map)
     {
         var key = (Offset + i).Normalize();
         
-        var result = (_characterMap.Encode(key) - Offset).Normalize();
+        var result = (map.Encode(key) - Offset).Normalize();
 
         return result;
     }
         
     public char Decode(char c) => Decode(c.ToInt()).ToChar();
     
-    private int Decode(int i)
-    {
-        var key = (Offset + i).Normalize();
-        
-        var result = (_characterMap.Inversion.Encode(key) - Offset).Normalize();
-
-        return result;
-    }
+    private int Decode(int i) => Encode(i, _characterMap.Inversion as CharacterMap);
     
     public override string ToString() => _characterMap.ToString();
-
-    public string Dump()
-    {
-        return $"{_rotorName,10} {Position,3} {Cipher,25}";
-    }
 }

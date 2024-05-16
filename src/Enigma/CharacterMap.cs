@@ -3,7 +3,7 @@ namespace Enigma;
 public class CharacterMap : ICipher
 {
     private readonly int[] _encodings;
-    private readonly Lazy<ICipher> _inversion;
+    private readonly Lazy<CharacterMap> _inversion;
     public ICipher Inversion => _inversion.Value;
     
     public CharacterMap(string characters) 
@@ -11,13 +11,13 @@ public class CharacterMap : ICipher
     {}
 
     public CharacterMap(char[] characters) 
-        : this(characters.Select(c => c.ToInt()).ToArray())
+        : this(characters.Select(x => x.ToInt()).ToArray())
     { }
-
-    private CharacterMap(int[] encodings)
+    
+    public CharacterMap(int[] encodings)
     {
         _encodings = encodings;
-        _inversion = new Lazy<ICipher>(Invert);
+        _inversion = new Lazy<CharacterMap>(Invert);
     }
     
     public int Encode(int i) => _encodings[i];

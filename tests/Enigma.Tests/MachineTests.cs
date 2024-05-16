@@ -104,13 +104,15 @@ public class MachineTests(ITestOutputHelper output)
         var machine = Build("AAA", RotorName.I, RotorName.II, RotorName.III);
 
         var cipher = machine.ToCipher();
+        
+        var dictionary = cipher.ToDictionary();
 
-        cipher.Dictionary.Keys.Should().OnlyHaveUniqueItems();
-        cipher.Dictionary.Values.Should().OnlyHaveUniqueItems();
+        dictionary.Keys.Should().OnlyHaveUniqueItems();
+        dictionary.Values.Should().OnlyHaveUniqueItems();
         cipher.ToString().Should().Be("UEJOBTPZWCNSRKDGVMLFAQIYXH");
         
-        cipher.Dictionary.Should().AllSatisfy(x => 
-            cipher.Dictionary[x.Value].Should().Be(x.Key)
+        dictionary.Should().AllSatisfy(x => 
+            dictionary[x.Value].Should().Be(x.Key)
             );
     }
 
