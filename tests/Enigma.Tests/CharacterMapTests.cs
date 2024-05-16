@@ -10,18 +10,29 @@ public class CharacterMapTests(ITestOutputHelper output)
     public void CharLookup()
     {
         var map = new CharacterMap(Alphabet.I);
+        var inverse = map.Inversion;
+        
+        output.WriteLine(Alphabet.PlainText);
+        output.WriteLine(map.ToString());
+        output.WriteLine(inverse.ToString());
+        output.WriteLine(Alphabet.PlainText);
 
         map.Encode('A').Should().Be('E');
-        map.Decode('E').Should().Be('L');
+        map.Decode('E').Should().Be('A');
+        
     }
 
     [Fact]
     public void IntLookup()
     {
         var map = new CharacterMap(Alphabet.I);
+        
+        output.WriteLine(Alphabet.PlainText);
+        output.WriteLine(map.ToString());
 
         map.Encode(0).ToChar().Should().Be('E');
-        map.Decode(4).ToChar().Should().Be('L');
+        
+        map.Decode(4).ToChar().Should().Be('A');
     }
 
     [Theory]
@@ -40,6 +51,21 @@ public class CharacterMapTests(ITestOutputHelper output)
             buffer.Append(result);
         }
         output.WriteLine(buffer.ToString());
+    }
+
+
+    [Fact]
+    public void WTF()
+    {
+        var map = new CharacterMap(Alphabet.I);
+        var cipher = new SubstitutionCipher(Alphabet.I);
+        
+        output.WriteLine(map.ToString());
+        output.WriteLine(cipher.ToString());
+        output.WriteLine(String.Empty);
+        output.WriteLine(map.Inversion.ToString());
+        output.WriteLine(cipher.Inversion.ToString());
+        
     }
 
     public static TheoryData<char> Rings => Alphabet.PlainText

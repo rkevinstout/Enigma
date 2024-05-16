@@ -8,20 +8,21 @@ public class Rotor : IComponent
     public string Name => _rotorName.ToString();
     private readonly RotorName _rotorName;
     public Ring Ring { get; }
-    
+
     private int _position;
     public int Position
     {
         get => _position;
-        set => UpdatePosition(value);
+        set => _position = value % 26;
     }
-    public bool IsAtNotch => Ring.Notches.Contains(_position.ToChar());
-    
-    private SubstitutionCipher _substitutionCipher;
-    public ICipher Cipher => _substitutionCipher;  
 
-    public ICipher Shift { get; private set; }
+    private int Offset => (Position - Ring.Position.ToInt()).Normalize();
+    public bool IsAtNotch => Ring.Notches.Contains(Position.ToChar());
     
+    public ICipher Cipher => _characterMap;  
+    
+    private readonly CharacterMap _characterMap;
+
     public static Rotor Create(RotorName name) => new(RotorConfiguration.Create(name));
     public static Rotor Create(RotorName name, char ringSetting) =>
         new(RotorConfiguration.Create(name, ringSetting));
@@ -41,55 +42,35 @@ public class Rotor : IComponent
     {
         _rotorName = name;
         Ring = ring;
-        
-        var chars = Ring.Position != 'A'
-            ? wiring.Rotate((Ring.Position - 'A'))
-            : wiring;
-        
-        _substitutionCipher = new SubstitutionCipher(chars);
-        
-        Shift = new CaesarSubstitutionCipher(Position * -1);
+        Position = 0;
+        _characterMap = new CharacterMap(wiring);
     }
 
     public void Advance() => Position += 1;
-
-    private void UpdatePosition(int position)
-    { 
-        position %= 26;
-        
-        if (_position == position) return;
-        
-        _position = position;
-        
-        UpdateCipher();
-    }
     
-    private SubstitutionCipher CreateSubstitutionCipher(char[] chars)
+    public char Encode(char c) => Encode(c.ToInt()).ToChar();
+
+    private int Encode(int i)
     {
-        var shift = (Position - Ring.Position.ToInt()).Normalize();
+        var key = (Offset + i).Normalize();
         
-        var rotated = chars.Rotate(shift);
-        
-        return new SubstitutionCipher(rotated);
-    }
+        var result = (_characterMap.Encode(key) - Offset).Normalize();
 
-    private void UpdateCipher()
+        return result;
+    }
+        
+    public char Decode(char c) => Decode(c.ToInt()).ToChar();
+    
+    private int Decode(int i)
     {
-        var chars = RotorConfiguration
-            .Alphabets[_rotorName]
-            .ToCharArray()
-            .Rotate(Ring.Position - 'A')
-            .Rotate(_position);
-
-        _substitutionCipher = new SubstitutionCipher(chars);
+        var key = (Offset + i).Normalize();
         
-        Shift = new CaesarSubstitutionCipher(Position * -1);
+        var result = (_characterMap.Inversion.Encode(key) - Offset).Normalize();
+
+        return result;
     }
     
-    public char Encode(char c) => _substitutionCipher.Encode(c);
-    public char Decode(char c) => _substitutionCipher.Decode(c);
-    
-    public override string ToString() => _substitutionCipher.ToString();
+    public override string ToString() => _characterMap.ToString();
 
     public string Dump()
     {

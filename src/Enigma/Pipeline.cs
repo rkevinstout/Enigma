@@ -28,12 +28,6 @@ public class Pipeline
         {
             var next = stack.Pop();
             
-            if (next is Rotor rotor)
-            {
-                // Add Caesar Shift to capture the offset of the rotor position
-                list.AddFirst(next.CreateStep(rotor.Shift));
-                list.AddLast(next.CreateStep(rotor.Shift, false)); 
-            }
             // the normal encipherment of the wheels/components themselves
             list.AddFirst(next.CreateStep());
             list.AddLast(next.CreateStep(false));
@@ -50,8 +44,8 @@ public class Pipeline
         public ICipher Cipher { get; }
         public bool Inbound { get; }
         public char Execute(char input) => Inbound
-            ? Cipher.Encode(input)
-            : Cipher.Decode(input);
+            ? Component.Encode(input)
+            : Component.Decode(input);
 
         /// <summary>
         /// A wrapper for a character substitution.  Mostly for logging purposes
@@ -60,11 +54,12 @@ public class Pipeline
         /// <param name="action">delegate that will perform the encipherment</param>
         /// <param name="cipher"></param>
         /// <param name="isInbound">flag to denote the monoalphabetic substitution performed</param>
-        public Step(IComponent component, ICipher cipher, bool isInbound = true)
+        public Step(IComponent component, bool isInbound = true)
         {
             Component = component;
-            Cipher = cipher;
             Inbound = isInbound;
+            
+            Cipher = isInbound ? component.Cipher : component.Cipher.Inversion;
         }
     }
 }

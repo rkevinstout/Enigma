@@ -11,14 +11,7 @@ public static class Extensions
     public static Pipeline.Step CreateStep(
         this IComponent component, 
         bool isInbound = true
-    ) => new(component, component.Cipher, isInbound);
-    
-    public static Pipeline.Step CreateStep(
-        this IComponent component, 
-        ICipher cipher,
-        bool isInbound = true
-    ) => new(component, cipher, isInbound);
-    
+    ) => new(component, isInbound);
     
     /// <summary>
     /// Swaps keys and values in a dictionary

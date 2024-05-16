@@ -11,7 +11,7 @@ public class CharacterMap : ICipher
     {}
 
     public CharacterMap(char[] characters) 
-        : this(characters.Select(x => x.ToInt()).ToArray())
+        : this(characters.Select(c => c.ToInt()).ToArray())
     { }
     
     public CharacterMap(int[] encodings)
@@ -33,8 +33,11 @@ public class CharacterMap : ICipher
 
         for (var i = 0; i < _encodings.Length; i++)
         {
-            output[i] = _encodings[i];
+            var value = _encodings[i];
+            output[value] = i;
         }
         return new CharacterMap(output);
     }
+    
+    public override string ToString() => new(_encodings.Select(i => i.ToChar()).ToArray());
 }
