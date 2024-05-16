@@ -4,14 +4,14 @@ public class PlugBoard : IComponent
 {
     public string Name => "PB";
 
-    private readonly SubstitutionCipher _substitutionCipher;
-    public ICipher Cipher => _substitutionCipher;
+    private readonly CharacterMap _characterMap;
+    public ICipher Cipher => _characterMap;
     
     public PlugBoard(params Pair[] pairs)
     {
         var chars = Swap(pairs);
 
-        _substitutionCipher = new SubstitutionCipher(chars);
+        _characterMap = new CharacterMap(chars);
     }
 
     private static char[] Swap(Pair[] pairs)
@@ -28,9 +28,9 @@ public class PlugBoard : IComponent
     }
     
     
-    public char Encode(char c) => _substitutionCipher.Encode(c);
-    public char Decode(char c) => _substitutionCipher.Decode(c);
-    public override string ToString() => _substitutionCipher.ToString();
+    public char Encode(char c) => _characterMap.Encode(c);
+    public char Decode(char c) => _characterMap.Decode(c);
+    public override string ToString() => _characterMap.ToString();
 
     public record struct Pair(char From, char To);
 }

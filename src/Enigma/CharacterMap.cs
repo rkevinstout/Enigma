@@ -13,8 +13,8 @@ public class CharacterMap : ICipher
     public CharacterMap(char[] characters) 
         : this(characters.Select(c => c.ToInt()).ToArray())
     { }
-    
-    public CharacterMap(int[] encodings)
+
+    private CharacterMap(int[] encodings)
     {
         _encodings = encodings;
         _inversion = new Lazy<ICipher>(Invert);

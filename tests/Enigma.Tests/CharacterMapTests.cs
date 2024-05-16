@@ -21,6 +21,22 @@ public class CharacterMapTests(ITestOutputHelper output)
         map.Decode('E').Should().Be('A');
         
     }
+    
+    [Theory]
+    [MemberData(nameof(Alphabets))]
+    public void MapIsSymetric(string alphabet)
+    {
+        var map = new CharacterMap(alphabet);
+        var inverse = map.Inversion;
+        
+        for (var i = 0; i < alphabet.Length; i++)
+        {
+            var key = i.ToChar();
+            var result = map.Encode(key);
+            
+            inverse.Encode(result).Should().Be(key);
+        }
+    }
 
     [Fact]
     public void IntLookup()
@@ -31,7 +47,6 @@ public class CharacterMapTests(ITestOutputHelper output)
         output.WriteLine(map.ToString());
 
         map.Encode(0).ToChar().Should().Be('E');
-        
         map.Decode(4).ToChar().Should().Be('A');
     }
 
@@ -53,23 +68,12 @@ public class CharacterMapTests(ITestOutputHelper output)
         output.WriteLine(buffer.ToString());
     }
 
-
-    [Fact]
-    public void WTF()
-    {
-        var map = new CharacterMap(Alphabet.I);
-        var cipher = new SubstitutionCipher(Alphabet.I);
-        
-        output.WriteLine(map.ToString());
-        output.WriteLine(cipher.ToString());
-        output.WriteLine(String.Empty);
-        output.WriteLine(map.Inversion.ToString());
-        output.WriteLine(cipher.Inversion.ToString());
-        
-    }
-
     public static TheoryData<char> Rings => Alphabet.PlainText
         .ToCharArray()
+        .ToTheoryData();
+    
+    public static TheoryData<string> Alphabets => RotorConfiguration.Alphabets
+        .Select(x => x.Value)
         .ToTheoryData();
 
 }
