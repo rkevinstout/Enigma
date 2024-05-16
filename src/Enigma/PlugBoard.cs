@@ -27,7 +27,6 @@ public class PlugBoard : IComponent
         return chars;
     }
     
-    
     public char Encode(char c) => _characterMap.Encode(c);
     public char Decode(char c) => _characterMap.Decode(c);
     public override string ToString() => _characterMap.ToString();

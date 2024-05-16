@@ -10,6 +10,8 @@ public class Machine
     private readonly Spindle _spindle;
     private readonly Reflector _reflector;
 
+    public bool Debug { get; set; } = false;
+
     private readonly LinkedList<Pipeline.Step> _pipeline;
 
     public string Position
@@ -51,12 +53,7 @@ public class Machine
         return Encode(input);
     }
     
-    public char Encode(char input)
-    {
-        var pipeline = BuildPipeline();
-
-        return Encode(pipeline, input);
-    }
+    public char Encode(char input) => Encode(_pipeline, input);
 
     private char Encode(LinkedList<Pipeline.Step> pipeline, char input)
     {
@@ -66,7 +63,8 @@ public class Machine
         {
             var result = step.Execute(temp);
 
-            Log.Record(step, temp, result, _spindle.Position);
+            if (Debug)
+                Log.Record(step, temp, result, _spindle.Position);
 
             temp = result;
         }

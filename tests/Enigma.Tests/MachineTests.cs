@@ -16,7 +16,11 @@ public class MachineTests(ITestOutputHelper output)
             config.AddRotor(rotors[i], rings[i]);
         }
         
-        return config.Create();
+        var machine = config.Create();
+        
+        machine.Debug = true;
+        
+        return machine;
     }
 
     [Fact]
@@ -110,7 +114,40 @@ public class MachineTests(ITestOutputHelper output)
             );
     }
 
+    [Fact]
+    public void TonySaleExample()
+    {
+        // https://www.codesandciphers.org.uk/enigma/emachines/enigmad.htm
+        var config = new Machine.Configuration();
+        
+        config.AddRotor(RotorName.IV, 'G');
+        config.AddRotor(RotorName.II, 'M');
+        config.AddRotor(RotorName.V, 'Y');
+        config.ReflectorName = ReflectorName.RefB;
+        
+        // DN GR IS KC QX TM PV HY FW BJ
+        config.AddPairs(
+            new('D','N'), new('G','R'), new('I','S'), new('K','C'), new('Q','X'), 
+            new('T','M'), new('P','V'), new('H','Y'), new('F','W'), new('B','J')
+            );
+        
+        var machine = config.Create();
 
+        machine.Position = "DHO";
+
+        var key = machine.Encode("GXS");
+        
+        key.Should().Be("RLP");
+
+        machine.Position = key;
+
+        const string cipherText = "NQVLT YQFSE WWGJZ GQHVS EIXIM YKCNW IEBMB ATPPZ TDVCU PKAY";
+        
+        var result = machine.Encode(cipherText);
+        
+        output.WriteLine(result);
+    }
+    
     private string EncodeAndLog(Machine machine, string input)
     {
         var buffer = new StringBuilder();
@@ -148,6 +185,7 @@ public class MachineTests(ITestOutputHelper output)
             Add("AAA", "AAA", text);
             Add("BBB", "BBB", text);
             Add("ABC", "DEF", text);
+            Add("XYZ", "YHF", text);
         }
     }
     
