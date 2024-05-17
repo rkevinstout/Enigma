@@ -51,9 +51,6 @@ public static class Extensions
         return input >= 0 ? abs : @base - abs;
     }
 
-    public static SubstitutionCipher Rotate(this SubstitutionCipher cipher, int offset) => 
-        new(cipher.Dictionary.Values.ToArray().Rotate(offset));
-
     public static string Encode(this ICipher cipher, string text)
     {
         var buffer = new StringBuilder();
@@ -85,6 +82,16 @@ public static class Extensions
         Alphabet.PlainText
             .ToCharArray()
             .ToDictionary(c => c, cipher.Encode);
+    
+    public static CharacterMap Invert(this CharacterMap map)
+    {
+        var output = new char[map.Encodings.Count];
 
-    public static SubstitutionCipher ToCipher(Dictionary<char, char> dictionary) => new(dictionary);
+        for (var i = 0; i < map.Encodings.Count; i++)
+        {
+            var value = map.Encodings[i].ToInt();
+            output[value] = i.ToChar();
+        }
+        return new CharacterMap(output);
+    }
 }

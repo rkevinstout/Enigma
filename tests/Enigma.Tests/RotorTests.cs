@@ -36,7 +36,7 @@ public class RotorTests(ITestOutputHelper output)
         rotor.Advance();
 
         rotor.Position.Should().Be(0);
-        rotor.Cipher.ToString().Should().Be(Alphabet.I);
+        rotor.CharacterMap.ToString().Should().Be(Alphabet.I);
     }
 
     [Theory]

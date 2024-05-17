@@ -1,17 +1,29 @@
+using System.Collections.ObjectModel;
+
 namespace Enigma;
 
 public class CharacterMap : ICipher
 {
     private readonly int[] _encodings;
+    
+    public ReadOnlyCollection<char> Encodings => _encodings
+        .Select(i => i.ToChar())
+        .ToArray()
+        .AsReadOnly();
+    
     private readonly Lazy<CharacterMap> _inversion;
     public ICipher Inversion => _inversion.Value;
     
     public CharacterMap(string characters) 
         : this(characters.ToCharArray())
-    {}
+    { }
 
     public CharacterMap(char[] characters) 
         : this(characters.Select(x => x.ToInt()).ToArray())
+    { }
+
+    public CharacterMap(ReadOnlySpan<int> encodings)
+        : this(encodings.ToArray())
     { }
     
     public CharacterMap(int[] encodings)
@@ -27,13 +39,14 @@ public class CharacterMap : ICipher
     public int Decode(int i) => Inversion.Encode(i);
     public char Decode(char c) => Decode(c.ToInt()).ToChar();
 
-    private CharacterMap Invert()
+    public CharacterMap Invert()
     {
-        var output = new int[_encodings.Length];
+        ReadOnlySpan<int> encodings = _encodings;
+        Span<int> output = new int[encodings.Length].AsSpan();
 
-        for (var i = 0; i < _encodings.Length; i++)
+        for (var i = 0; i < encodings.Length; i++)
         {
-            var value = _encodings[i];
+            var value = encodings[i];
             output[value] = i;
         }
         return new CharacterMap(output);

@@ -6,6 +6,5 @@ public interface ICipher
     char Encode(char c);
     int Decode(int i);
     char Decode(char c);
-    ICipher Inversion { get; }
 
 }

@@ -19,7 +19,7 @@ public class PlugBoardTests
     [MemberData(nameof(TestPairs))]
     public void ShouldEncode(char from, char to)
     {
-        var result = PlugBoard.Cipher.Encode(from);
+        var result = PlugBoard.Encode(from);
 
         result.Should().Be(to);
     }
@@ -27,7 +27,7 @@ public class PlugBoardTests
     [Fact]
     public void ShouldBeReciprocal()
     {   
-        var dictionary = PlugBoard.Cipher.ToDictionary();
+        var dictionary = PlugBoard.CharacterMap.ToDictionary();
 
         dictionary.Should().AllSatisfy(x => dictionary[x.Value].Should().Be(x.Key));
     }

@@ -24,11 +24,11 @@ public record RotorConfiguration(
 
     public static Dictionary<RotorName, char[]> Notches => new()
     {
-        { RotorName.I, ['R'] },
-        { RotorName.II, ['F'] },
-        { RotorName.III, ['W'] },
-        { RotorName.IV, ['K'] },
-        { RotorName.V, ['A'] },
+        { RotorName.I, ['Q'] },
+        { RotorName.II, ['E'] },
+        { RotorName.III, ['V'] },
+        { RotorName.IV, ['J'] },
+        { RotorName.V, ['Z'] },
         { RotorName.VI, ['A', 'N'] },
         { RotorName.VII, ['A', 'N'] },
         { RotorName.VIII, ['A', 'N'] },

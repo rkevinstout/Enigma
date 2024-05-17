@@ -41,7 +41,7 @@ public class Pipeline
     public class Step
     {
         public IComponent Component { get; }
-        public ICipher Cipher { get; }
+        public CharacterMap CharacterMap { get; }
         public bool Inbound { get; }
         public char Execute(char input) => Inbound
             ? Component.Encode(input)
@@ -51,15 +51,12 @@ public class Pipeline
         /// A wrapper for a character substitution.  Mostly for logging purposes
         /// </summary>
         /// <param name="component">Plug board, reflector, rotor, etc</param>
-        /// <param name="action">delegate that will perform the encipherment</param>
-        /// <param name="cipher"></param>
         /// <param name="isInbound">flag to denote the monoalphabetic substitution performed</param>
         public Step(IComponent component, bool isInbound = true)
         {
             Component = component;
             Inbound = isInbound;
-            
-            Cipher = isInbound ? component.Cipher : component.Cipher.Inversion;
+            CharacterMap = component.CharacterMap;
         }
     }
 }

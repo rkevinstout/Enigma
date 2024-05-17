@@ -4,14 +4,13 @@ public class PlugBoard : IComponent
 {
     public string Name => "PB";
 
-    private readonly CharacterMap _characterMap;
-    public ICipher Cipher => _characterMap;
+    public CharacterMap CharacterMap { get; }
     
     public PlugBoard(params Pair[] pairs)
     {
         var chars = Swap(pairs);
 
-        _characterMap = new CharacterMap(chars);
+        CharacterMap = new CharacterMap(chars);
     }
 
     private static char[] Swap(Pair[] pairs)
@@ -27,9 +26,9 @@ public class PlugBoard : IComponent
         return chars;
     }
     
-    public char Encode(char c) => _characterMap.Encode(c);
-    public char Decode(char c) => _characterMap.Decode(c);
-    public override string ToString() => _characterMap.ToString();
+    public char Encode(char c) => CharacterMap.Encode(c);
+    public char Decode(char c) => CharacterMap.Decode(c);
+    public override string ToString() => CharacterMap.ToString();
 
     public record struct Pair(char From, char To);
 }

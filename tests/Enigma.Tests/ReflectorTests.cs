@@ -10,7 +10,7 @@ public class ReflectorTests
     {
         var reflector = Reflector.Create(name);
         
-        var dictionary = reflector.Cipher.ToDictionary();
+        var dictionary = reflector.CharacterMap.ToDictionary();
 
         dictionary.Should().AllSatisfy(x => dictionary[x.Value].Should().Be(x.Key));
     }

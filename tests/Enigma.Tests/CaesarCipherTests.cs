@@ -51,21 +51,4 @@ public class CaesarCipherTests()
         leftInversion.ToString().Should().Be(right.ToString());
     }
 
-    [Theory]
-    [InlineData(1)]
-    [InlineData(13)]
-    [InlineData(25)]
-    [InlineData(35)]
-    [InlineData(95)]
-    public void AlgoShouldEqualDictionary(int shift)
-    {
-        var substitution = new CaesarSubstitutionCipher(shift);
-        var algo = new CaesarCipher(shift);
-
-        var d = algo.ToDictionary();
-
-        substitution.ToDictionary().Should().Equal(d);
-
-        substitution.Inversion.ToDictionary().Should().Equal(algo.Inversion.ToDictionary());
-    }
 }

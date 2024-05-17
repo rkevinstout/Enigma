@@ -2,4 +2,4 @@
 using Enigma.Benchmarks;
 
 
-var summary = BenchmarkRunner.Run<CipherTests>();
+var summary = BenchmarkRunner.Run<MachineTests>();

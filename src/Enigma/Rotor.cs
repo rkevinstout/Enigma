@@ -19,10 +19,10 @@ public class Rotor : IComponent
     private int Offset => (Position - Ring.Position.ToInt()).Normalize();
     public bool IsAtNotch => Ring.Notches.Contains(Position.ToChar());
     
-    public ICipher Cipher => _characterMap;  
-    
-    private readonly CharacterMap _characterMap;
+    public CharacterMap CharacterMap { get; }
 
+    private readonly CharacterMap _inversion;
+    
     public static Rotor Create(RotorName name) => new(RotorConfiguration.Create(name));
     public static Rotor Create(RotorName name, char ringSetting) =>
         new(RotorConfiguration.Create(name, ringSetting));
@@ -43,14 +43,15 @@ public class Rotor : IComponent
         _rotorName = name;
         Ring = ring;
         Position = 0;
-        _characterMap = new CharacterMap(wiring);
+        CharacterMap = new CharacterMap(wiring);
+        _inversion = CharacterMap.Invert();
     }
 
     public void Advance() => Position += 1;
     
     public char Encode(char c) => Encode(c.ToInt()).ToChar();
 
-    private int Encode(int i) => Encode(i, _characterMap);
+    private int Encode(int i) => Encode(i, CharacterMap);
 
     private int Encode(int i, CharacterMap map)
     {
@@ -63,7 +64,7 @@ public class Rotor : IComponent
         
     public char Decode(char c) => Decode(c.ToInt()).ToChar();
     
-    private int Decode(int i) => Encode(i, _characterMap.Inversion as CharacterMap);
+    private int Decode(int i) => Encode(i, _inversion);
     
-    public override string ToString() => _characterMap.ToString();
+    public override string ToString() => CharacterMap.ToString();
 }

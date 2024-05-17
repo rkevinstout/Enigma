@@ -27,21 +27,22 @@ public class Spindle
 
     public void Advance()
     {
-        Stack<Rotor> stack = new(_rotors);
-
-        var rotor = stack.Pop();
+        const int left = 2;
+        const int middle = 1;
+        const int right = 0;
         
-        rotor.Advance();
+        var rotors = Rotors.Take(3).Reverse().ToArray();
 
-        while (stack.Count > 0)
+        if (rotors[middle].IsAtNotch)
         {
-            var next = stack.Pop();
-
-            if (!rotor.IsAtNotch) return;
-            
-            next.Advance();
-            rotor = next;
+            rotors[middle].Advance();
+            rotors[left].Advance();
         }
+        else if (rotors[right].IsAtNotch)
+        {
+            rotors[middle].Advance();
+        }
+        rotors[right].Advance();
     }
 
     private void SetRotorPositions(string trigram)

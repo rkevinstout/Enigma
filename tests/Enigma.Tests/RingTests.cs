@@ -1,8 +1,9 @@
 using FluentAssertions;
+using Xunit.Abstractions;
 
 namespace Enigma.Tests;
 
-public class RingTests
+public class RingTests(ITestOutputHelper output)
 {
     [Theory]
     [ClassData(typeof(DefaultSettings))]
@@ -28,6 +29,16 @@ public class RingTests
         var ring = Ring.Create(RotorName.VI, 'B');
 
         ring.Notches.Should().BeEquivalentTo(new[] { 'B', 'O' });
+    }
+
+    [Fact]
+    public void DumpAlphabet()
+    {
+        Alphabet.PlainText
+            .ToCharArray()
+            .Select((c, index) => new ValueTuple<char, int>(c, index))
+            .ToList()
+            .ForEach(x => output.WriteLine($"{x.Item1} {x.Item2}"));
     }
 
     private class DefaultSettings : TheoryData<RotorName, char[]>

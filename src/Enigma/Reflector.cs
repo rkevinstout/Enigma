@@ -6,8 +6,7 @@ public class Reflector : IComponent
 
     private readonly ReflectorName _reflectorName;
 
-    private readonly CharacterMap _characterMap;
-    public ICipher Cipher => _characterMap;
+    public CharacterMap CharacterMap { get; }
 
     public static Reflector Create(ReflectorName name) => 
         new(name, Alphabets[name]);
@@ -15,7 +14,7 @@ public class Reflector : IComponent
     private Reflector(ReflectorName name, string alphabet)
     {
         _reflectorName = name;
-        _characterMap = new CharacterMap(alphabet);
+        CharacterMap = new CharacterMap(alphabet);
     }
     
     public static Dictionary<ReflectorName, string> Alphabets => new()
@@ -26,7 +25,7 @@ public class Reflector : IComponent
         { ReflectorName.M4C, Alphabet.M4C },
     };
     
-    public char Encode(char c) => _characterMap.Encode(c);
-    public char Decode(char c) => _characterMap.Decode(c);
-    public override string ToString() => _characterMap.ToString();
+    public char Encode(char c) => CharacterMap.Encode(c);
+    public char Decode(char c) => CharacterMap.Decode(c);
+    public override string ToString() => CharacterMap.ToString();
 }

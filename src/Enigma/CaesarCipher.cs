@@ -1,19 +1,5 @@
 namespace Enigma;
 
-/// <summary>
-/// a substitution cipher in which each letter in the
-/// plaintext is replaced by a letter some fixed number
-/// of positions down the alphabet.
-/// </summary>
-/// <param name="offset">The number of poitions to shift</param>
-/// <seealso cref="https://en.wikipedia.org/wiki/Caesar_cipher"/>
-public class CaesarSubstitutionCipher(int offset) 
-    : CharacterMap(
-        Alphabet.PlainText
-            .ToCharArray()
-            .Rotate(offset)
-        );
-
 public class CaesarCipher(int offset) : ICipher
 {
     private readonly int _offset = offset.Normalize();
