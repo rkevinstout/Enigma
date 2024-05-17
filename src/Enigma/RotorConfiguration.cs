@@ -5,7 +5,12 @@ public record RotorConfiguration(
     Ring Ring
     )
 {
-    public static RotorConfiguration Create(RotorName name, char ringSetting = 'A') =>
+    public static RotorConfiguration Create(RotorName name) =>
+        new(name, Ring.Create(name, 'A'));    
+    public static RotorConfiguration Create(RotorName name, int ringSetting) =>
+        new(name, Ring.Create(name, (ringSetting - 1).ToChar()));    
+    
+    public static RotorConfiguration Create(RotorName name, char ringSetting) =>
         new(name, Ring.Create(name, ringSetting));
 
     public string Wiring => Alphabets[Name];
@@ -24,14 +29,14 @@ public record RotorConfiguration(
 
     public static Dictionary<RotorName, char[]> Notches => new()
     {
-        { RotorName.I, ['R'] },
-        { RotorName.II, ['F'] },
-        { RotorName.III, ['W'] },
-        { RotorName.IV, ['K'] },
-        { RotorName.V, ['A'] },
-        { RotorName.VI, ['A', 'N'] },
-        { RotorName.VII, ['A', 'N'] },
-        { RotorName.VIII, ['A', 'N'] },
+        { RotorName.I, ['Q'] },
+        { RotorName.II, ['E'] },
+        { RotorName.III, ['V'] },
+        { RotorName.IV, ['J'] },
+        { RotorName.V, ['Z'] },
+        { RotorName.VI, ['Z', 'M'] },
+        { RotorName.VII, ['Z', 'M'] },
+        { RotorName.VIII, ['Z', 'M'] },
     };
 }
 

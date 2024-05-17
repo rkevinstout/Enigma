@@ -12,6 +12,7 @@ public static class Alphabet
     public const string VI  = "JPGVOUMFYQBENHZRDKASXLICTW";
     public const string VII = "NZJHGRCXMYSWBOUFAIVLPEKQDT";
     public const string VIII = "FKQHTLXOCBJSPDZRAMEWNIUYGV";
+    public const string RefA = "EJMZALYXVBWFCRQUONTSPIKHGD";
     public const string RefB = "YRUHQSLDPXNGOKMIEBFZCWVJAT";
     public const string RefC = "FVPJIAOYEDRZXWGCTKUQSBNMHL";
     public const string M4B = "ENKQAUYWJICOPBLMDXZVFTHRGS";
@@ -32,6 +33,7 @@ public enum RotorName
 
 public enum ReflectorName
 {
+    RefA,
     RefB,
     RefC,
     M4B,

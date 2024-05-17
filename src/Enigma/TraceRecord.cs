@@ -8,17 +8,13 @@ public class TraceLog
     
     public void Record(Pipeline.Step step, char input, char output, string position)
     {
-        var cipher = step.Inbound
-            ? step.Component.Cipher
-            : step.Component.Cipher.Inversion;
-
-        var alphabet = cipher.ToString();
+        var map = step.Inbound ? step.CharacterMap : step.CharacterMap.Inversion;
         
         var record = new TraceRecord(
             step.Component.Name,
             input,
             output,
-            alphabet!,
+            map.ToString(),
             position
         );
         

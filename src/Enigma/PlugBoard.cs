@@ -4,30 +4,35 @@ public class PlugBoard : IComponent
 {
     public string Name => "PB";
 
-    private readonly SubstitutionCipher _substitutionCipher;
-    public ICipher Cipher => _substitutionCipher;
+    public CharacterMap CharacterMap { get; }
+    
+    private Pair[] _pairs;
     
     public PlugBoard(params Pair[] pairs)
     {
-        var dictionary = Alphabet.PlainText.ToCharArray()
-            .Select((c, index) => new KeyValuePair<char, char>(index.ToChar(), c))
-            .ToDictionary();
+        _pairs = pairs;
+        var chars = Swap(pairs);
 
-        Add(dictionary, pairs);
-
-        _substitutionCipher = new SubstitutionCipher(dictionary);
+        CharacterMap = new CharacterMap(chars);
     }
-    
-    private static void Add(IDictionary<char, char> dictionary, params Pair[] pairs)
+
+    private static ReadOnlySpan<char> Swap(Pair[] pairs)
     {
+        var chars = Alphabet.PlainText.ToCharArray().AsSpan();
+
         foreach (var pair in pairs)
         {
-            dictionary[pair.From] = pair.To;
-            dictionary[pair.To] = pair.From;
+            chars[pair.From.ToInt()] = pair.To;
+            chars[pair.To.ToInt()] = pair.From;
         }
+
+        return chars;
     }
 
-    public override string ToString() => _substitutionCipher.ToString();
+    public char Encode(char c) => CharacterMap.Encode(c);
+    public char Decode(char c) => CharacterMap.Decode(c);
+    public override string ToString() => _pairs
+        .Select(x => $"{x.From}{x.To}").Aggregate((a, b) => $"{a} {b}");
 
     public record struct Pair(char From, char To);
 }

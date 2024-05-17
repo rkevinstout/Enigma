@@ -11,42 +11,42 @@ public class Spindle
 
     public string Position
     {
-        get => new (Rotors.Select(r => r.Position.ToChar()).ToArray());
+        get => new (Rotors.Reverse().Select(r => r.Position.ToChar()).ToArray());
         set => SetRotorPositions(value);
     }
 
-    public Spindle(params RotorName[] rotors) 
-        : this(rotors.Select(Rotor.Create).ToArray())
-    { }
+    public Rotor Left => Rotors[2];
+    public Rotor Middle => Rotors[1];
+    public Rotor Right => Rotors[0];
+    
+    public string Rings => string.Join("", Rotors.Reverse().Select(r => r.Ring.Position));
 
     public Spindle(params Rotor[] rotors)
     {
-        _rotors = rotors;
+        _rotors = rotors.Reverse().ToArray();
         Validate();
     }
 
     public void Advance()
     {
-        Stack<Rotor> stack = new(_rotors);
+        // 4th rotor (if present) does not rotate
+        //var rotors = Rotors.Take(3).ToArray();
 
-        var rotor = stack.Pop();
-        
-        rotor.Advance();
-
-        while (stack.Count > 0)
+        if (Middle.IsAtNotch)
         {
-            var next = stack.Pop();
-
-            if (!rotor.IsAtNotch) return;
-            
-            next.Advance();
-            rotor = next;
+            Middle.Advance();
+            Left.Advance();
         }
+        else if (Right.IsAtNotch)
+        {
+            Middle.Advance();
+        }
+        Right.Advance();
     }
 
     private void SetRotorPositions(string trigram)
     {
-        var chars = trigram.ToCharArray();
+        var chars = trigram.Reverse().ToArray();
 
         for (var i = 0; i < Rotors.Count; i++)
         {
@@ -66,4 +66,6 @@ public class Spindle
             throw new ArgumentException("Rotors must be unique");
         }
     }
+    
+    public override string ToString() => string.Join("-", Rotors.Reverse().Select(r => r.Name));
 }

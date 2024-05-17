@@ -6,13 +6,21 @@ namespace Enigma.Tests;
 
 public class MachineTests(ITestOutputHelper output)
 {
-    private static Machine Build(params RotorName[] rotors)
+    private static Machine Build(string ringSettings = "AAA", params RotorName[] rotors )
     {
+        var rings = ringSettings.AsSpan();
         var config = new Machine.Configuration();
         
-        config.AddRotors(rotors);
-
-        return config.Create();
+        for (var i = 0; i < rotors.Length; i++)
+        {
+            config.AddRotor(rotors[i], rings[i]);
+        }
+        
+        var machine = config.Create();
+        
+        machine.Debug = true;
+        
+        return machine;
     }
 
     [Fact]
@@ -20,7 +28,7 @@ public class MachineTests(ITestOutputHelper output)
     {
         // https://www.codesandciphers.org.uk/enigma/example1.htm
 
-        var machine = Build(RotorName.I, RotorName.II, RotorName.III);
+        var machine = Build("AAA",RotorName.I, RotorName.II, RotorName.III);
 
         machine.Position = "AAA";
         
@@ -39,7 +47,7 @@ public class MachineTests(ITestOutputHelper output)
     {
         // https://en.wikipedia.org/wiki/Enigma_rotor_details#Rotor_offset
         
-        var machine = Build(RotorName.I, RotorName.II, RotorName.III);
+        var machine = Build("AAA", RotorName.I, RotorName.II, RotorName.III);
 
         machine.Position = position;
 
@@ -72,18 +80,18 @@ public class MachineTests(ITestOutputHelper output)
     }
 
     [Theory]
-    [ClassData(typeof(RandomTextGenerator))]
-    public void EncryptionIsReciprocal(string plainText)
+    [ClassData(typeof(TestConfigurations))]
+    public void EncryptionIsSymetric (string ringSettings, string position, string plainText)
     {
-        var machine = Build(RotorName.I, RotorName.II, RotorName.III);
+        var machine = Build(ringSettings, RotorName.I, RotorName.II, RotorName.III);
 
-        machine.Position = "AAA";
+        machine.Position = position;
 
         var cipherText = EncodeAndLog(machine, plainText);
         
         machine.Log.Reset();
-        
-        machine.Position = "AAA";
+
+        machine.Position = position;
         
         var result = EncodeAndLog(machine, cipherText);
 
@@ -93,16 +101,18 @@ public class MachineTests(ITestOutputHelper output)
     [Fact]
     public void ShouldCreateCipher()
     {
-        var machine = Build(RotorName.I, RotorName.II, RotorName.III);
+        var machine = Build("AAA", RotorName.I, RotorName.II, RotorName.III);
 
         var cipher = machine.ToCipher();
+        
+        var dictionary = cipher.ToDictionary();
 
-        cipher.Dictionary.Keys.Should().OnlyHaveUniqueItems();
-        cipher.Dictionary.Values.Should().OnlyHaveUniqueItems();
+        dictionary.Keys.Should().OnlyHaveUniqueItems();
+        dictionary.Values.Should().OnlyHaveUniqueItems();
         cipher.ToString().Should().Be("UEJOBTPZWCNSRKDGVMLFAQIYXH");
         
-        cipher.Dictionary.Should().AllSatisfy(x => 
-            cipher.Dictionary[x.Value].Should().Be(x.Key)
+        dictionary.Should().AllSatisfy(x => 
+            dictionary[x.Value].Should().Be(x.Key)
             );
     }
 
@@ -126,28 +136,20 @@ public class MachineTests(ITestOutputHelper output)
         return buffer.ToString();
     }
     
-    private void LogOutput(Machine machine)
+    private void LogOutput(Machine machine) => machine.Log.Records
+        .ForEach(x => output.WriteLine(x.ToString()));
+
+    public class TestConfigurations : TheoryData<string, string, string>
     {
-        foreach (var x in machine.Log.Records)
+        public TestConfigurations()
         {
-            output.WriteLine(x.ToString());
+            var text = GenerateText(256);
+            Add("AAA", "AAA", text);
+            Add("BBB", "BBB", text);
+            Add("ABC", "DEF", text);
+            Add("XYZ", "YHF", text);
         }
     }
-
-    public class RandomTextGenerator : TheoryData<string>
-    {
-        public RandomTextGenerator() => Add(Generate(256));
-        private static string Generate(int length)
-        {
-            var buffer = new StringBuilder(length);
-            
-            while (length-- > 0)
-            {
-                var c = Random.Shared.Next(26).ToChar();
-                buffer.Append(c);
-            }
-
-            return buffer.ToString();
-        }
-    }
+    
+    private static string GenerateText(int length) => Extensions.GenerateText(length);
 }

@@ -2,20 +2,22 @@ namespace Enigma;
 
 public record struct Ring(char Position, char[] Notches)
 {
-    public static Ring Create(RotorName name, char position = 'A')
+    public static Ring Create(RotorName name) => Create(name, 'A');
+    public static Ring Create(RotorName name, int position) => Create(name, (position -1).ToChar());
+    public static Ring Create(RotorName name, char position)
     {
         var notches = RotorConfiguration.Notches[name];
 
-        if (position != 'A')
-        {
-            var offset = position - 'A';
-
-            notches = notches
-                .Select(notch => (notch + offset)
-                    .Normalize()
-                    .ToChar())
-                .ToArray();
-        }
+        // if (position != 'A')
+        // {
+        //     var offset = position.ToInt();
+        //
+        //     notches = notches
+        //         .Select(notch => (notch.ToInt() - offset)
+        //             .Normalize()
+        //             .ToChar())
+        //         .ToArray();
+        // }
 
         return new Ring(position, notches);
     }

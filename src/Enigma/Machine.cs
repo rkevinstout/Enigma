@@ -10,6 +10,8 @@ public class Machine
     private readonly Spindle _spindle;
     private readonly Reflector _reflector;
 
+    public bool Debug { get; set; } = false;
+
     private readonly LinkedList<Pipeline.Step> _pipeline;
 
     public string Position
@@ -20,7 +22,11 @@ public class Machine
 
     public readonly TraceLog Log = new();
 
-    private Machine(PlugBoard plugBoard, Spindle spindle, Reflector reflector)
+    private Machine(
+        PlugBoard plugBoard, 
+        Spindle spindle, 
+        Reflector reflector
+        )
     {
         _plugBoard = plugBoard;
         _spindle = spindle;
@@ -34,7 +40,7 @@ public class Machine
         var pipeline = new Pipeline();
 
         pipeline.Add(_plugBoard);
-        pipeline.Add(_spindle.Rotors.Reverse());
+        pipeline.Add(_spindle.Rotors);
         pipeline.Add(_reflector);
 
         return pipeline.Build();
@@ -47,12 +53,7 @@ public class Machine
         return Encode(input);
     }
     
-    public char Encode(char input)
-    {
-        var pipeline = BuildPipeline();
-
-        return Encode(pipeline, input);
-    }
+    public char Encode(char input) => Encode(_pipeline, input);
 
     private char Encode(LinkedList<Pipeline.Step> pipeline, char input)
     {
@@ -62,7 +63,8 @@ public class Machine
         {
             var result = step.Execute(temp);
 
-            Log.Record(step, temp, result, _spindle.Position);
+            if (Debug)
+                Log.Record(step, temp, result, _spindle.Position);
 
             temp = result;
         }
@@ -75,20 +77,30 @@ public class Machine
             .ToCharArray()
             .ToDictionary(c => c, Encode);
 
-    public SubstitutionCipher ToCipher() => new(ToDictionary());
+    public CharacterMap ToCipher() => new(ToDictionary().Values.ToArray());
+    
+    public override string ToString() => $"{_reflector.Name} {_spindle} {_spindle.Rings} [{_plugBoard}] {_spindle.Position}";
 
     public class Configuration
     {
         public List<Rotor> Rotors { get; } = new();
         public List<PlugBoard.Pair> Pairs { get; } = new();
         public ReflectorName ReflectorName { get; set; } = ReflectorName.RefB;
-        public void AddRotor(Rotor rotor) => Rotors.Add(rotor);
+        public void AddRotor(RotorName name, int ringSetting) => 
+            Rotors.Add(Rotor.Create(name, ringSetting));
         public void AddRotor(RotorName name, char ringSetting) => 
             Rotors.Add(Rotor.Create(name, ringSetting));
 
         public void AddRotor(RotorName name) => Rotors.Add(Rotor.Create(name));
         public void AddRotors(params RotorName[] names) => names.ToList().ForEach(AddRotor);
         public void AddPairs(params PlugBoard.Pair[] pairs) => pairs.ToList().ForEach(Pairs.Add);
+
+        public void AddPairs(string text) =>
+            text.Split(' ')
+                .Select(x => new PlugBoard.Pair(x[0], x[1]))
+                .ToList()
+                .ForEach(Pairs.Add);
+        
 
         public Machine Create() =>
             new(

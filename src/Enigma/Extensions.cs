@@ -7,18 +7,22 @@ public static class Extensions
     public static int ToInt(this char c) => Convert.ToInt32(c - 'A');
 
     public static char ToChar(this int i) => Convert.ToChar(i + 65);
+
+    public static ReadOnlySpan<int> ToInt(this ReadOnlySpan<char> chars)
+    {
+        Span<int> span = new int[chars.Length];
+
+        for (var i = 0; i < chars.Length; i++)
+        {
+            span[i] = chars[i] - 65;
+        }
+        return span;
+    }
     
     public static Pipeline.Step CreateStep(
         this IComponent component, 
         bool isInbound = true
-    ) => new(component, component.Cipher, isInbound);
-    
-    public static Pipeline.Step CreateStep(
-        this IComponent component, 
-        ICipher cipher,
-        bool isInbound = true
-    ) => new(component, cipher, isInbound);
-    
+    ) => new(component, isInbound);
     
     /// <summary>
     /// Swaps keys and values in a dictionary
@@ -57,15 +61,12 @@ public static class Extensions
 
         return input >= 0 ? abs : @base - abs;
     }
-
-    public static SubstitutionCipher Rotate(this SubstitutionCipher cipher, int offset) => 
-        new(cipher.Dictionary.Values.ToArray().Rotate(offset));
-
+    
     public static string Encode(this ICipher cipher, string text)
     {
         var buffer = new StringBuilder();
         
-        foreach (var c in text.ToCharArray())
+        foreach (var c in text.AsSpan())
         {
             buffer.Append(char.IsWhiteSpace(c) 
                 ? c 
@@ -78,7 +79,7 @@ public static class Extensions
     {
         var buffer = new StringBuilder();
         
-        foreach (var c in text.ToCharArray())
+        foreach (var c in text.AsSpan())
         {
             buffer.Append(char.IsWhiteSpace(c) 
                 ? c 
@@ -91,7 +92,17 @@ public static class Extensions
     public static Dictionary<char, char> ToDictionary(this ICipher cipher) =>
         Alphabet.PlainText
             .ToCharArray()
-            .ToDictionary(c => c, cipher.Encode);
+            .ToDictionary(c => c, c => cipher.Encode(c.ToInt()).ToChar());
+    
+    public static CharacterMap Invert(this CharacterMap map)
+    {
+        var output = new char[map.Encodings.Length];
 
-    public static SubstitutionCipher ToCipher(Dictionary<char, char> dictionary) => new(dictionary);
+        for (var i = 0; i < map.Encodings.Length; i++)
+        {
+            var value = map.Encodings[i].ToInt();
+            output[value] = i.ToChar();
+        }
+        return new CharacterMap(output);
+    }
 }

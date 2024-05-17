@@ -16,10 +16,10 @@ public class PlugBoardTests
     private static PlugBoard Create(PlugBoard.Pair[] pairs) => new(pairs);
 
     [Theory]
-    [ClassData(typeof(TestData))]
+    [MemberData(nameof(TestPairs))]
     public void ShouldEncode(char from, char to)
     {
-        var result = PlugBoard.Cipher.Encode(from);
+        var result = PlugBoard.Encode(from);
 
         result.Should().Be(to);
     }
@@ -27,15 +27,12 @@ public class PlugBoardTests
     [Fact]
     public void ShouldBeReciprocal()
     {   
-        var dictionary = PlugBoard.Cipher.ToDictionary();
+        var dictionary = PlugBoard.CharacterMap.ToDictionary();
 
         dictionary.Should().AllSatisfy(x => dictionary[x.Value].Should().Be(x.Key));
     }
 
-    private class TestData : TheoryData<char, char>
-    {
-        public TestData() => Pairs
-            .ToList()
-            .ForEach(p => Add(p.From, p.To));
-    }
+    public static TheoryData<char, char> TestPairs => Pairs
+        .Select(x => new Tuple<char, char>(x.From, x.To))
+        .ToTheoryData();
 }
