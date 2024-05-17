@@ -24,6 +24,8 @@ public class Rotor : IComponent
     private readonly CharacterMap _inversion;
     
     public static Rotor Create(RotorName name) => new(RotorConfiguration.Create(name));
+    public static Rotor Create(RotorName name, int ringSetting) =>
+        new(RotorConfiguration.Create(name, ringSetting));
     public static Rotor Create(RotorName name, char ringSetting) =>
         new(RotorConfiguration.Create(name, ringSetting));
 

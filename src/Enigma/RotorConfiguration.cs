@@ -5,7 +5,12 @@ public record RotorConfiguration(
     Ring Ring
     )
 {
-    public static RotorConfiguration Create(RotorName name, char ringSetting = 'A') =>
+    public static RotorConfiguration Create(RotorName name) =>
+        new(name, Ring.Create(name, 'A'));    
+    public static RotorConfiguration Create(RotorName name, int ringSetting) =>
+        new(name, Ring.Create(name, (ringSetting - 1).ToChar()));    
+    
+    public static RotorConfiguration Create(RotorName name, char ringSetting) =>
         new(name, Ring.Create(name, ringSetting));
 
     public string Wiring => Alphabets[Name];

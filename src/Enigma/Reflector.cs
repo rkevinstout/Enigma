@@ -19,6 +19,7 @@ public class Reflector : IComponent
     
     public static Dictionary<ReflectorName, string> Alphabets => new()
     {
+        { ReflectorName.RefA, Alphabet.RefA },
         { ReflectorName.RefB, Alphabet.RefB },
         { ReflectorName.RefC, Alphabet.RefC },
         { ReflectorName.M4B, Alphabet.M4B },
@@ -27,5 +28,5 @@ public class Reflector : IComponent
 
     public char Encode(char c) => CharacterMap.Encode(c);
     public char Decode(char c) => CharacterMap.Decode(c);
-    public override string ToString() => CharacterMap.ToString();
+    public override string ToString() => Name;
 }

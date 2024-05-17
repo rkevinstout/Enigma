@@ -66,7 +66,7 @@ public static class Extensions
     {
         var buffer = new StringBuilder();
         
-        foreach (var c in text.ToCharArray())
+        foreach (var c in text.AsSpan())
         {
             buffer.Append(char.IsWhiteSpace(c) 
                 ? c 
@@ -79,7 +79,7 @@ public static class Extensions
     {
         var buffer = new StringBuilder();
         
-        foreach (var c in text.ToCharArray())
+        foreach (var c in text.AsSpan())
         {
             buffer.Append(char.IsWhiteSpace(c) 
                 ? c 

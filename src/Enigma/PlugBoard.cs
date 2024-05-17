@@ -6,8 +6,11 @@ public class PlugBoard : IComponent
 
     public CharacterMap CharacterMap { get; }
     
+    private Pair[] _pairs;
+    
     public PlugBoard(params Pair[] pairs)
     {
+        _pairs = pairs;
         var chars = Swap(pairs);
 
         CharacterMap = new CharacterMap(chars);
@@ -28,7 +31,8 @@ public class PlugBoard : IComponent
 
     public char Encode(char c) => CharacterMap.Encode(c);
     public char Decode(char c) => CharacterMap.Decode(c);
-    public override string ToString() => CharacterMap.ToString();
+    public override string ToString() => _pairs
+        .Select(x => $"{x.From}{x.To}").Aggregate((a, b) => $"{a} {b}");
 
     public record struct Pair(char From, char To);
 }

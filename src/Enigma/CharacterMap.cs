@@ -13,7 +13,7 @@ public class CharacterMap : ICipher
     private readonly Lazy<CharacterMap> _inversion;
     
     public CharacterMap(string characters) 
-        : this(characters.ToCharArray().AsSpan())
+        : this(characters.AsSpan())
     { }
     
     public CharacterMap(ReadOnlySpan<char> encodings)

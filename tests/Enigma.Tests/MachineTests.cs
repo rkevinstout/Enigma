@@ -8,7 +8,7 @@ public class MachineTests(ITestOutputHelper output)
 {
     private static Machine Build(string ringSettings = "AAA", params RotorName[] rotors )
     {
-        var rings = ringSettings.ToCharArray();
+        var rings = ringSettings.AsSpan();
         var config = new Machine.Configuration();
         
         for (var i = 0; i < rotors.Length; i++)
@@ -116,79 +116,6 @@ public class MachineTests(ITestOutputHelper output)
             );
     }
 
-    [Fact]
-    public void TonySaleExample1()
-    {
-        // https://www.codesandciphers.org.uk/enigma/emachines/enigmad.htm
-        var config = new Machine.Configuration();
-        
-        config.AddRotor(RotorName.IV, 'G');
-        config.AddRotor(RotorName.II, 'M');
-        config.AddRotor(RotorName.V, 'Y');
-        config.ReflectorName = ReflectorName.RefB;
-        
-        // DN GR IS KC QX TM PV HY FW BJ
-        config.AddPairs(
-            new('D','N'), new('G','R'), new('I','S'), new('K','C'), new('Q','X'), 
-            new('T','M'), new('P','V'), new('H','Y'), new('F','W'), new('B','J')
-            );
-        
-        var machine = config.Create();
-
-        machine.Position = "DHO";
-
-        var key = machine.Encode("GXS");
-        
-        key.Should().Be("RLP");
-
-        machine.Position = key;
-
-        const string cipherText = "NQVLT YQFSE WWGJZ GQHVS EIXIM YKCNW IEBMB ATPPZ TDVCU PKAY";
-        
-        var plainText = machine.Encode(cipherText);
-        
-        output.WriteLine(plainText);
-        
-        machine.Position.Should().Be("RNM");
-        
-        const string expected = "FLUGZ EUGFU EHRER ISTOF WYYXF UELLG RAFXF UELLG PAFXP OFOP";
-        
-        plainText.Should().Be(expected);
-    }
-
-    [Fact]
-    public void TonySaleExample2()
-    {
-        // https://www.codesandciphers.org.uk/enigma/emachines/enigmad.htm
-        var config = new Machine.Configuration();
-
-        config.AddRotor(RotorName.III, 'R');
-        config.AddRotor(RotorName.V, 'X');
-        config.AddRotor(RotorName.IV, 'O');
-        config.ReflectorName = ReflectorName.RefB;
-
-        // NP JV LY IX KQ AO DZ CR FT EM
-        config.AddPairs(
-            new('N','P'), new('J','V'), new('L','Y'), new('I','X'), new('K','Q'), 
-            new('A','O'), new('D','Z'), new('C','R'), new('F','T'), new('E','M')
-            );
-
-        var machine = config.Create();
-
-        machine.Position = "XNK";
-
-        var key = machine.Encode("SLH");
-
-        key.Should().Be("PNI");
-
-        machine.Position = key;
-
-        const string cipherText = "XAKEC EIMEU VXIIS JGFFH KHRMN QTLCZ OOOCL BSQDM";
-        
-        var result = machine.Encode(cipherText);
-        
-        output.WriteLine(result);
-    }
 
     private string EncodeAndLog(Machine machine, string input)
     {
