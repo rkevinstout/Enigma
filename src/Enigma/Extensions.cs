@@ -7,6 +7,17 @@ public static class Extensions
     public static int ToInt(this char c) => Convert.ToInt32(c - 'A');
 
     public static char ToChar(this int i) => Convert.ToChar(i + 65);
+
+    public static ReadOnlySpan<int> ToInt(this ReadOnlySpan<char> chars)
+    {
+        Span<int> span = new int[chars.Length];
+
+        for (var i = 0; i < chars.Length; i++)
+        {
+            span[i] = chars[i] - 65;
+        }
+        return span;
+    }
     
     public static Pipeline.Step CreateStep(
         this IComponent component, 
@@ -50,7 +61,7 @@ public static class Extensions
 
         return input >= 0 ? abs : @base - abs;
     }
-
+    
     public static string Encode(this ICipher cipher, string text)
     {
         var buffer = new StringBuilder();
@@ -81,13 +92,13 @@ public static class Extensions
     public static Dictionary<char, char> ToDictionary(this ICipher cipher) =>
         Alphabet.PlainText
             .ToCharArray()
-            .ToDictionary(c => c, cipher.Encode);
+            .ToDictionary(c => c, c => cipher.Encode(c.ToInt()).ToChar());
     
     public static CharacterMap Invert(this CharacterMap map)
     {
-        var output = new char[map.Encodings.Count];
+        var output = new char[map.Encodings.Length];
 
-        for (var i = 0; i < map.Encodings.Count; i++)
+        for (var i = 0; i < map.Encodings.Length; i++)
         {
             var value = map.Encodings[i].ToInt();
             output[value] = i.ToChar();

@@ -13,9 +13,9 @@ public class PlugBoard : IComponent
         CharacterMap = new CharacterMap(chars);
     }
 
-    private static char[] Swap(Pair[] pairs)
+    private static ReadOnlySpan<char> Swap(Pair[] pairs)
     {
-        var chars = Alphabet.PlainText.ToCharArray();
+        var chars = Alphabet.PlainText.ToCharArray().AsSpan();
 
         foreach (var pair in pairs)
         {
@@ -25,7 +25,7 @@ public class PlugBoard : IComponent
 
         return chars;
     }
-    
+
     public char Encode(char c) => CharacterMap.Encode(c);
     public char Decode(char c) => CharacterMap.Decode(c);
     public override string ToString() => CharacterMap.ToString();

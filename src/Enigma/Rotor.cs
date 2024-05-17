@@ -29,14 +29,14 @@ public class Rotor : IComponent
 
     private Rotor(RotorConfiguration config) : this(
         config.Name, 
-        config.Wiring.ToCharArray(), 
+        config.Wiring.AsSpan(),
         config.Ring
         )
     { }
 
     private Rotor(
         RotorName name, 
-        char[] wiring,
+        ReadOnlySpan<char> wiring,
         Ring ring
         )
     {
@@ -44,7 +44,7 @@ public class Rotor : IComponent
         Ring = ring;
         Position = 0;
         CharacterMap = new CharacterMap(wiring);
-        _inversion = CharacterMap.Invert();
+        _inversion = CharacterMap.Inversion;
     }
 
     public void Advance() => Position += 1;

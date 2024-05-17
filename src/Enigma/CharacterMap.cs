@@ -1,34 +1,28 @@
-using System.Collections.ObjectModel;
-
 namespace Enigma;
 
 public class CharacterMap : ICipher
 {
     private readonly int[] _encodings;
     
-    public ReadOnlyCollection<char> Encodings => _encodings
+    public ReadOnlySpan<char> Encodings => _encodings
         .Select(i => i.ToChar())
-        .ToArray()
-        .AsReadOnly();
-    
+        .ToArray();
+
+    public CharacterMap Inversion => _inversion.Value;
+
     private readonly Lazy<CharacterMap> _inversion;
-    public ICipher Inversion => _inversion.Value;
     
     public CharacterMap(string characters) 
-        : this(characters.ToCharArray())
-    { }
-
-    public CharacterMap(char[] characters) 
-        : this(characters.Select(x => x.ToInt()).ToArray())
-    { }
-
-    public CharacterMap(ReadOnlySpan<int> encodings)
-        : this(encodings.ToArray())
+        : this(characters.ToCharArray().AsSpan())
     { }
     
-    public CharacterMap(int[] encodings)
+    public CharacterMap(ReadOnlySpan<char> encodings)
+        : this(encodings.ToInt())
+    { }
+    
+    public CharacterMap(ReadOnlySpan<int> encodings)
     {
-        _encodings = encodings;
+        _encodings = encodings.ToArray();;
         _inversion = new Lazy<CharacterMap>(Invert);
     }
     
@@ -39,7 +33,7 @@ public class CharacterMap : ICipher
     public int Decode(int i) => Inversion.Encode(i);
     public char Decode(char c) => Decode(c.ToInt()).ToChar();
 
-    public CharacterMap Invert()
+    private CharacterMap Invert()
     {
         ReadOnlySpan<int> encodings = _encodings;
         Span<int> output = new int[encodings.Length].AsSpan();
@@ -52,5 +46,5 @@ public class CharacterMap : ICipher
         return new CharacterMap(output);
     }
     
-    public override string ToString() => new(_encodings.Select(i => i.ToChar()).ToArray());
+    public override string ToString() => new(Encodings);
 }

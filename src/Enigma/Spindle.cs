@@ -31,7 +31,8 @@ public class Spindle
         const int middle = 1;
         const int right = 0;
         
-        var rotors = Rotors.Take(3).Reverse().ToArray();
+        // 4th rotor (if present) does not rotate
+        var rotors = Rotors.Reverse().Take(3).ToArray();
 
         if (rotors[middle].IsAtNotch)
         {

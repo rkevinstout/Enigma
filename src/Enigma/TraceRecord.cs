@@ -8,7 +8,7 @@ public class TraceLog
     
     public void Record(Pipeline.Step step, char input, char output, string position)
     {
-        var map = step.Inbound ? step.CharacterMap : step.CharacterMap.Invert();
+        var map = step.Inbound ? step.CharacterMap : step.CharacterMap.Inversion;
         
         var record = new TraceRecord(
             step.Component.Name,

@@ -29,9 +29,9 @@ public record RotorConfiguration(
         { RotorName.III, ['V'] },
         { RotorName.IV, ['J'] },
         { RotorName.V, ['Z'] },
-        { RotorName.VI, ['A', 'N'] },
-        { RotorName.VII, ['A', 'N'] },
-        { RotorName.VIII, ['A', 'N'] },
+        { RotorName.VI, ['Z', 'M'] },
+        { RotorName.VII, ['Z', 'M'] },
+        { RotorName.VIII, ['Z', 'M'] },
     };
 }
 

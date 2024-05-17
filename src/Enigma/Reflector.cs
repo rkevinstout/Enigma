@@ -24,7 +24,7 @@ public class Reflector : IComponent
         { ReflectorName.M4B, Alphabet.M4B },
         { ReflectorName.M4C, Alphabet.M4C },
     };
-    
+
     public char Encode(char c) => CharacterMap.Encode(c);
     public char Decode(char c) => CharacterMap.Decode(c);
     public override string ToString() => CharacterMap.ToString();
