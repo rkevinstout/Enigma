@@ -71,18 +71,12 @@ public class Machine
 
         return temp;
     }
-
-    private Dictionary<char, char> ToDictionary() =>
-        Alphabet.PlainText
-            .ToCharArray()
-            .ToDictionary(c => c, Encode);
-
-    public CharacterMap ToCipher() => new(ToDictionary().Values.ToArray());
     
     public override string ToString() => $"{_reflector.Name} {_spindle} {_spindle.Rings} [{_plugBoard}] {_spindle.Position}";
 
     public class Configuration
     {
+        // TODO: add methods to set the ring settings (char and int)
         public List<Rotor> Rotors { get; } = new();
         public List<PlugBoard.Pair> Pairs { get; } = new();
         public ReflectorName ReflectorName { get; set; } = ReflectorName.RefB;
@@ -94,13 +88,14 @@ public class Machine
         public void AddRotor(RotorName name) => Rotors.Add(Rotor.Create(name));
         public void AddRotors(params RotorName[] names) => names.ToList().ForEach(AddRotor);
         public void AddPairs(params PlugBoard.Pair[] pairs) => pairs.ToList().ForEach(Pairs.Add);
+        
+        public void AddPair(char from, char to) => Pairs.Add(new(from, to));
 
         public void AddPairs(string text) =>
             text.Split(' ')
                 .Select(x => new PlugBoard.Pair(x[0], x[1]))
                 .ToList()
                 .ForEach(Pairs.Add);
-        
 
         public Machine Create() =>
             new(

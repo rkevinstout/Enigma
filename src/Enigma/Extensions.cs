@@ -88,7 +88,13 @@ public static class Extensions
 
         return buffer.ToString();
     }
-
+    
+    public static CharacterMap ToCipher(this Machine machine) => new(machine.ToDictionary().Values.ToArray());
+    private static Dictionary<char, char> ToDictionary(this Machine machine) =>
+        Alphabet.PlainText
+            .ToCharArray()
+            .ToDictionary(c => c, machine.Encode);
+    
     public static Dictionary<char, char> ToDictionary(this ICipher cipher) =>
         Alphabet.PlainText
             .ToCharArray()

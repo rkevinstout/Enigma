@@ -8,17 +8,6 @@ public record struct Ring(char Position, char[] Notches)
     {
         var notches = RotorConfiguration.Notches[name];
 
-        // if (position != 'A')
-        // {
-        //     var offset = position.ToInt();
-        //
-        //     notches = notches
-        //         .Select(notch => (notch.ToInt() - offset)
-        //             .Normalize()
-        //             .ToChar())
-        //         .ToArray();
-        // }
-
         return new Ring(position, notches);
     }
 }

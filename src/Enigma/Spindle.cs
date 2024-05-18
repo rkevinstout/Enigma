@@ -11,13 +11,13 @@ public class Spindle
 
     public string Position
     {
-        get => new (Rotors.Reverse().Select(r => r.Position.ToChar()).ToArray());
+        get => GetRotorPositions;
         set => SetRotorPositions(value);
     }
 
-    public Rotor Left => Rotors[2];
-    public Rotor Middle => Rotors[1];
-    public Rotor Right => Rotors[0];
+    private Rotor Left => Rotors[2];
+    private Rotor Middle => Rotors[1];
+    private Rotor Right => Rotors[0];
     
     public string Rings => string.Join("", Rotors.Reverse().Select(r => r.Ring.Position));
 
@@ -43,6 +43,12 @@ public class Spindle
         }
         Right.Advance();
     }
+    
+    private string GetRotorPositions => new (Rotors
+        .Reverse()
+        .Select(r => r.Position.ToChar())
+        .ToArray()
+    );
 
     private void SetRotorPositions(string trigram)
     {
