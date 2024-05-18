@@ -1,16 +1,16 @@
 namespace Enigma;
 
-public class CharacterMap : ICipher
+public readonly struct CharacterMap
 {
     private readonly int[] _encodings;
     
     public ReadOnlySpan<char> Encodings => _encodings
         .Select(i => i.ToChar())
         .ToArray();
-
-    public CharacterMap Inversion => _inversion.Value;
-
-    private readonly Lazy<CharacterMap> _inversion;
+    
+    public CharacterMap() 
+        : this(Alphabet.PlainText) 
+    { }
     
     public CharacterMap(string characters) 
         : this(characters.AsSpan())
@@ -19,29 +19,24 @@ public class CharacterMap : ICipher
     public CharacterMap(ReadOnlySpan<char> encodings)
         : this(encodings.ToInt())
     { }
-    
-    public CharacterMap(ReadOnlySpan<int> encodings)
+
+    private CharacterMap(ReadOnlySpan<int> encodings)
     {
-        _encodings = encodings.ToArray();;
-        _inversion = new Lazy<CharacterMap>(Invert);
+        _encodings = encodings.ToArray();
     }
     
     public int Encode(int i) => _encodings[i];
-    
     public char Encode(char c) => Encode(c.ToInt()).ToChar();
 
-    public int Decode(int i) => Inversion.Encode(i);
-    public char Decode(char c) => Decode(c.ToInt()).ToChar();
-
-    private CharacterMap Invert()
+    public CharacterMap Invert()
     {
         ReadOnlySpan<int> encodings = _encodings;
         Span<int> output = new int[encodings.Length].AsSpan();
 
         for (var i = 0; i < encodings.Length; i++)
         {
-            var value = encodings[i];
-            output[value] = i;
+            var index = encodings[i];
+            output[index] = i;
         }
         return new CharacterMap(output);
     }

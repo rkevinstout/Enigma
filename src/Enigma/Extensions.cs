@@ -95,19 +95,20 @@ public static class Extensions
             .ToCharArray()
             .ToDictionary(c => c, machine.Encode);
     
-    public static Dictionary<char, char> ToDictionary(this ICipher cipher) =>
+    public static Dictionary<char, char> ToDictionary(this CharacterMap map) =>
         Alphabet.PlainText
             .ToCharArray()
-            .ToDictionary(c => c, c => cipher.Encode(c.ToInt()).ToChar());
+            .ToDictionary(c => c, map.Encode);
     
     public static CharacterMap Invert(this CharacterMap map)
     {
-        var output = new char[map.Encodings.Length];
+        var chars = map.Encodings;
+        var output = new char[chars.Length].AsSpan();
 
-        for (var i = 0; i < map.Encodings.Length; i++)
+        for (var i = 0; i < chars.Length; i++)
         {
-            var value = map.Encodings[i].ToInt();
-            output[value] = i.ToChar();
+            var index = chars[i].ToInt();
+            output[index] = i.ToChar();
         }
         return new CharacterMap(output);
     }

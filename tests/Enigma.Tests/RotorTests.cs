@@ -19,13 +19,12 @@ public class RotorTests(ITestOutputHelper output)
     {
         var defaultRing = Rotor.Create(RotorName.II);
 
-        defaultRing.Ring.Position.Should().Be('A');
+        defaultRing.RingPosition.Should().Be('A');
         
         var explicitRing = Rotor.Create(RotorName.II, 'A');
 
         defaultRing.ToString().Should().Be(explicitRing.ToString());
     }
-    
 
     [Fact]
     public void RotorShouldRollOver()
@@ -50,7 +49,5 @@ public class RotorTests(ITestOutputHelper output)
         output.WriteLine(rotor.ToString());
 
         result.Should().Be(expected);
-        
     }
-
 }

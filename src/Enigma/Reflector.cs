@@ -27,6 +27,6 @@ public class Reflector : IComponent
     };
 
     public char Encode(char c) => CharacterMap.Encode(c);
-    public char Decode(char c) => CharacterMap.Decode(c);
+    public char Decode(char c) => CharacterMap.Encode(c);
     public override string ToString() => Name;
 }

@@ -19,7 +19,7 @@ public class Spindle
     private Rotor Middle => Rotors[1];
     private Rotor Right => Rotors[0];
     
-    public string Rings => string.Join("", Rotors.Reverse().Select(r => r.Ring.Position));
+    public string Rings => string.Join("", Rotors.Reverse().Select(r => r.RingPosition));
 
     public Spindle(params Rotor[] rotors)
     {

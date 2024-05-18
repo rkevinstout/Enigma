@@ -12,7 +12,7 @@ public class SampleMessageTests(ITestOutputHelper output)
     public void TonySaleExample1()
     {
         // https://www.codesandciphers.org.uk/enigma/emachines/enigmad.htm
-        var config = new Machine.Configuration();
+        var config = new Configuration();
         
         config.AddRotor(RotorName.IV, 'G');
         config.AddRotor(RotorName.II, 'M');
@@ -56,7 +56,7 @@ public class SampleMessageTests(ITestOutputHelper output)
     public void TonySaleExample2()
     {
         // https://www.codesandciphers.org.uk/enigma/emachines/enigmad.htm
-        var config = new Machine.Configuration();
+        var config = new Configuration();
 
         config.AddRotor(RotorName.III, 'R');
         config.AddRotor(RotorName.V, 'X');
@@ -91,7 +91,7 @@ public class SampleMessageTests(ITestOutputHelper output)
     {
         // http://wiki.franklinheath.co.uk/index.php/Enigma/Sample_Messages#Enigma_Instruction_Manual.2C_1930
         
-        var config = new Machine.Configuration();
+        var config = new Configuration();
         
         config.AddRotor(RotorName.II, 24);
         config.AddRotor(RotorName.I, 13);
@@ -114,9 +114,9 @@ public class SampleMessageTests(ITestOutputHelper output)
         output.WriteLine(result);
     }
 
-    private Machine CreateBarbarossaMachine()
+    private static Machine CreateBarbarossaMachine()
     {
-        var config = new Machine.Configuration();
+        var config = new Configuration();
         
         config.AddRotor(RotorName.II, 2);
         config.AddRotor(RotorName.IV, 21);

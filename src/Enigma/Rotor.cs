@@ -7,7 +7,9 @@ public class Rotor : IComponent
 {
     public string Name => _rotorName.ToString();
     private readonly RotorName _rotorName;
-    public Ring Ring { get; }
+    public char RingPosition { get; }
+
+    private char[] Notches { get; }
 
     private int _position;
     public int Position
@@ -16,37 +18,36 @@ public class Rotor : IComponent
         set => _position = value % 26;
     }
 
-    private int Offset => (Position - Ring.Position.ToInt()).Normalize();
-    public bool IsAtNotch => Ring.Notches.Contains(Position.ToChar());
+    private int Offset => (Position - RingPosition.ToInt()).Normalize();
+    public bool IsAtNotch => Notches.Contains(Position.ToChar());
     
     public CharacterMap CharacterMap { get; }
 
     private readonly CharacterMap _inversion;
     
-    public static Rotor Create(RotorName name) => new(RotorConfiguration.Create(name));
-    public static Rotor Create(RotorName name, int ringSetting) =>
-        new(RotorConfiguration.Create(name, ringSetting));
-    public static Rotor Create(RotorName name, char ringSetting) =>
-        new(RotorConfiguration.Create(name, ringSetting));
-
-    private Rotor(RotorConfiguration config) : this(
-        config.Name, 
-        config.Wiring.AsSpan(),
-        config.Ring
+    public static Rotor Create(RotorName name) => Create(name, 'A');
+    public static Rotor Create(RotorName name, int ring) =>
+        Create(name, (ring -1).ToChar());
+    public static Rotor Create(RotorName name, char ring) =>
+        new(RotorDescription.Data[name], ring);
+    
+    private Rotor(RotorDescription description, char ring = 'A') : this(
+        description.Name, 
+        description.Wiring.AsSpan(),
+        ring,
+        description.Notches
         )
     { }
-
-    private Rotor(
-        RotorName name, 
-        ReadOnlySpan<char> wiring,
-        Ring ring
-        )
+    
+    private Rotor(RotorName name, ReadOnlySpan<char> wiring, char ring, params char[] notches)
     {
         _rotorName = name;
-        Ring = ring;
-        Position = 0;
         CharacterMap = new CharacterMap(wiring);
-        _inversion = CharacterMap.Inversion;
+        RingPosition = ring;
+        Notches = notches;
+        Position = 0;
+        
+        _inversion = CharacterMap.Invert();
     }
 
     public void Advance() => Position += 1;
