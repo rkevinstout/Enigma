@@ -1,32 +1,55 @@
 namespace Enigma;
 
+using RotorSetting = (RotorName Name, char Ring);
+
 public class Configuration
 {
-    // TODO: add methods to set the ring settings (char and int)
-    public List<Rotor> Rotors { get; } = new();
-    public List<PlugBoard.Pair> Pairs { get; } = new();
-    public ReflectorName ReflectorName { get; set; } = ReflectorName.RefB;
-    public void AddRotor(RotorName name, int ringSetting) => 
-        Rotors.Add(Rotor.Create(name, ringSetting));
-    public void AddRotor(RotorName name, char ringSetting) => 
-        Rotors.Add(Rotor.Create(name, ringSetting));
+    public RotorSettings Rotors { get; } = new();
+    public PlugBoardSettings PlugBoard { get; } = new();
+    public ReflectorName Reflector { get; set; } = ReflectorName.RefB;
 
-    public void AddRotor(RotorName name) => Rotors.Add(Rotor.Create(name));
-    public void AddRotors(params RotorName[] names) => names.ToList().ForEach(AddRotor);
-    public void AddPairs(params PlugBoard.Pair[] pairs) => pairs.ToList().ForEach(Pairs.Add);
+    public class RotorSettings
+    {
+        private readonly List<RotorSetting> _list = [];
         
-    public void AddPair(char from, char to) => Pairs.Add(new(from, to));
+        public void Add(RotorName name, char ringSetting = 'A') => 
+            _list.Add((name, ringSetting));
+        public void Add(RotorName name, int ringSetting) => 
+            _list.Add((name, (ringSetting - 1).ToChar()));
 
-    public void AddPairs(string text) =>
-        text.Split(' ')
-            .Select(x => new PlugBoard.Pair(x[0], x[1]))
-            .ToList()
-            .ForEach(Pairs.Add);
+        public void SetRings(params int[] rings) =>
+            SetRings(rings.Select(x => (x - 1).ToChar()).ToArray());
+        public void SetRings(params char[] rings)
+        {
+            for (var i = 0; i < rings.Length; i++)
+            {
+                _list[i] = (_list[i].Name, rings[i]);
+            }
+        }
+        private Rotor[] ToArray() => 
+            _list.Select(x => Rotor.Create(x.Name, x.Ring)).ToArray();
+        
+        public Spindle CreateSpindle() => new(ToArray());
+    }
+    
+    public class PlugBoardSettings
+    {
+        private readonly List<PlugBoard.Pair> _pairs = [];
+        
+        public void Add(char from, char to) => _pairs.Add(new(from, to));
+        public void Add(params PlugBoard.Pair[] pairs) => 
+            pairs.ToList().ForEach(_pairs.Add);
+        public void Add(string text) =>
+            text.Split(' ')
+                .Select(x => new PlugBoard.Pair(x[0], x[1]))
+                .ToList()
+                .ForEach(_pairs.Add);
+        public PlugBoard CreatePlugBoard() => new(_pairs.ToArray());
+    }
 
-    public Machine Create() =>
-        new(
-            new PlugBoard(Pairs.ToArray()),
-            new Spindle(Rotors.ToArray()),
-            Reflector.Create(ReflectorName)
-        );
+    public Machine Create() => new(
+        PlugBoard.CreatePlugBoard(),
+        Rotors.CreateSpindle(),
+        Enigma.Reflector.Create(Reflector)
+    );
 }

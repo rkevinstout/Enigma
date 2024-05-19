@@ -13,7 +13,7 @@ public class MachineTests(ITestOutputHelper output)
         
         for (var i = 0; i < rotors.Length; i++)
         {
-            config.AddRotor(rotors[i], rings[i]);
+            config.Rotors.Add(rotors[i], rings[i]);
         }
         
         var machine = config.Create();
@@ -66,9 +66,9 @@ public class MachineTests(ITestOutputHelper output)
 
         var config = new Configuration();
         
-        config.AddRotor(RotorName.I, rings[0]);
-        config.AddRotor(RotorName.II, rings[1]);
-        config.AddRotor(RotorName.III, rings[2]);
+        config.Rotors.Add(RotorName.I, rings[0]);
+        config.Rotors.Add(RotorName.II, rings[1]);
+        config.Rotors.Add(RotorName.III, rings[2]);
 
         var machine = config.Create();
 
