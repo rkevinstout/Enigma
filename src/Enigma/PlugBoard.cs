@@ -32,7 +32,8 @@ public class PlugBoard : IComponent
     public char Encode(char c) => CharacterMap.Encode(c);
     public char Decode(char c) => CharacterMap.Encode(c);
     public override string ToString() => _pairs
-        .Select(x => $"{x.From}{x.To}").Aggregate((a, b) => $"{a} {b}");
+        .Select(x => $"{x.From}{x.To}")
+        .Aggregate((a, b) => $"{a} {b}");
 
     public record struct Pair(char From, char To);
 }

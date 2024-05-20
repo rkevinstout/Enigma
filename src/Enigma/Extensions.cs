@@ -4,9 +4,9 @@ namespace Enigma;
 
 public static class Extensions
 {
-    public static int ToInt(this char c) => Convert.ToInt32(c - 'A');
+    public static int ToInt(this char c) => c - 'A';
 
-    public static char ToChar(this int i) => Convert.ToChar(i + 65);
+    public static char ToChar(this int i) => (char)(i + 'A');
 
     public static ReadOnlySpan<int> ToInt(this ReadOnlySpan<char> chars)
     {

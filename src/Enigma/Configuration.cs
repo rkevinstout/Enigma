@@ -12,6 +12,9 @@ public class Configuration
     {
         private readonly List<RotorSetting> _list = [];
         
+        public void Add(params RotorName[] names) => 
+            names.ToList().ForEach(x => Add(x));
+        
         public void Add(RotorName name, char ringSetting = 'A') => 
             _list.Add((name, ringSetting));
         public void Add(RotorName name, int ringSetting) => 

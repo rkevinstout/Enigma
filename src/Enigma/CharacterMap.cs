@@ -20,15 +20,13 @@ public readonly struct CharacterMap
         : this(encodings.ToInt())
     { }
 
-    private CharacterMap(ReadOnlySpan<int> encodings)
-    {
+    private CharacterMap(ReadOnlySpan<int> encodings) => 
         _encodings = encodings.ToArray();
-    }
-    
+
     public int Encode(int i) => _encodings[i];
     public char Encode(char c) => Encode(c.ToInt()).ToChar();
 
-    public CharacterMap Invert()
+    internal CharacterMap Invert()
     {
         ReadOnlySpan<int> encodings = _encodings;
         Span<int> output = new int[encodings.Length].AsSpan();
