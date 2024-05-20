@@ -9,11 +9,11 @@ public class MachineTests(ITestOutputHelper output)
     private static Machine Build(string ringSettings = "AAA", params RotorName[] rotors )
     {
         var rings = ringSettings.AsSpan();
-        var config = new Machine.Configuration();
+        var config = new Configuration();
         
         for (var i = 0; i < rotors.Length; i++)
         {
-            config.AddRotor(rotors[i], rings[i]);
+            config.Rotors.Add(rotors[i], rings[i]);
         }
         
         var machine = config.Create();
@@ -64,11 +64,11 @@ public class MachineTests(ITestOutputHelper output)
 
         var rings = ringSettings.ToCharArray();
 
-        var config = new Machine.Configuration();
+        var config = new Configuration();
         
-        config.AddRotor(RotorName.I, rings[0]);
-        config.AddRotor(RotorName.II, rings[1]);
-        config.AddRotor(RotorName.III, rings[2]);
+        config.Rotors.Add(RotorName.I, rings[0]);
+        config.Rotors.Add(RotorName.II, rings[1]);
+        config.Rotors.Add(RotorName.III, rings[2]);
 
         var machine = config.Create();
 

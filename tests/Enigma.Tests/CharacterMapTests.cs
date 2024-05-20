@@ -10,7 +10,7 @@ public class CharacterMapTests(ITestOutputHelper output)
     public void CharLookup()
     {
         var map = new CharacterMap(Alphabet.I);
-        var inverse = map.Inversion;
+        var inverse = map.Invert();
         
         output.WriteLine(Alphabet.PlainText);
         output.WriteLine(map.ToString());
@@ -18,8 +18,7 @@ public class CharacterMapTests(ITestOutputHelper output)
         output.WriteLine(Alphabet.PlainText);
 
         map.Encode('A').Should().Be('E');
-        map.Decode('E').Should().Be('A');
-        
+        inverse.Encode('E').Should().Be('A');
     }
     
     [Theory]
@@ -27,7 +26,7 @@ public class CharacterMapTests(ITestOutputHelper output)
     public void MapIsSymetric(string alphabet)
     {
         var map = new CharacterMap(alphabet);
-        var inverse = map.Inversion;
+        var inverse = map.Invert();
         
         for (var i = 0; i < alphabet.Length; i++)
         {
@@ -42,38 +41,49 @@ public class CharacterMapTests(ITestOutputHelper output)
     public void IntLookup()
     {
         var map = new CharacterMap(Alphabet.I);
+        var inverse = map.Invert();
         
         output.WriteLine(Alphabet.PlainText);
         output.WriteLine(map.ToString());
 
         map.Encode(0).ToChar().Should().Be('E');
-        map.Decode(4).ToChar().Should().Be('A');
+        inverse.Encode(4).ToChar().Should().Be('A');
     }
 
     [Theory]
     [MemberData(nameof(Rings))]
     public void OffsetTests(char ring)
     {
-        var ringSettings = Ring.Create(RotorName.I, ring);
         var map = new CharacterMap(Alphabet.I);
         var buffer = new StringBuilder();
 
         for (var i = 0; i < Alphabet.I.Length; i++)
         {
-            var shift = ringSettings.Position.ToInt();
+            var shift = ring.ToInt();
             var key = (shift + i).Normalize();
             var result = map.Encode(key).ToChar();
             buffer.Append(result);
         }
         output.WriteLine(buffer.ToString());
     }
+    
+    [Fact]
+    public void ParameterlessCtor()
+    {
+        var map = new CharacterMap();
+        
+        var chars = new string(map.Encodings);
+        
+        chars.Should().BeEquivalentTo(Alphabet.PlainText);
+    }
 
     public static TheoryData<char> Rings => Alphabet.PlainText
         .ToCharArray()
         .ToTheoryData();
     
-    public static TheoryData<string> Alphabets => RotorConfiguration.Alphabets
-        .Select(x => x.Value)
+    public static TheoryData<string> Alphabets => RotorDescription.Data
+        .Values
+        .Select(x => x.Wiring)
         .ToTheoryData();
 
 }

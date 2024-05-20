@@ -1,7 +1,6 @@
 using System.Text;
 using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Configs;
-using BenchmarkDotNet.Environments;
 using BenchmarkDotNet.Jobs;
 
 namespace Enigma.Benchmarks;
@@ -24,11 +23,11 @@ public class MachineTests
 
     private static Machine Build(params RotorName[] rotors)
     {
-        var config = new Machine.Configuration();
+        var config = new Configuration();
         
-        config.AddRotor(RotorName.I);
-        config.AddRotor(RotorName.II);
-        config.AddRotor(RotorName.III);
+        config.Rotors.Add(RotorName.I);
+        config.Rotors.Add(RotorName.II);
+        config.Rotors.Add(RotorName.III);
 
         return config.Create();
     }

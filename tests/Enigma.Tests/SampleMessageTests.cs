@@ -12,15 +12,15 @@ public class SampleMessageTests(ITestOutputHelper output)
     public void TonySaleExample1()
     {
         // https://www.codesandciphers.org.uk/enigma/emachines/enigmad.htm
-        var config = new Machine.Configuration();
+        var config = new Configuration();
         
-        config.AddRotor(RotorName.IV, 'G');
-        config.AddRotor(RotorName.II, 'M');
-        config.AddRotor(RotorName.V, 'Y');
-        config.ReflectorName = ReflectorName.RefB;
+        config.Rotors.Add(RotorName.IV, 'G');
+        config.Rotors.Add(RotorName.II, 'M');
+        config.Rotors.Add(RotorName.V, 'Y');
+        config.Reflector = ReflectorName.RefB;
         
         // DN GR IS KC QX TM PV HY FW BJ
-        config.AddPairs(
+        config.PlugBoard.Add(
             new('D','N'), new('G','R'), new('I','S'), new('K','C'), new('Q','X'), 
             new('T','M'), new('P','V'), new('H','Y'), new('F','W'), new('B','J')
             );
@@ -56,15 +56,15 @@ public class SampleMessageTests(ITestOutputHelper output)
     public void TonySaleExample2()
     {
         // https://www.codesandciphers.org.uk/enigma/emachines/enigmad.htm
-        var config = new Machine.Configuration();
+        var config = new Configuration();
 
-        config.AddRotor(RotorName.III, 'R');
-        config.AddRotor(RotorName.V, 'X');
-        config.AddRotor(RotorName.IV, 'O');
-        config.ReflectorName = ReflectorName.RefB;
+        config.Rotors.Add(RotorName.III, 'R');
+        config.Rotors.Add(RotorName.V, 'X');
+        config.Rotors.Add(RotorName.IV, 'O');
+        config.Reflector = ReflectorName.RefB;
 
         // NP JV LY IX KQ AO DZ CR FT EM
-        config.AddPairs(
+        config.PlugBoard.Add(
             new('N','P'), new('J','V'), new('L','Y'), new('I','X'), new('K','Q'), 
             new('A','O'), new('D','Z'), new('C','R'), new('F','T'), new('E','M')
             );
@@ -91,15 +91,14 @@ public class SampleMessageTests(ITestOutputHelper output)
     {
         // http://wiki.franklinheath.co.uk/index.php/Enigma/Sample_Messages#Enigma_Instruction_Manual.2C_1930
         
-        var config = new Machine.Configuration();
+        var config = new Configuration();
         
-        config.AddRotor(RotorName.II, 24);
-        config.AddRotor(RotorName.I, 13);
-        config.AddRotor(RotorName.III, 22);
-        
-        config.AddPairs("AM FI NV PS TU WZ");
-
-        config.ReflectorName = ReflectorName.RefA;
+        config.Rotors.Add(RotorName.II);
+        config.Rotors.Add(RotorName.I);
+        config.Rotors.Add(RotorName.III);
+        config.Rotors.SetRings(24, 13, 22);
+        config.PlugBoard.Add("AM FI NV PS TU WZ");
+        config.Reflector = ReflectorName.RefA;
         
         var machine = config.Create();
         
@@ -114,18 +113,17 @@ public class SampleMessageTests(ITestOutputHelper output)
         output.WriteLine(result);
     }
 
-    private Machine CreateBarbarossaMachine()
+    private static Machine CreateBarbarossaMachine()
     {
-        var config = new Machine.Configuration();
+        var config = new Configuration();
         
-        config.AddRotor(RotorName.II, 2);
-        config.AddRotor(RotorName.IV, 21);
-        config.AddRotor(RotorName.V, 12);
+        config.Rotors.Add(RotorName.II, 2);
+        config.Rotors.Add(RotorName.IV, 21);
+        config.Rotors.Add(RotorName.V, 12);
         
-        config.AddPairs("AV BS CG DL FU HZ IN KM OW RX");
+        config.PlugBoard.Add("AV BS CG DL FU HZ IN KM OW RX");
         
         return config.Create();
-        
     }
 
     [Fact]
