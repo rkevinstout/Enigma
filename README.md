@@ -8,7 +8,7 @@ A simulation of the [Enigma machine](https://en.wikipedia.org/wiki/Enigma_machin
 2. Construct a machine from that configuration
 3. Encipher/decipher text using that machine
 
-For example, the [Operation Barbarosa example](http://wiki.franklinheath.co.uk/index.php/Enigma/Sample_Messages#Operation_Barbarossa.2C_1941) from the excelent Franklin Heath wiki can be deciphered as follows:
+For example, the [Operation Barbarosa example](http://wiki.franklinheath.co.uk/index.php/Enigma/Sample_Messages#Operation_Barbarossa.2C_1941) from the excelent [Franklin Heath wiki](http://wiki.franklinheath.co.uk/index.php/Enigma) can be deciphered as follows:
 
 ```csharp
     var config = new Configuration();
