@@ -32,3 +32,12 @@ For example, the [Operation Barbarossa example](http://wiki.franklinheath.co.uk/
 ```
 
 This and other examples may be found in [SampleMessageTests.cs](/tests/Enigma.Tests/SampleMessageTests.cs)
+
+## Credits
+
+This was made possible by the technical documentation made available by
+
+- [Wikipedia](https://en.wikipedia.org/wiki/Enigma_machine)
+- [Tony Sale](https://www.codesandciphers.org.uk/enigma/index.htm)
+- [Franklin Heath](http://wiki.franklinheath.co.uk/index.php/Enigma)
+- [Computerphile](https://github.com/mikepound/enigma)
