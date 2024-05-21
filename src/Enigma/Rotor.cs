@@ -7,7 +7,7 @@ public class Rotor : IComponent
 {
     public string Name => _rotorName.ToString();
     private readonly RotorName _rotorName;
-    public char RingPosition { get; }
+    public int RingPosition { get; }
 
     private char[] Notches { get; }
 
@@ -15,10 +15,10 @@ public class Rotor : IComponent
     public int Position
     {
         get => _position;
-        set => _position = value % 26;
+        set => _position = value.Normalize();
     }
 
-    private int Offset => (Position - RingPosition.ToInt()).Normalize();
+    private int Offset => (Position - RingPosition).Normalize();
     public bool IsAtNotch => Notches.Contains(Position.ToChar());
     
     public CharacterMap CharacterMap { get; }
@@ -27,11 +27,11 @@ public class Rotor : IComponent
     
     public static Rotor Create(RotorName name) => Create(name, 'A');
     public static Rotor Create(RotorName name, int ring) =>
-        Create(name, (ring -1).ToChar());
-    public static Rotor Create(RotorName name, char ring) =>
         new(RotorDescription.Data[name], ring);
+    public static Rotor Create(RotorName name, char ring) =>
+        new(RotorDescription.Data[name], ring.ToInt());
     
-    private Rotor(RotorDescription description, char ring = 'A') : this(
+    private Rotor(RotorDescription description, int ring = 0) : this(
         description.Name, 
         description.Wiring.AsSpan(),
         ring,
@@ -39,7 +39,7 @@ public class Rotor : IComponent
         )
     { }
     
-    private Rotor(RotorName name, ReadOnlySpan<char> wiring, char ring, params char[] notches)
+    private Rotor(RotorName name, ReadOnlySpan<char> wiring, int ring, params char[] notches)
     {
         _rotorName = name;
         CharacterMap = new CharacterMap(wiring);

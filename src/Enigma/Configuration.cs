@@ -20,6 +20,12 @@ public class Configuration
         public void Add(RotorName name, int ringSetting) => 
             _list.Add((name, (ringSetting - 1).ToChar()));
 
+        /// <summary>
+        /// Sets the rings for each rotor
+        /// </summary>
+        /// <remarks>unlike the internal implementation, this method assumes one-based
+        /// indexing to conform to informal usage</remarks>
+        /// <param name="rings"></param>
         public void SetRings(params int[] rings) =>
             SetRings(rings.Select(x => (x - 1).ToChar()).ToArray());
         public void SetRings(params char[] rings)
