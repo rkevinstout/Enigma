@@ -19,7 +19,7 @@ public class Spindle
     private Rotor Middle => Rotors[1];
     private Rotor Right => Rotors[0];
     
-    public string Rings => string.Join("", Rotors.Reverse().Select(r => r.RingPosition));
+    public string Rings => string.Join("", Rotors.Reverse().Select(r => r.RingPosition.ToChar()));
 
     public Spindle(params Rotor[] rotors)
     {
@@ -30,7 +30,6 @@ public class Spindle
     public void Advance()
     {
         // 4th rotor (if present) does not rotate
-        //var rotors = Rotors.Take(3).ToArray();
 
         if (Middle.IsAtNotch)
         {

@@ -93,9 +93,7 @@ public class SampleMessageTests(ITestOutputHelper output)
         
         var config = new Configuration();
         
-        config.Rotors.Add(RotorName.II);
-        config.Rotors.Add(RotorName.I);
-        config.Rotors.Add(RotorName.III);
+        config.Rotors.Add(RotorName.II, RotorName.I, RotorName.III);
         config.Rotors.SetRings(24, 13, 22);
         config.PlugBoard.Add("AM FI NV PS TU WZ");
         config.Reflector = ReflectorName.RefA;
@@ -117,11 +115,10 @@ public class SampleMessageTests(ITestOutputHelper output)
     {
         var config = new Configuration();
         
-        config.Rotors.Add(RotorName.II, 2);
-        config.Rotors.Add(RotorName.IV, 21);
-        config.Rotors.Add(RotorName.V, 12);
-        
         config.PlugBoard.Add("AV BS CG DL FU HZ IN KM OW RX");
+        config.Rotors.Add(RotorName.II, RotorName.IV, RotorName.V);
+        config.Rotors.SetRings(2, 21, 12);
+        config.Reflector = ReflectorName.RefB;
         
         return config.Create();
     }

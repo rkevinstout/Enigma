@@ -19,7 +19,7 @@ public class RotorTests(ITestOutputHelper output)
     {
         var defaultRing = Rotor.Create(RotorName.II);
 
-        defaultRing.RingPosition.Should().Be('A');
+        defaultRing.RingPosition.ToChar().Should().Be('A');
         
         var explicitRing = Rotor.Create(RotorName.II, 'A');
 

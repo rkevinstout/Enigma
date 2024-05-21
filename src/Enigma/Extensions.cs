@@ -55,11 +55,11 @@ public static class Extensions
 
     public static int Normalize(this int input, int @base = 26)
     {
-        if (input == 0) return input;
-
-        var abs = Math.Abs(input) % @base;
-
-        return input >= 0 ? abs : @base - abs;
+        if (input < 0) return input + @base;
+        
+        if (input >= @base) return input - @base;
+        
+        return input;
     }
     
     public static string Encode(this ICipher cipher, string text)

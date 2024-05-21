@@ -13,13 +13,12 @@ For example, the [Operation Barbarossa example](http://wiki.franklinheath.co.uk/
 ```csharp
     var config = new Configuration();
     
-    config.Rotors.Add(RotorName.II, 2);
-    config.Rotors.Add(RotorName.IV, 21);
-    config.Rotors.Add(RotorName.V, 12);
+    config.PlugBoard.Add("AV BS CG DL FU HZ IN KM OW RX");
+
+    config.Rotors.Add(RotorName.II, RotorName.IV, RotorName.V);
+    config.Rotors.SetRings(2, 21, 12);
 
     config.Reflector = ReflectorName.RefB;
-    
-    config.PlugBoard.Add("AV BS CG DL FU HZ IN KM OW RX");
     
     var machine = config.Create();
 
