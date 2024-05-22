@@ -16,7 +16,7 @@ public class ReflectorTests
     }
     
     public static TheoryData<ReflectorName> ReflectorNames => 
-        Reflector.Alphabets.Select(x => x.Key)
+        Configuration.ReflectorSettings.Data.Select(x => x.Key)
             .ToTheoryData();
 
 }

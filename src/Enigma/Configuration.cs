@@ -6,7 +6,23 @@ public class Configuration
 {
     public RotorSettings Rotors { get; } = new();
     public PlugBoardSettings PlugBoard { get; } = new();
-    public ReflectorName Reflector { get; set; } = ReflectorName.RefB;
+    public ReflectorSettings Reflector { get; } = new();
+
+    public class ReflectorSettings
+    {
+        public ReflectorName Name { get; set; } = ReflectorName.RefB;
+        
+        public Reflector Create() => Enigma.Reflector.Create(Name);
+        
+        public static Dictionary<ReflectorName, string> Data => new()
+        {
+            { ReflectorName.RefA, Alphabet.RefA },
+            { ReflectorName.RefB, Alphabet.RefB },
+            { ReflectorName.RefC, Alphabet.RefC },
+            { ReflectorName.M4B, Alphabet.M4B },
+            { ReflectorName.M4C, Alphabet.M4C },
+        };
+    }
 
     public class RotorSettings
     {
@@ -39,6 +55,24 @@ public class Configuration
             _list.Select(x => Rotor.Create(x.Name, x.Ring)).ToArray();
         
         public Spindle CreateSpindle() => new(ToArray());
+
+        public record struct RotorDescription(
+            RotorName Name,
+            string Wiring,
+            params char[] Notches
+        );
+        
+        public static Dictionary<RotorName, RotorDescription> Data => new()
+        {
+            { RotorName.I, new(RotorName.I, Alphabet.I, 'Q') },
+            { RotorName.II, new (RotorName.II,Alphabet.II, 'E') },
+            { RotorName.III, new (RotorName.III, Alphabet.III, 'V') },
+            { RotorName.IV, new (RotorName.IV, Alphabet.IV, 'J') },
+            { RotorName.V, new (RotorName.V, Alphabet.V, 'Z') },
+            { RotorName.VI, new (RotorName.VI, Alphabet.VI, 'Z', 'M') },
+            { RotorName.VII, new (RotorName.VII, Alphabet.VII, 'Z', 'M') },    
+            { RotorName.VIII, new (RotorName.VIII, Alphabet.VIII, 'Z', 'M') },
+        };
     }
     
     public class PlugBoardSettings
@@ -59,6 +93,6 @@ public class Configuration
     public Machine Create() => new(
         PlugBoard.CreatePlugBoard(),
         Rotors.CreateSpindle(),
-        Enigma.Reflector.Create(Reflector)
+        Reflector.Create()
     );
 }

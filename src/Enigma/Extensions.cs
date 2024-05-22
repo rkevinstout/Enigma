@@ -62,19 +62,6 @@ public static class Extensions
         return input;
     }
     
-    public static string Encode(this ICipher cipher, string text)
-    {
-        var buffer = new StringBuilder();
-        
-        foreach (var c in text.AsSpan())
-        {
-            buffer.Append(char.IsWhiteSpace(c) 
-                ? c 
-                : cipher.Encode(c));
-        }
-
-        return buffer.ToString();
-    }
     public static string Encode(this Machine machine, ReadOnlySpan<char> text)
     {
         var buffer = new StringBuilder();

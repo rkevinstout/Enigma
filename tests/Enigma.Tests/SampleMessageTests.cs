@@ -17,7 +17,7 @@ public class SampleMessageTests(ITestOutputHelper output)
         config.Rotors.Add(RotorName.IV, 'G');
         config.Rotors.Add(RotorName.II, 'M');
         config.Rotors.Add(RotorName.V, 'Y');
-        config.Reflector = ReflectorName.RefB;
+        config.Reflector.Name = ReflectorName.RefB;
         
         // DN GR IS KC QX TM PV HY FW BJ
         config.PlugBoard.Add(
@@ -61,7 +61,7 @@ public class SampleMessageTests(ITestOutputHelper output)
         config.Rotors.Add(RotorName.III, 'R');
         config.Rotors.Add(RotorName.V, 'X');
         config.Rotors.Add(RotorName.IV, 'O');
-        config.Reflector = ReflectorName.RefB;
+        config.Reflector.Name = ReflectorName.RefB;
 
         // NP JV LY IX KQ AO DZ CR FT EM
         config.PlugBoard.Add(
@@ -96,7 +96,7 @@ public class SampleMessageTests(ITestOutputHelper output)
         config.Rotors.Add(RotorName.II, RotorName.I, RotorName.III);
         config.Rotors.SetRings(24, 13, 22);
         config.PlugBoard.Add("AM FI NV PS TU WZ");
-        config.Reflector = ReflectorName.RefA;
+        config.Reflector.Name = ReflectorName.RefA;
         
         var machine = config.Create();
         
@@ -118,7 +118,7 @@ public class SampleMessageTests(ITestOutputHelper output)
         config.PlugBoard.Add("AV BS CG DL FU HZ IN KM OW RX");
         config.Rotors.Add(RotorName.II, RotorName.IV, RotorName.V);
         config.Rotors.SetRings(2, 21, 12);
-        config.Reflector = ReflectorName.RefB;
+        config.Reflector.Name = ReflectorName.RefB;
         
         return config.Create();
     }

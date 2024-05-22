@@ -81,7 +81,7 @@ public class CharacterMapTests(ITestOutputHelper output)
         .ToCharArray()
         .ToTheoryData();
     
-    public static TheoryData<string> Alphabets => RotorDescription.Data
+    public static TheoryData<string> Alphabets => Configuration.RotorSettings.Data
         .Values
         .Select(x => x.Wiring)
         .ToTheoryData();

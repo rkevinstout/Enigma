@@ -1,4 +1,6 @@
 namespace Enigma;
+
+using RotorDescription = Configuration.RotorSettings.RotorDescription;
 /// <summary>
 /// A rotating wheel the effects a substitution cipher
 /// </summary>
@@ -27,9 +29,9 @@ public class Rotor : IComponent
     
     public static Rotor Create(RotorName name) => Create(name, 'A');
     public static Rotor Create(RotorName name, int ring) =>
-        new(RotorDescription.Data[name], ring);
+        new(Configuration.RotorSettings.Data[name], ring);
     public static Rotor Create(RotorName name, char ring) =>
-        new(RotorDescription.Data[name], ring.ToInt());
+        new(Configuration.RotorSettings.Data[name], ring.ToInt());
     
     private Rotor(RotorDescription description, int ring = 0) : this(
         description.Name, 
