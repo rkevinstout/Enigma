@@ -18,7 +18,7 @@ For example, the [Operation Barbarossa example](http://wiki.franklinheath.co.uk/
     config.Rotors.Add(RotorName.II, RotorName.IV, RotorName.V);
     config.Rotors.SetRings(2, 21, 12);
 
-    config.Reflector = ReflectorName.RefB;
+    config.Reflector.Name = ReflectorName.RefB;
     
     var machine = config.Create();
 
