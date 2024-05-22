@@ -40,6 +40,9 @@ msbuild.wrn
 [Tt]est[Rr]esult*/
 [Bb]uild[Ll]og.*
 
+# BenchmarkDotNet artifacts
+**/BenchmarkDotNet.Artifacts/*
+
 #NUNIT
 *.VisualState.xml
 TestResult.xml
@@ -115,7 +118,7 @@ Temporary Items
 *.un~
 Session.vim
 .netrwhist
-*~
+
 
 # Visual Studio Code
 .vscode/
