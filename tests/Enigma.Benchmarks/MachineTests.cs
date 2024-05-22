@@ -1,33 +1,34 @@
 using System.Text;
 using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Configs;
+using BenchmarkDotNet.Engines;
 using BenchmarkDotNet.Jobs;
 
 namespace Enigma.Benchmarks;
 
 [MemoryDiagnoser]
-// [Config(typeof(Config))]
+// [SimpleJob(RunStrategy.Throughput, launchCount: 10,
+//    warmupCount: 10, iterationCount: 10)]
 public class MachineTests
 {
-    private readonly Machine _machine;
-    private readonly Dictionary<int, string> _dictionary;
+    private readonly Machine _machine = Build(RotorName.I, RotorName.II, RotorName.III);
+
+    private string _text = string.Empty;
 
     [Params(256, 1024, 2048, 4096)]
-    public int Key;
-
-    public MachineTests()
+    public int Length;
+    
+    [GlobalSetup]
+    public void GlobalSetup()
     {
-        _machine = Build(RotorName.I, RotorName.II, RotorName.III);
-        _dictionary = CreateTextDictionary();
+        _text = Generate(Length);
     }
 
     private static Machine Build(params RotorName[] rotors)
     {
         var config = new Configuration();
         
-        config.Rotors.Add(RotorName.I);
-        config.Rotors.Add(RotorName.II);
-        config.Rotors.Add(RotorName.III);
+        config.Rotors.Add(rotors);
 
         return config.Create();
     }
@@ -35,9 +36,7 @@ public class MachineTests
     [Benchmark]
     public string Encrpyt()
     {
-        var plainText = _dictionary[Key];
-        
-        return _machine.Encode(plainText);
+        return _machine.Encode(_text);
     }
     private static string Generate(int length)
     {
@@ -50,27 +49,5 @@ public class MachineTests
         }
 
         return buffer.ToString();
-    }
-
-    private static Dictionary<int, string> CreateTextDictionary() => new()
-    {
-        { 256, Generate(256) }, 
-        { 1024, Generate(1024) },
-        { 2048,  Generate(2048) },
-        { 4096,  Generate(4096) },
-        { 8192,  Generate(8192) }
-    };
-
-    private class Config : ManualConfig
-    {
-        public Config()
-        {
-            AddJob(new Job(Job.Dry)
-            {
-                // Environment = { Jit = Jit.LegacyJit, Platform = Platform.X64 },
-                Run = { LaunchCount = 5, WarmupCount = 10, IterationCount = 20 }
-                // Accuracy = { MaxRelativeError = 0.01 }
-            });
-        }
     }
 }

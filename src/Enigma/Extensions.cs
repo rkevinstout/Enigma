@@ -75,11 +75,11 @@ public static class Extensions
 
         return buffer.ToString();
     }
-    public static string Encode(this Machine machine, string text)
+    public static string Encode(this Machine machine, ReadOnlySpan<char> text)
     {
         var buffer = new StringBuilder();
         
-        foreach (var c in text.AsSpan())
+        foreach (var c in text)
         {
             buffer.Append(char.IsWhiteSpace(c) 
                 ? c 
