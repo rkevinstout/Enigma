@@ -99,4 +99,7 @@ public static class Extensions
         }
         return new CharacterMap(output);
     }
+    
+    public static char EncodeChar(this IComponent component, char c) => component.Encode(c.ToInt()).ToChar();
+    public static char DecodeChar(this IComponent component, char c) => component.Decode(c.ToInt()).ToChar();
 }

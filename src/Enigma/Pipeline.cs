@@ -43,7 +43,7 @@ public class Pipeline
         public IComponent Component { get; }
         public CharacterMap CharacterMap { get; }
         public bool Inbound { get; }
-        public char Execute(char input) => Inbound
+        public int Execute(int input) => Inbound
             ? Component.Encode(input)
             : Component.Decode(input);
 

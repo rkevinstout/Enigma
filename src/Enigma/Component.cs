@@ -4,6 +4,6 @@ public interface IComponent
 {
     public CharacterMap CharacterMap { get; }
     public string Name { get; }
-    char Encode(char c);
-    char Decode(char c);
+    int Encode(int i);
+    int Decode(int i);
 }

@@ -29,8 +29,8 @@ public class PlugBoard : IComponent
         return chars;
     }
 
-    public char Encode(char c) => CharacterMap.Encode(c);
-    public char Decode(char c) => CharacterMap.Encode(c);
+    public int Encode(int i) => CharacterMap.Encode(i);
+    public int Decode(int i) => CharacterMap.Encode(i);
     public override string ToString() => _pairs
         .Select(x => $"{x.From}{x.To}")
         .Aggregate((a, b) => $"{a} {b}");

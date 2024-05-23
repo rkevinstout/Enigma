@@ -53,10 +53,9 @@ public class Rotor : IComponent
     }
 
     public void Advance() => Position += 1;
-    
-    public char Encode(char c) => Encode(c.ToInt()).ToChar();
 
-    private int Encode(int i) => Encode(i, CharacterMap);
+    public int Encode(int i) => Encode(i, CharacterMap);
+    public int Decode(int i) => Encode(i, _inversion);
 
     private int Encode(int i, CharacterMap map)
     {
@@ -66,10 +65,6 @@ public class Rotor : IComponent
 
         return result;
     }
-        
-    public char Decode(char c) => Decode(c.ToInt()).ToChar();
-    
-    private int Decode(int i) => Encode(i, _inversion);
     
     public override string ToString() => CharacterMap.ToString();
 }
