@@ -14,7 +14,7 @@ public class Configuration
         
         public Reflector Create() => Enigma.Reflector.Create(Name);
         
-        public static Dictionary<ReflectorName, string> Data => new()
+        public static Dictionary<ReflectorName, string> Data { get; } = new()
         {
             { ReflectorName.RefA, Alphabet.RefA },
             { ReflectorName.RefB, Alphabet.RefB },
@@ -62,16 +62,16 @@ public class Configuration
             params char[] Notches
         );
         
-        public static Dictionary<RotorName, RotorDescription> Data => new()
+        public static Dictionary<RotorName, RotorDescription> Data { get; } = new()
         {
             { RotorName.I, new(RotorName.I, Alphabet.I, 'Q') },
-            { RotorName.II, new (RotorName.II,Alphabet.II, 'E') },
-            { RotorName.III, new (RotorName.III, Alphabet.III, 'V') },
-            { RotorName.IV, new (RotorName.IV, Alphabet.IV, 'J') },
-            { RotorName.V, new (RotorName.V, Alphabet.V, 'Z') },
-            { RotorName.VI, new (RotorName.VI, Alphabet.VI, 'Z', 'M') },
-            { RotorName.VII, new (RotorName.VII, Alphabet.VII, 'Z', 'M') },    
-            { RotorName.VIII, new (RotorName.VIII, Alphabet.VIII, 'Z', 'M') },
+            { RotorName.II, new(RotorName.II, Alphabet.II, 'E') },
+            { RotorName.III, new(RotorName.III, Alphabet.III, 'V') },
+            { RotorName.IV, new(RotorName.IV, Alphabet.IV, 'J') },
+            { RotorName.V, new(RotorName.V, Alphabet.V, 'Z') },
+            { RotorName.VI, new(RotorName.VI, Alphabet.VI, 'Z', 'M') },
+            { RotorName.VII, new(RotorName.VII, Alphabet.VII, 'Z', 'M') },
+            { RotorName.VIII, new(RotorName.VIII, Alphabet.VIII, 'Z', 'M') },
         };
     }
     

@@ -41,9 +41,8 @@ public class Pipeline
     public class Step
     {
         public IComponent Component { get; }
-        public CharacterMap CharacterMap { get; }
         public bool Inbound { get; }
-        public char Execute(char input) => Inbound
+        public int Execute(int input) => Inbound
             ? Component.Encode(input)
             : Component.Decode(input);
 
@@ -56,7 +55,6 @@ public class Pipeline
         {
             Component = component;
             Inbound = isInbound;
-            CharacterMap = component.CharacterMap;
         }
     }
 }

@@ -7,6 +7,7 @@ public class Reflector : IComponent
     private readonly ReflectorName _reflectorName;
 
     public CharacterMap CharacterMap { get; }
+    public CharacterMap InvertedMap => CharacterMap;
 
     public static Reflector Create(ReflectorName name) => 
         new(name, Configuration.ReflectorSettings.Data[name]);
@@ -16,8 +17,8 @@ public class Reflector : IComponent
         _reflectorName = name;
         CharacterMap = new CharacterMap(alphabet);
     }
-
-    public char Encode(char c) => CharacterMap.Encode(c);
-    public char Decode(char c) => CharacterMap.Encode(c);
+    
+    public int Encode(int i) => CharacterMap.Encode(i);
+    public int Decode(int i) => CharacterMap.Encode(i);
     public override string ToString() => Name;
 }

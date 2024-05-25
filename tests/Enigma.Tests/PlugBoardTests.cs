@@ -19,8 +19,8 @@ public class PlugBoardTests
     [MemberData(nameof(TestPairs))]
     public void ShouldEncode(char from, char to)
     {
-        PlugBoard.Encode(from).Should().Be(to);
-        PlugBoard.Encode(to).Should().Be(from);
+        PlugBoard.EncodeChar(from).Should().Be(to);
+        PlugBoard.EncodeChar(to).Should().Be(from);
     }
 
     [Fact]

@@ -10,7 +10,7 @@ public class Machine
     private readonly Spindle _spindle;
     private readonly Reflector _reflector;
 
-    public bool Debug { get; set; } = false;
+    public bool Debug { get; set; }
 
     private readonly LinkedList<Pipeline.Step> _pipeline;
 
@@ -57,19 +57,19 @@ public class Machine
 
     private char Encode(LinkedList<Pipeline.Step> pipeline, char input)
     {
-        var temp = input;
+        var temp = input - 'A';
 
         foreach (var step in pipeline)
         {
             var result = step.Execute(temp);
 
             if (Debug)
-                Log.Record(step, temp, result, _spindle.Position);
+                Log.Record(step, temp.ToChar(), result.ToChar(), _spindle.Position);
 
             temp = result;
         }
 
-        return temp;
+        return temp.ToChar();
     }
     
     public override string ToString() => $"{_reflector.Name} {_spindle} {_spindle.Rings} [{_plugBoard}] {_spindle.Position}";

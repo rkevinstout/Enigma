@@ -45,7 +45,7 @@ public class RotorTests(ITestOutputHelper output)
     {
         var rotor = Rotor.Create(RotorName.I, ring);
 
-        var result = rotor.Encode(plaintext);
+        var result = rotor.Encode(plaintext.ToInt()).ToChar();
         output.WriteLine(rotor.ToString());
 
         result.Should().Be(expected);

@@ -55,9 +55,11 @@ public static class Extensions
 
     public static int Normalize(this int input, int @base = 26)
     {
-        if (input < 0) return input + @base;
+        if (input >= @base) 
+            return input - @base;
         
-        if (input >= @base) return input - @base;
+        if (input < 0) 
+            return input + @base;
         
         return input;
     }
@@ -99,4 +101,7 @@ public static class Extensions
         }
         return new CharacterMap(output);
     }
+    
+    public static char EncodeChar(this IComponent component, char c) => component.Encode(c.ToInt()).ToChar();
+    public static char DecodeChar(this IComponent component, char c) => component.Decode(c.ToInt()).ToChar();
 }
