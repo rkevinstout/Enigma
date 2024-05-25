@@ -7,6 +7,7 @@ public class Reflector : IComponent
     private readonly ReflectorName _reflectorName;
 
     public CharacterMap CharacterMap { get; }
+    public CharacterMap InvertedMap => CharacterMap;
 
     public static Reflector Create(ReflectorName name) => 
         new(name, Configuration.ReflectorSettings.Data[name]);

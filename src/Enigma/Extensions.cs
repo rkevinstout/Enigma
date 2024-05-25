@@ -55,9 +55,11 @@ public static class Extensions
 
     public static int Normalize(this int input, int @base = 26)
     {
-        if (input < 0) return input + @base;
+        if (input >= @base) 
+            return input - @base;
         
-        if (input >= @base) return input - @base;
+        if (input < 0) 
+            return input + @base;
         
         return input;
     }

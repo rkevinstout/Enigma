@@ -25,7 +25,7 @@ public class Rotor : IComponent
     
     public CharacterMap CharacterMap { get; }
 
-    private readonly CharacterMap _inversion;
+    public  CharacterMap InvertedMap { get; }
     
     public static Rotor Create(RotorName name) => Create(name, 'A');
     public static Rotor Create(RotorName name, int ring) =>
@@ -45,17 +45,16 @@ public class Rotor : IComponent
     {
         _rotorName = name;
         CharacterMap = new CharacterMap(wiring);
+        InvertedMap = CharacterMap.Invert();
         RingPosition = ring;
         Notches = notches;
         Position = 0;
-        
-        _inversion = CharacterMap.Invert();
     }
 
     public void Advance() => Position += 1;
 
     public int Encode(int i) => Encode(i, CharacterMap);
-    public int Decode(int i) => Encode(i, _inversion);
+    public int Decode(int i) => Encode(i, InvertedMap);
 
     private int Encode(int i, CharacterMap map)
     {

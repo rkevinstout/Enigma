@@ -5,6 +5,7 @@ public class PlugBoard : IComponent
     public string Name => "PB";
 
     public CharacterMap CharacterMap { get; }
+    public CharacterMap InvertedMap => CharacterMap;
     
     private readonly Pair[] _pairs;
     
