@@ -1,15 +1,15 @@
 ```
 
-BenchmarkDotNet v0.13.12, macOS Sonoma 14.4.1 (23E224) [Darwin 23.4.0]
+BenchmarkDotNet v0.13.12, macOS 26.3.1 (25D2128) [Darwin 25.3.0]
 Apple M1 Pro, 1 CPU, 10 logical and 10 physical cores
-.NET SDK 8.0.300
-  [Host]     : .NET 8.0.5 (8.0.524.21615), Arm64 RyuJIT AdvSIMD
-  DefaultJob : .NET 8.0.5 (8.0.524.21615), Arm64 RyuJIT AdvSIMD
+.NET SDK 10.0.103
+  [Host]     : .NET 10.0.3 (10.0.326.7603), Arm64 RyuJIT AdvSIMD
+  DefaultJob : .NET 10.0.3 (10.0.326.7603), Arm64 RyuJIT AdvSIMD
 
 
 ```
-| Method  | Length | Mean      | Error    | StdDev   | Gen0    | Gen1   | Allocated |
-|-------- |------- |----------:|---------:|---------:|--------:|-------:|----------:|
-| **Encrpyt** | **256**    |  **22.76 μs** | **0.079 μs** | **0.066 μs** |  **3.1738** |      **-** |  **19.62 KB** |
-| **Encrpyt** | **1024**   |  **90.19 μs** | **0.235 μs** | **0.196 μs** | **12.5732** |      **-** |  **77.48 KB** |
-| **Encrpyt** | **4096**   | **360.18 μs** | **1.282 μs** | **1.136 μs** | **50.2930** | **0.9766** |  **308.5 KB** |
+| Method  | Length | Mean      | Error    | StdDev   | Gen0   | Allocated |
+|-------- |------- |----------:|---------:|---------:|-------:|----------:|
+| **Encrpyt** | **256**    |  **14.95 μs** | **0.074 μs** | **0.062 μs** | **0.1678** |   **1.09 KB** |
+| **Encrpyt** | **1024**   |  **59.37 μs** | **0.334 μs** | **0.279 μs** | **0.6104** |   **4.09 KB** |
+| **Encrpyt** | **4096**   | **243.21 μs** | **1.632 μs** | **1.446 μs** | **2.4414** |  **16.09 KB** |
