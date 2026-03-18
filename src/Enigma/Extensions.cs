@@ -89,19 +89,6 @@ public static class Extensions
             .ToCharArray()
             .ToDictionary(c => c, map.Encode);
     
-    public static CharacterMap Invert(this CharacterMap map)
-    {
-        var chars = map.Encodings;
-        var output = new char[chars.Length].AsSpan();
-
-        for (var i = 0; i < chars.Length; i++)
-        {
-            var index = chars[i].ToInt();
-            output[index] = i.ToChar();
-        }
-        return new CharacterMap(output);
-    }
-    
     public static char EncodeChar(this IComponent component, char c) => component.Encode(c.ToInt()).ToChar();
     public static char DecodeChar(this IComponent component, char c) => component.Decode(c.ToInt()).ToChar();
 }
