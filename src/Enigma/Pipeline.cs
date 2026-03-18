@@ -6,33 +6,33 @@ public class Pipeline
     public void Add(IComponent component) => _components.Add(component);
     public void Add(IEnumerable<IComponent> components) => _components.AddRange(components);
 
-    public LinkedList<Step> Build()
+    public Step[] Build()
     {
         if (_components.Count == 0) return [];
-        
+
         var stack = new Stack<IComponent>(_components);
 
         return Build(stack);
     }
 
-    private static LinkedList<Step> Build(Stack<IComponent> stack)
+    private static Step[] Build(Stack<IComponent> stack)
     {
-        var list = new LinkedList<Step>();
-        
+        var list = new List<Step>();
+
         var component = stack.Pop();
-        
+
         // unlike other components reflector is only called once
-        list.AddFirst(component.CreateStep());
+        list.Add(component.CreateStep());
 
         while (stack.Count > 0)
         {
             var next = stack.Pop();
-            
+
             // the normal encipherment of the wheels/components themselves
-            list.AddFirst(next.CreateStep());
-            list.AddLast(next.CreateStep(false));
+            list.Insert(0, next.CreateStep());
+            list.Add(next.CreateStep(false));
         }
-        return list;
+        return list.ToArray();
     }
 
     /// <summary>

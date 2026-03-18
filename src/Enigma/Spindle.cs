@@ -7,7 +7,8 @@ namespace Enigma;
 public class Spindle
 {
     private readonly Rotor[] _rotors;
-    public ReadOnlyCollection<Rotor> Rotors => _rotors.AsReadOnly();
+    public ReadOnlyCollection<Rotor> Rotors { get; }
+
 
     public string Position
     {
@@ -24,6 +25,7 @@ public class Spindle
     public Spindle(params Rotor[] rotors)
     {
         _rotors = rotors.Reverse().ToArray();
+        Rotors = _rotors.AsReadOnly();
         Validate();
     }
 

@@ -12,7 +12,7 @@ public class Machine
 
     public bool Debug { get; set; }
 
-    private readonly LinkedList<Pipeline.Step> _pipeline;
+    private readonly Pipeline.Step[] _pipeline;
 
     public string Position
     {
@@ -35,7 +35,7 @@ public class Machine
         _pipeline = BuildPipeline();
     }
 
-    private LinkedList<Pipeline.Step>  BuildPipeline()
+    private Pipeline.Step[] BuildPipeline()
     {
         var pipeline = new Pipeline();
 
@@ -55,7 +55,7 @@ public class Machine
     
     public char Encode(char input) => Encode(_pipeline, input);
 
-    private char Encode(LinkedList<Pipeline.Step> pipeline, char input)
+    private char Encode(Pipeline.Step[] pipeline, char input)
     {
         var temp = input - 'A';
 

@@ -157,3 +157,6 @@ TestResults/
 
 # ApprovalTests
 *.received.txt
+
+# Claude
+.claude/settings.local.json

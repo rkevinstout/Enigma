@@ -66,7 +66,7 @@ public static class Extensions
     
     public static string Encode(this Machine machine, ReadOnlySpan<char> text)
     {
-        var buffer = new StringBuilder();
+        var buffer = new StringBuilder(text.Length);
         
         foreach (var c in text)
         {
