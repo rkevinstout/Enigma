@@ -1,5 +1,3 @@
-using Xunit.Abstractions;
-
 namespace Enigma.Tests;
 
 public class RotationTests(ITestOutputHelper output)

@@ -1,6 +1,3 @@
-using FluentAssertions;
-using Xunit.Abstractions;
-
 namespace Enigma.Tests;
 
 public class SampleMessageTests(ITestOutputHelper output)
@@ -14,16 +11,10 @@ public class SampleMessageTests(ITestOutputHelper output)
         // https://www.codesandciphers.org.uk/enigma/emachines/enigmad.htm
         var config = new Configuration();
         
-        config.Rotors.Add(RotorName.IV, 'G');
-        config.Rotors.Add(RotorName.II, 'M');
-        config.Rotors.Add(RotorName.V, 'Y');
+        config.Rotors.Add(RotorName.IV, RotorName.II, RotorName.V);
+        config.Rotors.SetRings('G', 'M', 'Y');
         config.Reflector.Name = ReflectorName.RefB;
-        
-        // DN GR IS KC QX TM PV HY FW BJ
-        config.PlugBoard.Add(
-            new('D','N'), new('G','R'), new('I','S'), new('K','C'), new('Q','X'), 
-            new('T','M'), new('P','V'), new('H','Y'), new('F','W'), new('B','J')
-            );
+        config.PlugBoard.Add("DN GR IS KC QX TM PV HY FW BJ");
         
         var machine = config.Create();
         
@@ -62,12 +53,7 @@ public class SampleMessageTests(ITestOutputHelper output)
         config.Rotors.Add(RotorName.V, 'X');
         config.Rotors.Add(RotorName.IV, 'O');
         config.Reflector.Name = ReflectorName.RefB;
-
-        // NP JV LY IX KQ AO DZ CR FT EM
-        config.PlugBoard.Add(
-            new('N','P'), new('J','V'), new('L','Y'), new('I','X'), new('K','Q'), 
-            new('A','O'), new('D','Z'), new('C','R'), new('F','T'), new('E','M')
-            );
+        config.PlugBoard.Add("NP JV LY IX KQ AO DZ CR FT EM");
 
         var machine = config.Create();
 
